@@ -20,7 +20,7 @@ import { getEveOutfitVisual } from '../../utils/outfitVisuals';
 import confetti from 'canvas-confetti';
 
 export const VanityMirror: React.FC = () => {
-  const { state, setViewMode, equipItem, unlockOutfit, modifyStats } = useGameStore();
+  const { state, setViewMode, equipItem, unlockOutfit, modifyStats, triggerMinigame } = useGameStore();
   const [selectedCategory, setSelectedCategory] = useState<OutfitCategory>('top');
 
   const currentEra = EVE_ERAS[state.transitionEra];
@@ -128,6 +128,24 @@ export const VanityMirror: React.FC = () => {
               <span className="text-[10px] text-emerald-400 font-bold uppercase block">Shield</span>
               <strong className="text-base text-white">{100 - state.stats.dysphoria}%</strong>
             </div>
+          </div>
+
+          {/* Vanity Self-Care Minigame Launchers */}
+          <div className="w-full z-10 grid grid-cols-2 gap-2 mt-3">
+            <button
+              onClick={() => triggerMinigame('eyeliner')}
+              className="py-2 px-3 rounded-xl bg-gradient-to-r from-pink-600/30 to-purple-600/30 hover:from-pink-600/50 hover:to-purple-600/50 border border-pink-500/40 text-pink-200 text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-pink-400" />
+              <span>Wing Eyeliner</span>
+            </button>
+            <button
+              onClick={() => triggerMinigame('mirror_monologue')}
+              className="py-2 px-3 rounded-xl bg-gradient-to-r from-purple-600/30 to-slate-800 hover:from-purple-600/50 hover:to-slate-700 border border-purple-500/40 text-purple-200 text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-purple-400" />
+              <span>Face Shadow</span>
+            </button>
           </div>
         </div>
 

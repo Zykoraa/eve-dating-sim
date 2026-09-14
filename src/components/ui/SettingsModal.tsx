@@ -1,19 +1,28 @@
 import React, { useState } from 'react';
-import { Settings, Volume2, VolumeX, Type, RotateCcw, X } from 'lucide-react';
+import { Settings, Volume2, VolumeX, Type, RotateCcw, X, Eye, ShieldAlert, Sliders } from 'lucide-react';
 import { useGameStore } from '../../state/useGameStore';
 import { soundEngine } from '../../state/useAudioStore';
 
 export const SettingsModal: React.FC = () => {
-  const { state, setViewMode, resetGame } = useGameStore();
+  const { state, setViewMode, resetGame, updateSettings } = useGameStore();
   const [vol, setVol] = useState(soundEngine.getVolume() * 100);
   const [isMuted, setIsMuted] = useState(soundEngine.getMuted());
   const [textSpeed, setTextSpeed] = useState(state.textSpeedMs);
   const [confirmReset, setConfirmReset] = useState(false);
 
+  const settings = state.settings || {
+    dyslexiaFont: false,
+    fontSize: 'md',
+    contentIntensity: 'standard',
+    autoAdvanceDelayMs: 2200,
+    bgmVolume: 0.6,
+    sfxVolume: 0.8,
+  };
+
   const handleVolumeChange = (newVal: number) => {
     setVol(newVal);
     soundEngine.setVolume(newVal / 100);
-    soundEngine.playClick();
+    updateSettings({ sfxVolume: newVal / 100 });
   };
 
   const handleMuteToggle = () => {
@@ -30,11 +39,11 @@ export const SettingsModal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4">
-      <div className="w-full max-w-lg bg-slate-900 rounded-3xl border border-pink-500/30 shadow-2xl p-6 flex flex-col space-y-6">
+      <div className="w-full max-w-xl max-h-[90vh] overflow-y-auto no-scrollbar bg-slate-900 rounded-3xl border border-pink-500/30 shadow-2xl p-6 flex flex-col space-y-5 text-slate-100">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div className="flex items-center justify-between border-b border-slate-800 pb-3">
           <h2 className="text-xl font-bold text-white flex items-center gap-2">
-            <Settings className="w-5 h-5 text-pink-400" /> Game Settings
+            <Settings className="w-5 h-5 text-pink-400" /> Game & Accessibility Settings
           </h2>
           <button
             onClick={() => setViewMode(state.previousViewMode === 'title' ? 'title' : 'novel')}
@@ -45,7 +54,7 @@ export const SettingsModal: React.FC = () => {
         </div>
 
         {/* Audio Volume */}
-        <div className="space-y-2">
+        <div className="space-y-2 bg-slate-950/50 p-3.5 rounded-2xl border border-white/5">
           <div className="flex justify-between text-xs font-bold text-slate-300">
             <span className="flex items-center gap-1.5">
               {isMuted ? <VolumeX className="w-4 h-4 text-red-400" /> : <Volume2 className="w-4 h-4 text-emerald-400" />}
@@ -75,9 +84,9 @@ export const SettingsModal: React.FC = () => {
         </div>
 
         {/* Text Speed */}
-        <div className="space-y-2">
+        <div className="space-y-2 bg-slate-950/50 p-3.5 rounded-2xl border border-white/5">
           <label className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
-            <Type className="w-4 h-4 text-purple-400" /> Text Typewriter Speed:
+            <Type className="w-4 h-4 text-purple-400" /> Typewriter Speed:
           </label>
           <div className="grid grid-cols-3 gap-2">
             {[
@@ -104,8 +113,97 @@ export const SettingsModal: React.FC = () => {
           </div>
         </div>
 
+        {/* Typography & Dyslexia Support */}
+        <div className="space-y-3 bg-slate-950/50 p-3.5 rounded-2xl border border-white/5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Eye className="w-4 h-4 text-pink-400" />
+              <div>
+                <span className="text-xs font-bold text-slate-200 block">Dyslexia-Friendly Monospace Font</span>
+                <span className="text-[10px] text-slate-400">High-legibility character spacing</span>
+              </div>
+            </div>
+            <button
+              onClick={() => updateSettings({ dyslexiaFont: !settings.dyslexiaFont })}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition ${
+                settings.dyslexiaFont
+                  ? 'bg-pink-600 text-white border-pink-400 shadow-md'
+                  : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-white'
+              }`}
+            >
+              {settings.dyslexiaFont ? 'Enabled' : 'Default Sans'}
+            </button>
+          </div>
+
+          {/* Font Sizing */}
+          <div className="pt-2 border-t border-white/5 space-y-1.5">
+            <span className="text-xs font-bold text-slate-300 block">Dialogue Text Size:</span>
+            <div className="grid grid-cols-4 gap-2 text-xs">
+              {(['sm', 'md', 'lg', 'xl'] as const).map((size) => (
+                <button
+                  key={size}
+                  onClick={() => updateSettings({ fontSize: size })}
+                  className={`py-1.5 rounded-xl font-bold uppercase transition border ${
+                    settings.fontSize === size
+                      ? 'bg-purple-600 text-white border-purple-400'
+                      : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-white'
+                  }`}
+                >
+                  {size}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Narrative & Microaggression Intensity */}
+        <div className="space-y-2 bg-slate-950/50 p-3.5 rounded-2xl border border-white/5">
+          <label className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+            <ShieldAlert className="w-4 h-4 text-amber-400" /> Trans Reality & Microaggression Tone:
+          </label>
+          <div className="grid grid-cols-3 gap-2">
+            {[
+              { id: 'gentle', label: 'Gentle / Cozy', desc: 'Focus on euphoria & safety' },
+              { id: 'standard', label: 'Standard', desc: 'Balanced realism & hope' },
+              { id: 'authentic', label: 'Authentic Deep', desc: 'Full societal nuance' },
+            ].map((tone) => (
+              <button
+                key={tone.id}
+                onClick={() => updateSettings({ contentIntensity: tone.id as any })}
+                className={`p-2.5 rounded-xl text-left border transition ${
+                  settings.contentIntensity === tone.id
+                    ? 'bg-pink-950/60 border-pink-500 text-pink-200'
+                    : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-white'
+                }`}
+              >
+                <div className="font-bold text-xs">{tone.label}</div>
+                <div className="text-[9.5px] text-slate-400 mt-0.5">{tone.desc}</div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Auto-Advance Delay */}
+        <div className="space-y-2 bg-slate-950/50 p-3.5 rounded-2xl border border-white/5">
+          <div className="flex justify-between text-xs font-bold text-slate-300">
+            <span className="flex items-center gap-1.5">
+              <Sliders className="w-4 h-4 text-teal-400" /> Auto-Play Pause Delay:
+            </span>
+            <span className="text-teal-400 font-mono">{(settings.autoAdvanceDelayMs / 1000).toFixed(1)}s</span>
+          </div>
+          <input
+            type="range"
+            min="1200"
+            max="4000"
+            step="200"
+            value={settings.autoAdvanceDelayMs}
+            onChange={(e) => updateSettings({ autoAdvanceDelayMs: Number(e.target.value) })}
+            className="w-full accent-teal-500 cursor-pointer"
+          />
+        </div>
+
         {/* Reset Progress */}
-        <div className="pt-4 border-t border-slate-800">
+        <div className="pt-2 border-t border-slate-800">
           {confirmReset ? (
             <div className="bg-red-950/50 border border-red-500/50 p-4 rounded-2xl text-center space-y-3">
               <p className="text-xs text-red-200 font-bold">

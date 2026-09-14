@@ -31,11 +31,51 @@ export type GameViewMode =
   | 'vanity' 
   | 'minigame' 
   | 'gallery' 
+  | 'flowchart'
   | 'settings' 
   | 'save_load' 
   | 'title';
 
-export type MinigameType = 'boundary_clash' | 'vibe_check' | 'voice_tuner' | 'none';
+export type MinigameType = 'boundary_clash' | 'vibe_check' | 'voice_tuner' | 'eyeliner' | 'mirror_monologue' | 'none';
+
+export interface InstaComment {
+  id: string;
+  author: string;
+  avatar: string;
+  text: string;
+  time: string;
+}
+
+export interface InstaPost {
+  id: string;
+  author: string;
+  authorHandle: string;
+  avatar: string;
+  photoUrl: string;
+  caption: string;
+  likes: number;
+  isLiked?: boolean;
+  time: string;
+  comments: InstaComment[];
+  era: TransitionEra;
+}
+
+export interface DailyRoutines {
+  hrtLogged: boolean;
+  waterLogged: boolean;
+  skincareLogged: boolean;
+  voiceWarmupLogged: boolean;
+  streakDays: number;
+}
+
+export interface GameSettings {
+  dyslexiaFont: boolean;
+  fontSize: 'sm' | 'md' | 'lg' | 'xl';
+  contentIntensity: 'gentle' | 'standard' | 'authentic';
+  autoAdvanceDelayMs: number;
+  bgmVolume: number;
+  sfxVolume: number;
+}
 
 export interface SaveSlot {
   id: number;
@@ -53,4 +93,8 @@ export interface SaveSlot {
   suitors: Record<SuitorId, SuitorAffection>;
   chatThreads?: ChatThread[];
   nestMessages?: NestMessage[];
+  visitedScenes?: string[];
+  instaPosts?: InstaPost[];
+  dailyRoutines?: DailyRoutines;
 }
+

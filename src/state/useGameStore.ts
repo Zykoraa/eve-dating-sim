@@ -6,7 +6,11 @@ import type {
   SuitorAffection, 
   GameViewMode, 
   MinigameType, 
-  SaveSlot 
+  SaveSlot,
+  InstaPost,
+  InstaComment,
+  DailyRoutines,
+  GameSettings
 } from '../types/game';
 import type { EquippedOutfit } from '../types/outfits';
 import type { ChatThread, NestMessage } from '../types/phone';
@@ -32,12 +36,16 @@ export interface GameState {
   unlockedCGs: string[];
   unlockedEndings: string[];
   unreadPhoneCount: number;
-  activePhoneTab: 'bloom' | 'messages' | 'the_nest' | 'voice_coach' | 'memories';
+  activePhoneTab: 'bloom' | 'messages' | 'the_nest' | 'voice_coach' | 'memories' | 'instaglam' | 'wellness';
   activeChatThreadId: string | null;
   chatThreads: ChatThread[];
   nestMessages: NestMessage[];
   textSpeedMs: number;
   autoPlay: boolean;
+  visitedScenes: string[];
+  instaPosts: InstaPost[];
+  dailyRoutines: DailyRoutines;
+  settings: GameSettings;
 }
 
 const INITIAL_STATS: EveStats = {
@@ -107,6 +115,82 @@ const INITIAL_EQUIPPED: EquippedOutfit = {
   accessory: 'era1_choker',
 };
 
+const INITIAL_INSTA_POSTS: InstaPost[] = [
+  {
+    id: 'post_1',
+    author: 'Eve ✨',
+    authorHandle: '@eve.blossoming',
+    avatar: '/assets/characters/eve_avatar.png',
+    photoUrl: '/assets/characters/eve_era1.png',
+    caption: 'Day 32 HRT. Taking baby steps and trying not to let the mirror win today 🌸 oversized pastel hoodie is my armor.',
+    likes: 42,
+    isLiked: false,
+    time: '2h ago',
+    era: 1,
+    comments: [
+      {
+        id: 'c1',
+        author: 'Tara Higgins',
+        avatar: '/assets/characters/tara_avatar.png',
+        text: 'YOU ARE GLOWING MY QUEEN!! Drop the haters in the trash 🔥',
+        time: '1h ago',
+      },
+      {
+        id: 'c2',
+        author: 'Riley (The Nest)',
+        avatar: '/assets/characters/the_nest_avatar.png',
+        text: 'The hoodie era is sacred sister!! You are blooming so beautifully 💖',
+        time: '45m ago',
+      },
+      {
+        id: 'c3',
+        author: 'Liam Walker',
+        avatar: '/assets/characters/liam_avatar.png',
+        text: 'Soft pastel colors really suit you, Eve. Hope you have a peaceful afternoon ☕🌱',
+        time: '30m ago',
+      },
+    ],
+  },
+  {
+    id: 'post_2',
+    author: 'Eve ✨',
+    authorHandle: '@eve.blossoming',
+    avatar: '/assets/characters/eve_avatar.png',
+    photoUrl: '/assets/backgrounds/cafe.png',
+    caption: 'First coffee date out in the wild. Hand was shaking, but the cinnamon oat latte tasted like freedom.',
+    likes: 67,
+    isLiked: false,
+    time: 'Yesterday',
+    era: 1,
+    comments: [
+      {
+        id: 'c4',
+        author: 'Sasha (The Nest)',
+        avatar: '/assets/characters/the_nest_avatar.png',
+        text: 'Major milestone unlocked!! Next step: ordering with your chin up high 💕',
+        time: 'Yesterday',
+      },
+    ],
+  },
+];
+
+const INITIAL_ROUTINES: DailyRoutines = {
+  hrtLogged: false,
+  waterLogged: false,
+  skincareLogged: false,
+  voiceWarmupLogged: false,
+  streakDays: 3,
+};
+
+const INITIAL_SETTINGS: GameSettings = {
+  dyslexiaFont: false,
+  fontSize: 'md',
+  contentIntensity: 'standard',
+  autoAdvanceDelayMs: 2200,
+  bgmVolume: 0.6,
+  sfxVolume: 0.8,
+};
+
 const INITIAL_STATE: GameState = {
   viewMode: 'title',
   previousViewMode: 'title',
@@ -146,6 +230,10 @@ const INITIAL_STATE: GameState = {
   nestMessages: INITIAL_NEST_MESSAGES,
   textSpeedMs: 25,
   autoPlay: false,
+  visitedScenes: ['prologue_start'],
+  instaPosts: INITIAL_INSTA_POSTS,
+  dailyRoutines: INITIAL_ROUTINES,
+  settings: INITIAL_SETTINGS,
 };
 
 // Simple reactive store hook
@@ -156,15 +244,7 @@ function notify() {
   listeners.forEach((listener) => listener(globalState));
 }
 
-export function useGameStore() {
-  const [state, setState] = useState<GameState>(globalState);
 
-  useEffect(() => {
-    listeners.add(setState);
-    return () => {
-      listeners.delete(setState);
-    };
-  }, []);
 
   const setViewMode = (mode: GameViewMode) => {
     soundEngine.playClick();
@@ -189,9 +269,14 @@ export function useGameStore() {
     const targetEra = targetScenarioId ? ALL_SCENARIOS[targetScenarioId]?.era : undefined;
     const shouldAdvanceEra = targetEra && targetEra > globalState.transitionEra;
 
+    const visited = globalState.visitedScenes.includes(sceneId)
+      ? globalState.visitedScenes
+      : [...globalState.visitedScenes, sceneId];
+
     globalState = {
       ...globalState,
       currentSceneId: sceneId,
+      visitedScenes: visited,
       ...(targetScenarioId ? { currentScenarioId: targetScenarioId } : {}),
       ...(shouldAdvanceEra ? { transitionEra: targetEra } : {}),
     };
@@ -326,6 +411,97 @@ export function useGameStore() {
     notify();
   };
 
+  const fastTravelToScene = (sceneId: string, scenarioId?: string) => {
+    soundEngine.playSparkle();
+    setScene(sceneId, scenarioId);
+    setViewMode('novel');
+  };
+
+  const toggleAutoPlay = () => {
+    globalState = { ...globalState, autoPlay: !globalState.autoPlay };
+    notify();
+  };
+
+  const addInstaPost = (post: InstaPost) => {
+    soundEngine.playCameraSnap();
+    globalState = {
+      ...globalState,
+      instaPosts: [post, ...globalState.instaPosts],
+      stats: {
+        ...globalState.stats,
+        confidence: Math.min(100, globalState.stats.confidence + 5),
+        glamRating: Math.min(100, globalState.stats.glamRating + 5),
+      }
+    };
+    notify();
+  };
+
+  const toggleLikeInstaPost = (postId: string) => {
+    soundEngine.playClick();
+    globalState = {
+      ...globalState,
+      instaPosts: globalState.instaPosts.map(p => {
+        if (p.id === postId) {
+          const isLiked = !p.isLiked;
+          return { ...p, isLiked, likes: isLiked ? p.likes + 1 : Math.max(0, p.likes - 1) };
+        }
+        return p;
+      })
+    };
+    notify();
+  };
+
+  const addInstaComment = (postId: string, comment: InstaComment) => {
+    globalState = {
+      ...globalState,
+      instaPosts: globalState.instaPosts.map(p => {
+        if (p.id === postId) {
+          return { ...p, comments: [...p.comments, comment] };
+        }
+        return p;
+      })
+    };
+    notify();
+  };
+
+  const toggleDailyRoutine = (key: keyof Omit<DailyRoutines, 'streakDays'>) => {
+    const isChecking = !globalState.dailyRoutines[key];
+    if (isChecking) {
+      soundEngine.playSuccessChime();
+    } else {
+      soundEngine.playClick();
+    }
+    const updated = {
+      ...globalState.dailyRoutines,
+      [key]: isChecking,
+    };
+    const allDone = updated.hrtLogged && updated.waterLogged && updated.skincareLogged && updated.voiceWarmupLogged;
+    if (allDone && isChecking) {
+      soundEngine.playVictory();
+      updated.streakDays += 1;
+    }
+    globalState = {
+      ...globalState,
+      dailyRoutines: updated,
+      stats: {
+        ...globalState.stats,
+        dysphoria: isChecking ? Math.max(0, globalState.stats.dysphoria - 6) : globalState.stats.dysphoria,
+        confidence: isChecking ? Math.min(100, globalState.stats.confidence + 4) : globalState.stats.confidence,
+      }
+    };
+    notify();
+  };
+
+  const updateSettings = (newSettings: Partial<GameSettings>) => {
+    soundEngine.playClick();
+    if (newSettings.sfxVolume !== undefined) soundEngine.setVolume(newSettings.sfxVolume);
+    globalState = {
+      ...globalState,
+      settings: { ...globalState.settings, ...newSettings }
+    };
+    notify();
+  };
+
   const saveGame = (slotId: number, title?: string) => {
     soundEngine.playSparkle();
     const slot: SaveSlot = {
@@ -344,6 +520,9 @@ export function useGameStore() {
       suitors: globalState.suitors,
       chatThreads: globalState.chatThreads,
       nestMessages: globalState.nestMessages,
+      visitedScenes: globalState.visitedScenes,
+      instaPosts: globalState.instaPosts,
+      dailyRoutines: globalState.dailyRoutines,
     };
     try {
       localStorage.setItem(`eve_save_slot_${slotId}`, JSON.stringify(slot));
@@ -370,6 +549,9 @@ export function useGameStore() {
         suitors: slot.suitors,
         chatThreads: slot.chatThreads || INITIAL_CHAT_THREADS,
         nestMessages: slot.nestMessages || INITIAL_NEST_MESSAGES,
+        visitedScenes: slot.visitedScenes || ['prologue_start'],
+        instaPosts: slot.instaPosts || INITIAL_INSTA_POSTS,
+        dailyRoutines: slot.dailyRoutines || INITIAL_ROUTINES,
       };
       notify();
       return true;
@@ -399,26 +581,52 @@ export function useGameStore() {
     notify();
   };
 
+export const gameStoreActions = {
+  setViewMode,
+  setScene,
+  addDialogueHistory,
+  modifyStats,
+  advanceEra,
+  updateSuitor,
+  setFlag,
+  equipItem,
+  unlockOutfit,
+  unlockCG,
+  unlockEnding,
+  setPhoneTab,
+  setActiveChatThread,
+  updateChatThreads,
+  updateNestMessages,
+  triggerMinigame,
+  saveGame,
+  loadGame,
+  resetGame,
+  fastTravelToScene,
+  toggleAutoPlay,
+  addInstaPost,
+  toggleLikeInstaPost,
+  addInstaComment,
+  toggleDailyRoutine,
+  updateSettings,
+};
+
+export function useGameStore() {
+  const [state, setState] = useState<GameState>(globalState);
+
+  useEffect(() => {
+    listeners.add(setState);
+    return () => {
+      listeners.delete(setState);
+    };
+  }, []);
+
   return {
     state,
-    setViewMode,
-    setScene,
-    addDialogueHistory,
-    modifyStats,
-    advanceEra,
-    updateSuitor,
-    setFlag,
-    equipItem,
-    unlockOutfit,
-    unlockCG,
-    unlockEnding,
-    setPhoneTab,
-    setActiveChatThread,
-    updateChatThreads,
-    updateNestMessages,
-    triggerMinigame,
-    saveGame,
-    loadGame,
-    resetGame,
+    ...gameStoreActions,
   };
 }
+
+useGameStore.getState = () => ({
+  state: globalState,
+  ...gameStoreActions,
+});

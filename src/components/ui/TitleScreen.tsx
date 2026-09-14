@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, FolderOpen, Settings, Heart, Award } from 'lucide-react';
+import { Play, FolderOpen, Settings, Heart, Award, GitFork } from 'lucide-react';
 import { useGameStore } from '../../state/useGameStore';
 import { soundEngine } from '../../state/useAudioStore';
 
@@ -57,13 +57,21 @@ export const TitleScreen: React.FC = () => {
               <span>Start New Journey</span>
             </button>
 
-            <div className="grid grid-cols-3 gap-2.5">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
               <button
                 onClick={() => setViewMode('save_load')}
                 className="py-3 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-200 font-bold text-xs border border-slate-700 hover:border-pink-500/50 backdrop-blur-md transition flex items-center justify-center gap-1.5 shadow-lg"
               >
                 <FolderOpen className="w-3.5 h-3.5 text-pink-400" /> 
                 <span>Load</span>
+              </button>
+
+              <button
+                onClick={() => setViewMode('flowchart')}
+                className="py-3 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-200 font-bold text-xs border border-slate-700 hover:border-purple-500/50 backdrop-blur-md transition flex items-center justify-center gap-1.5 shadow-lg"
+              >
+                <GitFork className="w-3.5 h-3.5 text-purple-400" /> 
+                <span>Story Tree</span>
               </button>
 
               <button
@@ -76,9 +84,9 @@ export const TitleScreen: React.FC = () => {
 
               <button
                 onClick={() => setViewMode('settings')}
-                className="py-3 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-200 font-bold text-xs border border-slate-700 hover:border-purple-500/50 backdrop-blur-md transition flex items-center justify-center gap-1.5 shadow-lg"
+                className="py-3 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-200 font-bold text-xs border border-slate-700 hover:border-pink-500/50 backdrop-blur-md transition flex items-center justify-center gap-1.5 shadow-lg"
               >
-                <Settings className="w-3.5 h-3.5 text-purple-400" /> 
+                <Settings className="w-3.5 h-3.5 text-pink-400" /> 
                 <span>Settings</span>
               </button>
             </div>

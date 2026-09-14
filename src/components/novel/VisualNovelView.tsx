@@ -11,13 +11,17 @@ import {
   VolumeX,
   History,
   DollarSign,
-  Home
+  Home,
+  GitFork,
+  FastForward,
+  Heart
 } from 'lucide-react';
 import { useGameStore } from '../../state/useGameStore';
 import { getDialogueNode } from '../../data/scenarios';
 import { EVE_ERAS, CHARACTERS } from '../../data/characters';
 import { soundEngine } from '../../state/useAudioStore';
 import { getEveOutfitVisual } from '../../utils/outfitVisuals';
+import { ParticleAtmosphere } from './ParticleAtmosphere';
 import type { ChoiceOption } from '../../types/story';
 import confetti from 'canvas-confetti';
 
@@ -32,7 +36,8 @@ export const VisualNovelView: React.FC = () => {
     updateSuitor, 
     setFlag, 
     triggerMinigame,
-    unlockEnding
+    unlockEnding,
+    toggleAutoPlay
   } = useGameStore();
 
   const [displayedText, setDisplayedText] = useState('');
@@ -90,6 +95,36 @@ export const VisualNovelView: React.FC = () => {
       if (textIntervalRef.current) clearInterval(textIntervalRef.current);
     };
   }, [state.currentSceneId]);
+
+  // Auto-play timer effect
+  useEffect(() => {
+    if (!state.autoPlay || isTyping || !activeNode) return;
+    if (activeNode.choices && activeNode.choices.length > 0) return;
+
+    if (activeNode.nextSceneId) {
+      const delay = state.settings?.autoAdvanceDelayMs || 2200;
+      const timer = window.setTimeout(() => {
+        if (activeNode.advanceEra) advanceEra(activeNode.advanceEra);
+        setScene(activeNode.nextSceneId!);
+      }, delay);
+
+      return () => clearTimeout(timer);
+    }
+  }, [state.autoPlay, isTyping, state.currentSceneId]);
+
+  const handleSkip = () => {
+    if (!activeNode) return;
+    soundEngine.playClick();
+    if (isTyping) {
+      if (textIntervalRef.current) clearInterval(textIntervalRef.current);
+      setDisplayedText(activeNode.text);
+      setIsTyping(false);
+      addDialogueHistory(activeNode.speakerTitle || activeNode.speaker, activeNode.text);
+    } else if (!activeNode.choices && activeNode.nextSceneId) {
+      if (activeNode.advanceEra) advanceEra(activeNode.advanceEra);
+      setScene(activeNode.nextSceneId);
+    }
+  };
 
   const handleBoxClick = () => {
     if (!activeNode) return;
@@ -163,64 +198,114 @@ export const VisualNovelView: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
       </div>
 
+      {/* Dynamic Atmospheric Particle Canvas */}
+      <ParticleAtmosphere background={activeNode?.background || ''} />
+
       {/* Top Status & HUD Bar */}
-      <header className="relative z-20 w-full px-6 py-4 flex items-center justify-between bg-slate-950/70 backdrop-blur-md border-b border-pink-500/20 shadow-lg">
-        <div className="flex items-center gap-6">
+      <header className="relative z-20 w-full px-4 sm:px-6 py-3 flex items-center justify-between bg-slate-950/75 backdrop-blur-md border-b border-pink-500/20 shadow-lg">
+        <div className="flex items-center gap-3 sm:gap-6">
           {/* Transition Era Badge */}
-          <div className="flex items-center gap-3 bg-gradient-to-r from-pink-500/20 to-purple-500/20 border border-pink-500/40 px-4 py-1.5 rounded-full shadow-inner">
+          <div className="flex items-center gap-2.5 bg-gradient-to-r from-pink-500/20 to-purple-500/20 border border-pink-500/40 px-3.5 py-1.5 rounded-full shadow-inner">
             <span className="text-xs font-bold uppercase tracking-wider text-pink-300">
               Era {state.transitionEra}: {currentEraData.title}
             </span>
-            <span className="text-xs text-purple-300 font-mono">
+            <span className="text-xs text-purple-300 font-mono hidden sm:inline">
               Month {state.stats.hrtMonth} on E
             </span>
           </div>
 
+          {/* Suitor Dual Metric Pill (Affection & Respect) */}
+          {suitorProfile && activeNode?.activeSuitor && state.suitors[activeNode.activeSuitor] && (
+            <div className="hidden lg:flex items-center gap-3 bg-slate-900/80 border border-purple-500/30 px-3 py-1 rounded-full text-xs">
+              <span className="text-pink-300 font-bold flex items-center gap-1" title="Romance Affection">
+                <Heart className="w-3.5 h-3.5 fill-pink-400 text-pink-400" />
+                {state.suitors[activeNode.activeSuitor].affection}%
+              </span>
+              <span className="text-purple-300 font-bold flex items-center gap-1" title="Mutual Respect (Guards against chaser dynamics)">
+                <Sparkles className="w-3.5 h-3.5 text-purple-400" />
+                {state.suitors[activeNode.activeSuitor].respect}% Respect
+              </span>
+            </div>
+          )}
+
           {/* Stats Badges */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-3">
             {/* Confidence */}
-            <div className="flex items-center gap-2" title="Confidence: Enables bold dialogue options">
-              <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
-              <div className="w-20 bg-slate-800 rounded-full h-2.5 overflow-hidden border border-slate-700">
+            <div className="flex items-center gap-1.5" title="Confidence: Enables bold dialogue options">
+              <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+              <div className="w-16 bg-slate-800 rounded-full h-2 overflow-hidden border border-slate-700">
                 <div 
                   className="bg-gradient-to-r from-amber-400 to-yellow-300 h-full transition-all duration-500"
                   style={{ width: `${state.stats.confidence}%` }}
                 />
               </div>
-              <span className="text-xs font-bold text-amber-300">{state.stats.confidence}</span>
+              <span className="text-[11px] font-bold text-amber-300">{state.stats.confidence}</span>
             </div>
 
             {/* Dysphoria Shield */}
-            <div className="flex items-center gap-2" title="Dysphoria Shield: Protects against social anxiety">
-              <Shield className="w-4 h-4 text-emerald-400" />
-              <div className="w-20 bg-slate-800 rounded-full h-2.5 overflow-hidden border border-slate-700">
+            <div className="flex items-center gap-1.5" title="Dysphoria Shield: Mental resilience">
+              <Shield className="w-3.5 h-3.5 text-emerald-400" />
+              <div className="w-16 bg-slate-800 rounded-full h-2 overflow-hidden border border-slate-700">
                 <div 
                   className="bg-gradient-to-r from-emerald-400 to-teal-300 h-full transition-all duration-500"
                   style={{ width: `${Math.max(10, 100 - state.stats.dysphoria)}%` }}
                 />
               </div>
-              <span className="text-xs font-bold text-emerald-300">{100 - state.stats.dysphoria}%</span>
+              <span className="text-[11px] font-bold text-emerald-300">{100 - state.stats.dysphoria}%</span>
             </div>
 
             {/* Cash */}
-            <div className="flex items-center gap-1 text-xs font-bold text-emerald-400 bg-emerald-950/40 px-2.5 py-1 rounded-full border border-emerald-500/30">
-              <DollarSign className="w-3.5 h-3.5" />
+            <div className="flex items-center gap-1 text-[11px] font-bold text-emerald-400 bg-emerald-950/40 px-2 py-0.5 rounded-full border border-emerald-500/30">
+              <DollarSign className="w-3 h-3" />
               <span>{state.stats.cash}</span>
             </div>
           </div>
         </div>
 
         {/* Action Controls */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
+          {/* Auto Button */}
+          <button
+            onClick={toggleAutoPlay}
+            className={`px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all border ${
+              state.autoPlay 
+                ? 'bg-pink-600 text-white border-pink-400 animate-pulse'
+                : 'bg-slate-800/70 text-slate-300 border-white/10 hover:text-white'
+            }`}
+            title="Toggle Auto Advance"
+          >
+            Auto
+          </button>
+
+          {/* Skip Button */}
+          <button
+            onClick={handleSkip}
+            className="px-2.5 py-1.5 rounded-xl text-xs font-bold bg-slate-800/70 hover:bg-slate-700 text-slate-300 hover:text-white border border-white/10 transition-all flex items-center gap-1"
+            title="Fast forward dialogue"
+          >
+            <FastForward className="w-3 h-3" />
+            <span className="hidden sm:inline">Skip</span>
+          </button>
+
+          {/* Story Flowchart Tree Button */}
+          <button 
+            onClick={() => setViewMode('flowchart')}
+            className="flex items-center gap-1.5 bg-gradient-to-r from-purple-900/40 to-slate-800 text-purple-200 text-xs px-3 py-1.5 rounded-xl border border-purple-500/40 transition-all hover:scale-105"
+            title="Story Flowchart & Timeline"
+          >
+            <GitFork className="w-3.5 h-3.5 text-purple-400" />
+            <span className="hidden sm:inline">Tree</span>
+          </button>
+
           {/* HerSpace Phone Button */}
           <button 
             onClick={() => setViewMode('phone')}
-            className="relative flex items-center gap-2 bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-semibold text-xs px-4 py-2 rounded-full shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 border border-pink-400/50"
+            className="relative flex items-center gap-1.5 bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-semibold text-xs px-3 py-1.5 rounded-xl shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 border border-pink-400/50"
           >
-            <Smartphone className="w-4 h-4" />
-            <span className="hidden sm:inline">HerSpace</span>
+            <Smartphone className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Phone</span>
             {state.unreadPhoneCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-slate-950 animate-bounce">
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-slate-950 animate-bounce">
                 {state.unreadPhoneCount}
               </span>
             )}
@@ -229,47 +314,47 @@ export const VisualNovelView: React.FC = () => {
           {/* Vanity Mirror Button */}
           <button 
             onClick={() => setViewMode('vanity')}
-            className="flex items-center gap-2 bg-slate-800/80 hover:bg-slate-700 text-pink-200 text-xs px-3.5 py-2 rounded-full border border-pink-500/30 transition-all hover:scale-105"
+            className="flex items-center gap-1.5 bg-slate-800/80 hover:bg-slate-700 text-pink-200 text-xs px-2.5 py-1.5 rounded-xl border border-pink-500/30 transition-all hover:scale-105"
             title="Wardrobe & Vanity Mirror"
           >
-            <Sparkle className="w-4 h-4 text-pink-400" />
+            <Sparkle className="w-3.5 h-3.5 text-pink-400" />
             <span className="hidden sm:inline">Vanity</span>
           </button>
 
           {/* Backlog / History */}
           <button 
             onClick={() => setShowHistory(!showHistory)}
-            className="p-2 text-slate-300 hover:text-white bg-slate-800/60 hover:bg-slate-700/80 rounded-full transition"
+            className="p-1.5 text-slate-300 hover:text-white bg-slate-800/60 hover:bg-slate-700/80 rounded-xl transition"
             title="Dialogue Log"
           >
-            <History className="w-4 h-4" />
+            <History className="w-3.5 h-3.5" />
           </button>
 
           {/* Audio Mute */}
           <button 
             onClick={toggleMute}
-            className="p-2 text-slate-300 hover:text-white bg-slate-800/60 hover:bg-slate-700/80 rounded-full transition"
+            className="p-1.5 text-slate-300 hover:text-white bg-slate-800/60 hover:bg-slate-700/80 rounded-xl transition"
             title="Toggle Sound"
           >
-            {isMuted ? <VolumeX className="w-4 h-4 text-red-400" /> : <Volume2 className="w-4 h-4 text-emerald-400" />}
+            {isMuted ? <VolumeX className="w-3.5 h-3.5 text-red-400" /> : <Volume2 className="w-3.5 h-3.5 text-emerald-400" />}
           </button>
 
           {/* Save / Load */}
           <button 
             onClick={() => setViewMode('save_load')}
-            className="p-2 text-slate-300 hover:text-white bg-slate-800/60 hover:bg-slate-700/80 rounded-full transition"
+            className="p-1.5 text-slate-300 hover:text-white bg-slate-800/60 hover:bg-slate-700/80 rounded-xl transition"
             title="Save / Load Game"
           >
-            <Save className="w-4 h-4" />
+            <Save className="w-3.5 h-3.5" />
           </button>
 
           {/* Settings */}
           <button 
             onClick={() => setViewMode('settings')}
-            className="p-2 text-slate-300 hover:text-white bg-slate-800/60 hover:bg-slate-700/80 rounded-full transition"
+            className="p-1.5 text-slate-300 hover:text-white bg-slate-800/60 hover:bg-slate-700/80 rounded-xl transition"
             title="Settings"
           >
-            <Settings className="w-4 h-4" />
+            <Settings className="w-3.5 h-3.5" />
           </button>
         </div>
       </header>
@@ -402,12 +487,21 @@ export const VisualNovelView: React.FC = () => {
                 {activeNode?.speakerTitle || (activeNode?.speaker === 'eve' ? 'Eve' : suitorProfile?.name || activeNode?.speaker)}
               </span>
               <span className="text-[11px] text-slate-400 font-mono flex items-center gap-1">
+                {state.autoPlay && <span className="text-pink-400 font-bold">[Auto-Playing] • </span>}
                 {isTyping ? 'Typing...' : (activeNode?.choices || activeNode?.nextSceneId ? 'Click to continue ▼' : 'Episode complete ★')}
               </span>
             </div>
 
             {/* Spoken Text */}
-            <p className="text-slate-100 text-sm md:text-lg leading-relaxed font-sans">
+            <p className={`text-slate-100 leading-relaxed ${state.settings?.dyslexiaFont ? 'font-mono tracking-wide' : 'font-sans'} ${
+              state.settings?.fontSize === 'sm' 
+                ? 'text-xs md:text-sm' 
+                : state.settings?.fontSize === 'lg' 
+                ? 'text-base md:text-xl' 
+                : state.settings?.fontSize === 'xl' 
+                ? 'text-lg md:text-2xl' 
+                : 'text-sm md:text-lg'
+            }`}>
               {displayedText}
             </p>
           </div>

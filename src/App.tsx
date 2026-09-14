@@ -5,6 +5,9 @@ import { VisualNovelView } from './components/novel/VisualNovelView';
 import { PhoneModal } from './components/phone/PhoneModal';
 import { VanityMirror } from './components/vanity/VanityMirror';
 import { BoundaryClash } from './components/minigames/BoundaryClash';
+import { EyelinerMinigame } from './components/minigames/EyelinerMinigame';
+import { MirrorMonologue } from './components/minigames/MirrorMonologue';
+import { FlowchartModal } from './components/flowchart/FlowchartModal';
 import { SaveLoadModal } from './components/ui/SaveLoadModal';
 import { SettingsModal } from './components/ui/SettingsModal';
 import { GalleryModal } from './components/gallery/GalleryModal';
@@ -24,7 +27,10 @@ export const App: React.FC = () => {
       {/* Layered Modals and Interactive Systems */}
       {state.viewMode === 'phone' && <PhoneModal />}
       {state.viewMode === 'vanity' && <VanityMirror />}
+      {state.viewMode === 'flowchart' && <FlowchartModal />}
       {state.viewMode === 'minigame' && state.activeMinigame === 'boundary_clash' && <BoundaryClash />}
+      {state.viewMode === 'minigame' && state.activeMinigame === 'eyeliner' && <EyelinerMinigame />}
+      {state.viewMode === 'minigame' && state.activeMinigame === 'mirror_monologue' && <MirrorMonologue />}
       {state.viewMode === 'save_load' && <SaveLoadModal />}
       {state.viewMode === 'settings' && <SettingsModal />}
       {state.viewMode === 'gallery' && <GalleryModal />}

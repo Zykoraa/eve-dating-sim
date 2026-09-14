@@ -211,6 +211,46 @@ export const ERA2_SCENARIO: StoryScenario = {
       text: 'Before you leave in the early morning light, Chloe pulls out an old Instax camera. “Smile, bass goddess!” FLASH! The photo whirs out: Chloe flashing a peace sign, and you smiling with full, genuine radiance.',
       background: '/assets/backgrounds/punk_club.png',
       soundEffect: 'playPhonePing',
+      nextSceneId: 'era2_maya_mentorship',
+    },
+    'era2_maya_mentorship': {
+      id: 'era2_maya_mentorship',
+      speaker: 'narrator',
+      text: 'The next afternoon, Tara drags you to "Page & Petal", an sun-drenched queer bookstore and ceramic studio. The air smells of dried lavender, eucalyptus, and clay. Behind the polished oak counter stands Maya Lindqvist, draped in linen and golden jewelry, her smile radiant and inviting.',
+      background: '/assets/backgrounds/cafe.png',
+      nextSceneId: 'era2_maya_greeting',
+    },
+    'era2_maya_greeting': {
+      id: 'era2_maya_greeting',
+      speaker: 'maya',
+      activeSuitor: 'maya',
+      suitorExpression: 'smile',
+      text: 'Welcome, sisters. I saw your eyes light up when you walked through the door. You have the aura of someone whose spirit is stretching its wings after a very long sleep. I’m Maya. Can I brew you some warm jasmine tea?',
+      background: '/assets/backgrounds/cafe.png',
+      soundEffect: 'playSparkle',
+      choices: [
+        {
+          text: 'Accept with gratitude: "I’d love that. Sometimes transition feels so overwhelming, like I am learning to be human all over again."',
+          tone: 'vulnerable',
+          statEffects: { confidence: 15, comfortRating: 20, suitorAffection: { suitor: 'maya', amount: 20 }, suitorRespect: { suitor: 'maya', amount: 25 } },
+          nextSceneId: 'era2_maya_wisdom',
+        },
+        {
+          text: 'Admire her gallery: "Your ceramics and book collection are breathtaking! How long have you had this space?"',
+          tone: 'chill',
+          statEffects: { confidence: 10, suitorAffection: { suitor: 'maya', amount: 15 }, suitorRespect: { suitor: 'maya', amount: 20 } },
+          nextSceneId: 'era2_maya_wisdom',
+        }
+      ]
+    },
+    'era2_maya_wisdom': {
+      id: 'era2_maya_wisdom',
+      speaker: 'maya',
+      activeSuitor: 'maya',
+      suitorExpression: 'blush',
+      text: 'Maya sets down two delicate ceramic cups, her gaze warm and steady. “Never treat your early transition as a shameful mistake to erase, Eve. It is an art piece. Every tear in the mirror, every thrifted cardigan, every song that made you feel alive—it is all sacred. You are becoming a goddess in your own right.”',
+      background: '/assets/backgrounds/cafe.png',
+      soundEffect: 'playVictory',
       nextSceneId: 'era2_advance_to_era3',
     },
     'era2_advance_to_era3': {

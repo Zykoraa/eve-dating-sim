@@ -6,7 +6,9 @@ import {
   Heart, 
   Users, 
   Mic,
-  Camera
+  Camera,
+  Compass,
+  Activity
 } from 'lucide-react';
 import { useGameStore } from '../../state/useGameStore';
 import { BloomApp } from './BloomApp';
@@ -14,6 +16,8 @@ import { MessagesApp } from './MessagesApp';
 import { TheNestChat } from './TheNestChat';
 import { VoiceCoachApp } from './VoiceCoachApp';
 import { PhotoAlbumApp } from './PhotoAlbumApp';
+import { InstaGlamApp } from './InstaGlamApp';
+import { WellnessApp } from './WellnessApp';
 
 export const PhoneModal: React.FC = () => {
   const { state, setViewMode, setPhoneTab } = useGameStore();
@@ -21,7 +25,7 @@ export const PhoneModal: React.FC = () => {
   return (
     <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-2 sm:p-6 animate-fadeIn">
       {/* Smartphone Device Shell */}
-      <div className="relative w-full max-w-[400px] h-[92vh] max-h-[780px] bg-slate-950 rounded-[48px] border-[6px] border-slate-700 shadow-[0_25px_60px_rgba(0,0,0,0.9)] flex flex-col overflow-hidden ring-1 ring-white/10">
+      <div className="relative w-full max-w-[420px] h-[92vh] max-h-[800px] bg-slate-950 rounded-[48px] border-[6px] border-slate-700 shadow-[0_25px_60px_rgba(0,0,0,0.9)] flex flex-col overflow-hidden ring-1 ring-white/10">
         {/* Phone Notch & Status Bar */}
         <div className="bg-slate-950 px-6 pt-3 pb-2 flex items-center justify-between text-xs text-slate-300 select-none z-30">
           <span className="font-mono font-bold text-[11px]">9:41</span>
@@ -55,68 +59,92 @@ export const PhoneModal: React.FC = () => {
           {state.activePhoneTab === 'bloom' && <BloomApp />}
           {state.activePhoneTab === 'messages' && <MessagesApp />}
           {state.activePhoneTab === 'the_nest' && <TheNestChat />}
+          {state.activePhoneTab === 'instaglam' && <InstaGlamApp />}
+          {state.activePhoneTab === 'wellness' && <WellnessApp />}
           {state.activePhoneTab === 'voice_coach' && <VoiceCoachApp />}
           {state.activePhoneTab === 'memories' && <PhotoAlbumApp />}
         </div>
 
         {/* Phone Bottom Dock Navigation */}
-        <div className="bg-slate-950 border-t border-slate-800/80 px-4 py-3 flex items-center justify-between text-slate-400 z-30">
+        <div className="bg-slate-950 border-t border-slate-800/80 px-2 py-2.5 flex items-center justify-around text-slate-400 z-30">
           {/* Bloom App */}
           <button
             onClick={() => setPhoneTab('bloom')}
-            className={`flex flex-col items-center gap-1 transition ${
-              state.activePhoneTab === 'bloom' ? 'text-pink-400 scale-110' : 'hover:text-slate-200'
+            className={`flex flex-col items-center gap-0.5 transition ${
+              state.activePhoneTab === 'bloom' ? 'text-pink-400 scale-105' : 'hover:text-slate-200'
             }`}
           >
-            <Heart className="w-5 h-5 fill-current" />
-            <span className="text-[9px] font-bold">Bloom</span>
+            <Heart className="w-4 h-4 fill-current" />
+            <span className="text-[8.5px] font-bold">Spark</span>
           </button>
 
           {/* Messages App */}
           <button
             onClick={() => setPhoneTab('messages')}
-            className={`relative flex flex-col items-center gap-1 transition ${
-              state.activePhoneTab === 'messages' ? 'text-pink-400 scale-110' : 'hover:text-slate-200'
+            className={`relative flex flex-col items-center gap-0.5 transition ${
+              state.activePhoneTab === 'messages' ? 'text-pink-400 scale-105' : 'hover:text-slate-200'
             }`}
           >
-            <MessageCircle className="w-5 h-5" />
-            <span className="text-[9px] font-bold">Chats</span>
+            <MessageCircle className="w-4 h-4" />
+            <span className="text-[8.5px] font-bold">Chats</span>
             {state.unreadPhoneCount > 0 && (
               <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full" />
             )}
           </button>
 
+          {/* InstaGlam App */}
+          <button
+            onClick={() => setPhoneTab('instaglam')}
+            className={`flex flex-col items-center gap-0.5 transition ${
+              state.activePhoneTab === 'instaglam' ? 'text-pink-400 scale-105' : 'hover:text-slate-200'
+            }`}
+          >
+            <Compass className="w-4 h-4" />
+            <span className="text-[8.5px] font-bold">Insta</span>
+          </button>
+
           {/* The Nest App */}
           <button
             onClick={() => setPhoneTab('the_nest')}
-            className={`flex flex-col items-center gap-1 transition ${
-              state.activePhoneTab === 'the_nest' ? 'text-pink-400 scale-110' : 'hover:text-slate-200'
+            className={`flex flex-col items-center gap-0.5 transition ${
+              state.activePhoneTab === 'the_nest' ? 'text-pink-400 scale-105' : 'hover:text-slate-200'
             }`}
           >
-            <Users className="w-5 h-5" />
-            <span className="text-[9px] font-bold">The Nest</span>
+            <Users className="w-4 h-4" />
+            <span className="text-[8.5px] font-bold">Nest</span>
+          </button>
+
+          {/* Wellness / Routine App */}
+          <button
+            onClick={() => setPhoneTab('wellness')}
+            className={`flex flex-col items-center gap-0.5 transition ${
+              state.activePhoneTab === 'wellness' ? 'text-pink-400 scale-105' : 'hover:text-slate-200'
+            }`}
+          >
+            <Activity className="w-4 h-4" />
+            <span className="text-[8.5px] font-bold">Wellness</span>
           </button>
 
           {/* Voice Coach App */}
           <button
             onClick={() => setPhoneTab('voice_coach')}
-            className={`flex flex-col items-center gap-1 transition ${
-              state.activePhoneTab === 'voice_coach' ? 'text-pink-400 scale-110' : 'hover:text-slate-200'
+            className={`flex flex-col items-center gap-0.5 transition ${
+              state.activePhoneTab === 'voice_coach' ? 'text-pink-400 scale-105' : 'hover:text-slate-200'
             }`}
           >
-            <Mic className="w-5 h-5" />
-            <span className="text-[9px] font-bold">Voice</span>
+            <Mic className="w-4 h-4" />
+            <span className="text-[8.5px] font-bold">Voice</span>
           </button>
 
           {/* Memories Polaroid App */}
           <button
             onClick={() => setPhoneTab('memories')}
-            className={`flex flex-col items-center gap-1 transition ${
-              state.activePhoneTab === 'memories' ? 'text-pink-400 scale-110' : 'hover:text-slate-200'
+            className={`flex flex-col items-center gap-0.5 transition ${
+              state.activePhoneTab === 'memories' ? 'text-pink-400 scale-105' : 'hover:text-slate-200'
             }`}
           >
-            <Camera className="w-5 h-5" />
-            <span className="text-[9px] font-bold">Snaps</span>
+            <Camera className="w-4 h-4" />
+            <span className="text-[8.5px] font-bold">Snaps</span>
           </button>
         </div>
 

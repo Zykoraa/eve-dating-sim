@@ -274,6 +274,120 @@ class SoundEngine {
     }
   }
 
+  // Shutter click for photo snaps
+  public playCameraSnap() {
+    if (this.isMuted) return;
+    try {
+      this.initCtx();
+      if (!this.ctx) return;
+      const now = this.ctx.currentTime;
+      // High click + noise click
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(1200, now);
+      osc.frequency.exponentialRampToValueAtTime(100, now + 0.06);
+      gain.gain.setValueAtTime(this.volume * 0.4, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.09);
+    } catch {}
+  }
+
+  // Melodic affirmation / wellness routine chime
+  public playSuccessChime() {
+    if (this.isMuted) return;
+    try {
+      this.initCtx();
+      if (!this.ctx) return;
+      const notes = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6
+      notes.forEach((freq, idx) => {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime + idx * 0.05;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now);
+        gain.gain.setValueAtTime(this.volume * 0.25, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.36);
+      });
+    } catch {}
+  }
+
+  // Character emotional vocal cue synthesized via formants
+  public playVocalAccent(type: 'giggle' | 'gasp' | 'sigh' | 'affirmation') {
+    if (this.isMuted) return;
+    try {
+      this.initCtx();
+      if (!this.ctx) return;
+      const now = this.ctx.currentTime;
+
+      if (type === 'giggle') {
+        // High playful double blip
+        [0, 0.09].forEach((delay, i) => {
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(587.33 + i * 110, now + delay);
+          gain.gain.setValueAtTime(this.volume * 0.2, now + delay);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.07);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + delay);
+          osc.stop(now + delay + 0.08);
+        });
+      } else if (type === 'gasp') {
+        // Quick rising breathy sine
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(320, now);
+        osc.frequency.exponentialRampToValueAtTime(640, now + 0.12);
+        gain.gain.setValueAtTime(this.volume * 0.18, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.16);
+      } else if (type === 'sigh') {
+        // Soft descending warm tone
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(440, now);
+        osc.frequency.exponentialRampToValueAtTime(260, now + 0.3);
+        gain.gain.setValueAtTime(this.volume * 0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.36);
+      } else if (type === 'affirmation') {
+        // Warm two-note bell
+        [440, 554.37].forEach((freq, idx) => {
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.1);
+          gain.gain.setValueAtTime(this.volume * 0.22, now + idx * 0.1);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.1 + 0.28);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.1);
+          osc.stop(now + idx * 0.1 + 0.29);
+        });
+      }
+    } catch {}
+  }
+
   public isBgmRunning(): boolean {
     return this.isBgmActive;
   }
