@@ -14,7 +14,8 @@ import {
   Home,
   GitFork,
   FastForward,
-  Heart
+  Heart,
+  Compass
 } from 'lucide-react';
 import { useGameStore } from '../../state/useGameStore';
 import { getDialogueNode } from '../../data/scenarios';
@@ -319,6 +320,26 @@ export const VisualNovelView: React.FC = () => {
           >
             <Sparkle className="w-3.5 h-3.5 text-pink-400" />
             <span className="hidden sm:inline">Vanity</span>
+          </button>
+
+          {/* Sanctuary Home Button */}
+          <button 
+            onClick={() => setViewMode('apartment')}
+            className="flex items-center gap-1.5 bg-slate-800/80 hover:bg-slate-700 text-pink-200 text-xs px-2.5 py-1.5 rounded-xl border border-pink-500/30 transition-all hover:scale-105"
+            title="Eve's Apartment Sanctuary"
+          >
+            <Home className="w-3.5 h-3.5 text-pink-400" />
+            <span className="hidden sm:inline">Room</span>
+          </button>
+
+          {/* City Map Hub */}
+          <button 
+            onClick={() => setViewMode('city_hub')}
+            className="flex items-center gap-1.5 bg-slate-800/80 hover:bg-slate-700 text-indigo-200 text-xs px-2.5 py-1.5 rounded-xl border border-indigo-500/30 transition-all hover:scale-105"
+            title="City Districts & Activities"
+          >
+            <Compass className="w-3.5 h-3.5 text-indigo-400" />
+            <span className="hidden sm:inline">City</span>
           </button>
 
           {/* Backlog / History */}

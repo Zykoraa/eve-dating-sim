@@ -3,6 +3,7 @@ import { ERA1_SCENARIO } from './era1_dates';
 import { ERA2_SCENARIO } from './era2_dates';
 import { ERA3_SCENARIO } from './era3_dates';
 import { ERA4_SCENARIO } from './era4_climaxes';
+import { HEART_EVENTS_SCENARIOS } from './heart_events';
 import type { DialogueNode, StoryScenario } from '../../types/story';
 
 export const ALL_SCENARIOS: Record<string, StoryScenario> = {
@@ -11,6 +12,7 @@ export const ALL_SCENARIOS: Record<string, StoryScenario> = {
   era2_dates: ERA2_SCENARIO,
   era3_dates: ERA3_SCENARIO,
   era4_climaxes: ERA4_SCENARIO,
+  ...HEART_EVENTS_SCENARIOS,
 };
 
 export function getDialogueNode(sceneId: string, currentScenarioId: string = 'prologue'): DialogueNode | null {

@@ -34,7 +34,63 @@ export type GameViewMode =
   | 'flowchart'
   | 'settings' 
   | 'save_load' 
-  | 'title';
+  | 'title'
+  | 'city_hub'
+  | 'apartment'
+  | 'diary'
+  | 'daily_summary';
+
+export type TimeOfDay = 'morning' | 'afternoon' | 'evening' | 'night';
+export type DayOfWeek = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
+
+export interface CalendarState {
+  day: number;              // 1 to 120
+  dayOfWeek: DayOfWeek;
+  timeOfDay: TimeOfDay;
+  energy: number;           // 0 to 100
+  maxEnergy: number;
+  weather: 'sunny' | 'rainy' | 'violet_twilight' | 'clear_starry';
+}
+
+export interface DiaryEntry {
+  id: string;
+  day: number;
+  era: TransitionEra;
+  title: string;
+  content: string;
+  mood: 'euphoric' | 'tender' | 'vulnerable' | 'determined' | 'peaceful';
+  dateStr: string;
+  photoUrl?: string;
+  sticker?: string;
+}
+
+export interface ApartmentDecorItem {
+  id: string;
+  name: string;
+  category: 'plant' | 'music' | 'tech' | 'art' | 'cozy';
+  giver: string;
+  description: string;
+  statPerk: string;
+  icon: string;
+  unlocked: boolean;
+}
+
+export interface CityActivity {
+  id: string;
+  name: string;
+  category: 'job' | 'training' | 'wellness' | 'hangout' | 'shopping';
+  location: string;
+  description: string;
+  energyCost: number;
+  cashReward?: number;
+  cashCost?: number;
+  statEffects: Partial<EveStats>;
+  suitorAffection?: { suitor: SuitorId; amount: number; respect?: number };
+  icon: string;
+  unlockedEras: TransitionEra[];
+  timeAvailability: TimeOfDay[];
+  scenarioId?: string;
+}
 
 export type MinigameType = 'boundary_clash' | 'vibe_check' | 'voice_tuner' | 'eyeliner' | 'mirror_monologue' | 'none';
 
@@ -96,5 +152,9 @@ export interface SaveSlot {
   visitedScenes?: string[];
   instaPosts?: InstaPost[];
   dailyRoutines?: DailyRoutines;
+  calendar?: CalendarState;
+  diaryEntries?: DiaryEntry[];
+  apartmentDecors?: ApartmentDecorItem[];
+  suitorRanks?: Record<SuitorId, number>;
 }
 

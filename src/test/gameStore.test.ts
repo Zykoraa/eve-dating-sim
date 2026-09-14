@@ -124,5 +124,64 @@ describe('Game Data & Progression Integrity', () => {
     expect(useGameStore.getState().state.instaPosts[0].likes).toBe(11);
     expect(useGameStore.getState().state.instaPosts[0].isLiked).toBe(true);
   });
+
+  it('should progress time, days, energy, and diary entries in the life sim calendar', async () => {
+    const { useGameStore } = await import('../state/useGameStore');
+    const { CITY_ACTIVITIES } = await import('../data/activities');
+    const store = useGameStore.getState();
+
+    // Verify initial calendar state
+    const initialDay = store.state.calendar.day;
+    expect(store.state.calendar.timeOfDay).toBe('morning');
+    expect(store.state.calendar.energy).toBe(100);
+
+    // Advance time slot
+    store.advanceTime(25);
+    expect(useGameStore.getState().state.calendar.timeOfDay).toBe('afternoon');
+    expect(useGameStore.getState().state.calendar.energy).toBe(75);
+
+    // Perform a city activity
+    const baristaJob = CITY_ACTIVITIES.find(a => a.id === 'job_barista');
+    expect(baristaJob).toBeDefined();
+
+    const cashBefore = useGameStore.getState().state.stats.cash;
+    store.performCityActivity(baristaJob!);
+    expect(useGameStore.getState().state.stats.cash).toBe(cashBefore + baristaJob!.cashReward!);
+    expect(useGameStore.getState().state.calendar.timeOfDay).toBe('evening');
+
+    // Advance day (sleep)
+    const initialDiaryCount = useGameStore.getState().state.diaryEntries.length;
+    store.advanceDay();
+    expect(useGameStore.getState().state.calendar.day).toBe(initialDay + 1);
+    expect(useGameStore.getState().state.calendar.timeOfDay).toBe('morning');
+    expect(useGameStore.getState().state.calendar.energy).toBe(100);
+    expect(useGameStore.getState().state.diaryEntries.length).toBe(initialDiaryCount + 1);
+    expect(useGameStore.getState().state.viewMode).toBe('daily_summary');
+
+    // Test decor unlocking
+    expect(useGameStore.getState().state.apartmentDecors.find(d => d.id === 'decor_orchid')?.unlocked).toBe(false);
+    store.unlockApartmentDecor('decor_orchid');
+    expect(useGameStore.getState().state.apartmentDecors.find(d => d.id === 'decor_orchid')?.unlocked).toBe(true);
+  });
+
+  it('should verify all suitor episodic heart event scenarios are registered', async () => {
+    const { getDialogueNode } = await import('../data/scenarios/index');
+    
+    // Liam Heart Event
+    const liamRank2 = getDialogueNode('liam_rank2_start');
+    expect(liamRank2).toBeDefined();
+    expect(liamRank2?.text).toContain('Verdant Glow Conservatory');
+
+    // Chloe Heart Event
+    const chloeRank2 = getDialogueNode('chloe_rank2_start');
+    expect(chloeRank2).toBeDefined();
+    expect(chloeRank2?.speaker).toBe('chloe');
+
+    // Julian Heart Event
+    const julianRank2 = getDialogueNode('julian_rank2_start');
+    expect(julianRank2).toBeDefined();
+    expect(julianRank2?.text).toContain('pixel art');
+  });
 });
+
 

@@ -11,6 +11,10 @@ import { FlowchartModal } from './components/flowchart/FlowchartModal';
 import { SaveLoadModal } from './components/ui/SaveLoadModal';
 import { SettingsModal } from './components/ui/SettingsModal';
 import { GalleryModal } from './components/gallery/GalleryModal';
+import { ApartmentHub } from './components/apartment/ApartmentHub';
+import { CityMapModal } from './components/city/CityMapModal';
+import { DiaryModal } from './components/diary/DiaryModal';
+import { DailySummaryModal } from './components/summary/DailySummaryModal';
 
 export const App: React.FC = () => {
   const { state } = useGameStore();
@@ -28,6 +32,10 @@ export const App: React.FC = () => {
       {state.viewMode === 'phone' && <PhoneModal />}
       {state.viewMode === 'vanity' && <VanityMirror />}
       {state.viewMode === 'flowchart' && <FlowchartModal />}
+      {state.viewMode === 'apartment' && <ApartmentHub />}
+      {state.viewMode === 'city_hub' && <CityMapModal />}
+      {state.viewMode === 'diary' && <DiaryModal />}
+      {state.viewMode === 'daily_summary' && <DailySummaryModal />}
       {state.viewMode === 'minigame' && state.activeMinigame === 'boundary_clash' && <BoundaryClash />}
       {state.viewMode === 'minigame' && state.activeMinigame === 'eyeliner' && <EyelinerMinigame />}
       {state.viewMode === 'minigame' && state.activeMinigame === 'mirror_monologue' && <MirrorMonologue />}

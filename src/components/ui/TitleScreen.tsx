@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, FolderOpen, Settings, Heart, Award, GitFork } from 'lucide-react';
+import { Play, FolderOpen, Settings, Heart, Award, GitFork, Home } from 'lucide-react';
 import { useGameStore } from '../../state/useGameStore';
 import { soundEngine } from '../../state/useAudioStore';
 
@@ -55,6 +55,17 @@ export const TitleScreen: React.FC = () => {
             >
               <Play className="w-5 h-5 fill-white group-hover:scale-110 transition-transform" /> 
               <span>Start New Journey</span>
+            </button>
+
+            <button
+              onClick={() => {
+                soundEngine.playSparkle();
+                setViewMode('apartment');
+              }}
+              className="w-full py-3 px-4 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-pink-300 font-bold text-xs border border-pink-500/40 hover:border-pink-400 backdrop-blur-md transition flex items-center justify-center gap-2 shadow-lg cursor-pointer"
+            >
+              <Home className="w-4 h-4 text-pink-400" />
+              <span>Eve's Apartment Sanctuary & City Life Sim</span>
             </button>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">

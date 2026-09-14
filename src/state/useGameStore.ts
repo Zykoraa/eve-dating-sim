@@ -10,7 +10,13 @@ import type {
   InstaPost,
   InstaComment,
   DailyRoutines,
-  GameSettings
+  GameSettings,
+  CalendarState,
+  TimeOfDay,
+  DayOfWeek,
+  DiaryEntry,
+  ApartmentDecorItem,
+  CityActivity
 } from '../types/game';
 import type { EquippedOutfit } from '../types/outfits';
 import type { ChatThread, NestMessage } from '../types/phone';
@@ -18,6 +24,8 @@ import { soundEngine } from './useAudioStore';
 import { INITIAL_CHAT_THREADS } from '../data/datingProfiles';
 import { ALL_SCENARIOS } from '../data/scenarios';
 import { INITIAL_NEST_MESSAGES } from '../utils/nestResponses';
+import { INITIAL_DIARY_ENTRIES, createDaySummaryDiaryEntry } from '../data/diaryEntries';
+import { APARTMENT_DECORS } from '../data/decorItems';
 
 export interface GameState {
   viewMode: GameViewMode;
@@ -46,6 +54,11 @@ export interface GameState {
   instaPosts: InstaPost[];
   dailyRoutines: DailyRoutines;
   settings: GameSettings;
+  calendar: CalendarState;
+  diaryEntries: DiaryEntry[];
+  apartmentDecors: ApartmentDecorItem[];
+  suitorRanks: Record<SuitorId, number>;
+  lastCompletedActivity: string | null;
 }
 
 const INITIAL_STATS: EveStats = {
@@ -234,6 +247,24 @@ const INITIAL_STATE: GameState = {
   instaPosts: INITIAL_INSTA_POSTS,
   dailyRoutines: INITIAL_ROUTINES,
   settings: INITIAL_SETTINGS,
+  calendar: {
+    day: 1,
+    dayOfWeek: 'Monday',
+    timeOfDay: 'morning',
+    energy: 100,
+    maxEnergy: 100,
+    weather: 'sunny',
+  },
+  diaryEntries: INITIAL_DIARY_ENTRIES,
+  apartmentDecors: APARTMENT_DECORS,
+  suitorRanks: {
+    liam: 1,
+    chloe: 1,
+    julian: 1,
+    maya: 1,
+    marcus: 1,
+  },
+  lastCompletedActivity: null,
 };
 
 // Simple reactive store hook
@@ -522,7 +553,10 @@ function notify() {
       nestMessages: globalState.nestMessages,
       visitedScenes: globalState.visitedScenes,
       instaPosts: globalState.instaPosts,
-      dailyRoutines: globalState.dailyRoutines,
+      calendar: globalState.calendar,
+      diaryEntries: globalState.diaryEntries,
+      apartmentDecors: globalState.apartmentDecors,
+      suitorRanks: globalState.suitorRanks,
     };
     try {
       localStorage.setItem(`eve_save_slot_${slotId}`, JSON.stringify(slot));
@@ -552,12 +586,174 @@ function notify() {
         visitedScenes: slot.visitedScenes || ['prologue_start'],
         instaPosts: slot.instaPosts || INITIAL_INSTA_POSTS,
         dailyRoutines: slot.dailyRoutines || INITIAL_ROUTINES,
+        calendar: slot.calendar || globalState.calendar,
+        diaryEntries: slot.diaryEntries || globalState.diaryEntries,
+        apartmentDecors: slot.apartmentDecors || globalState.apartmentDecors,
+        suitorRanks: slot.suitorRanks || globalState.suitorRanks,
       };
       notify();
       return true;
     } catch {
       return false;
     }
+  };
+
+  const advanceTime = (costEnergy: number = 20) => {
+    const timeOrder: TimeOfDay[] = ['morning', 'afternoon', 'evening', 'night'];
+    const currentIdx = timeOrder.indexOf(globalState.calendar.timeOfDay);
+    const newEnergy = Math.max(0, globalState.calendar.energy - costEnergy);
+
+    if (currentIdx === timeOrder.length - 1) {
+      advanceDay();
+    } else {
+      globalState = {
+        ...globalState,
+        calendar: {
+          ...globalState.calendar,
+          timeOfDay: timeOrder[currentIdx + 1],
+          energy: newEnergy,
+        },
+      };
+      notify();
+    }
+  };
+
+  const advanceDay = () => {
+    soundEngine.playSparkle();
+    const nextDay = globalState.calendar.day + 1;
+    const WEEKDAYS: DayOfWeek[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    const nextWeekday = WEEKDAYS[(nextDay - 1) % 7];
+    const weathers: ('sunny' | 'rainy' | 'violet_twilight' | 'clear_starry')[] = ['sunny', 'rainy', 'violet_twilight', 'clear_starry'];
+    const nextWeather = weathers[nextDay % weathers.length];
+
+    const completedCount = [
+      globalState.dailyRoutines.hrtLogged,
+      globalState.dailyRoutines.waterLogged,
+      globalState.dailyRoutines.skincareLogged,
+      globalState.dailyRoutines.voiceWarmupLogged,
+    ].filter(Boolean).length;
+
+    const streakIncrement = completedCount >= 2 ? 1 : 0;
+    const newStreak = globalState.dailyRoutines.streakDays + streakIncrement;
+
+    const diary = createDaySummaryDiaryEntry(
+      globalState.calendar.day,
+      globalState.transitionEra,
+      globalState.lastCompletedActivity || 'Reflecting at home',
+      { confidence: completedCount * 3, dysphoria: -completedCount * 3 }
+    );
+
+    let nextEra = globalState.transitionEra;
+    if (nextDay >= 91 && globalState.transitionEra < 4) nextEra = 4;
+    else if (nextDay >= 61 && globalState.transitionEra < 3) nextEra = 3;
+    else if (nextDay >= 31 && globalState.transitionEra < 2) nextEra = 2;
+
+    globalState = {
+      ...globalState,
+      transitionEra: nextEra,
+      calendar: {
+        day: nextDay,
+        dayOfWeek: nextWeekday,
+        timeOfDay: 'morning',
+        energy: 100,
+        maxEnergy: 100,
+        weather: nextWeather,
+      },
+      diaryEntries: [diary, ...globalState.diaryEntries],
+      dailyRoutines: {
+        hrtLogged: false,
+        waterLogged: false,
+        skincareLogged: false,
+        voiceWarmupLogged: false,
+        streakDays: newStreak,
+      },
+      lastCompletedActivity: null,
+      viewMode: 'daily_summary',
+    };
+    notify();
+  };
+
+  const performCityActivity = (activity: CityActivity) => {
+    soundEngine.playSparkle();
+    const newCash = globalState.stats.cash + (activity.cashReward || 0) - (activity.cashCost || 0);
+    const updatedStats = { ...globalState.stats, cash: Math.max(0, newCash) };
+
+    if (activity.statEffects.confidence) updatedStats.confidence = Math.min(100, Math.max(0, updatedStats.confidence + activity.statEffects.confidence));
+    if (activity.statEffects.dysphoria) updatedStats.dysphoria = Math.min(100, Math.max(0, updatedStats.dysphoria + activity.statEffects.dysphoria));
+    if (activity.statEffects.comfortRating) updatedStats.comfortRating = Math.min(100, Math.max(0, updatedStats.comfortRating + activity.statEffects.comfortRating));
+    if (activity.statEffects.glamRating) updatedStats.glamRating = Math.min(100, Math.max(0, updatedStats.glamRating + activity.statEffects.glamRating));
+    if (activity.statEffects.voiceResonance) updatedStats.voiceResonance = Math.min(100, Math.max(0, updatedStats.voiceResonance + activity.statEffects.voiceResonance));
+
+    const suitors = { ...globalState.suitors };
+    if (activity.suitorAffection) {
+      const suitorId = activity.suitorAffection.suitor;
+      const cur = suitors[suitorId];
+      if (cur) {
+        suitors[suitorId] = {
+          ...cur,
+          affection: Math.min(100, cur.affection + activity.suitorAffection.amount),
+          respect: Math.min(100, cur.respect + (activity.suitorAffection.respect || 10)),
+        };
+      }
+    }
+
+    const timeOrder: TimeOfDay[] = ['morning', 'afternoon', 'evening', 'night'];
+    const currentIdx = timeOrder.indexOf(globalState.calendar.timeOfDay);
+    const nextTime = currentIdx < timeOrder.length - 1 ? timeOrder[currentIdx + 1] : 'night';
+
+    globalState = {
+      ...globalState,
+      stats: updatedStats,
+      suitors,
+      lastCompletedActivity: activity.name,
+      calendar: {
+        ...globalState.calendar,
+        energy: Math.max(0, globalState.calendar.energy - activity.energyCost),
+        timeOfDay: nextTime,
+      },
+    };
+
+    if (activity.scenarioId) {
+      setScene(activity.scenarioId);
+      setViewMode('novel');
+    } else {
+      notify();
+    }
+  };
+
+  const addDiaryEntry = (entry: DiaryEntry) => {
+    soundEngine.playSparkle();
+    globalState = {
+      ...globalState,
+      diaryEntries: [entry, ...globalState.diaryEntries],
+    };
+    notify();
+  };
+
+  const unlockApartmentDecor = (decorId: string) => {
+    soundEngine.playVictory();
+    globalState = {
+      ...globalState,
+      apartmentDecors: globalState.apartmentDecors.map((d) =>
+        d.id === decorId ? { ...d, unlocked: true } : d
+      ),
+    };
+    notify();
+  };
+
+  const raiseSuitorRank = (suitorId: SuitorId) => {
+    soundEngine.playVictory();
+    const currentRank = globalState.suitorRanks[suitorId] || 1;
+    const nextRank = Math.min(10, currentRank + 1);
+
+    globalState = {
+      ...globalState,
+      suitorRanks: {
+        ...globalState.suitorRanks,
+        [suitorId]: nextRank,
+      },
+    };
+    notify();
   };
 
   const updateChatThreads = (updater: (prev: ChatThread[]) => ChatThread[]) => {
@@ -608,6 +804,12 @@ export const gameStoreActions = {
   addInstaComment,
   toggleDailyRoutine,
   updateSettings,
+  advanceTime,
+  advanceDay,
+  performCityActivity,
+  addDiaryEntry,
+  unlockApartmentDecor,
+  raiseSuitorRank,
 };
 
 export function useGameStore() {
