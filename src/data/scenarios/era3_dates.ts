@@ -1,0 +1,190 @@
+import type { StoryScenario } from '../../types/story';
+
+export const ERA3_SCENARIO: StoryScenario = {
+  id: 'era3_dates',
+  title: 'Chapter 3: Rainy Exhibitions & The Disclosure Dilemma',
+  chapter: 'Era 3',
+  era: 3,
+  hrtMonth: 14,
+  description: 'Month 14 of transition. Polished aesthetics, passing in everyday public life, and navigating romance and disclosure with Julian Chen.',
+  initialSceneId: 'era3_julian_intro',
+  nodes: {
+    'era3_julian_intro': {
+      id: 'era3_julian_intro',
+      speaker: 'narrator',
+      text: 'Rain taps gently against the glass atrium of the Contemporary Art & Design Museum. Julian Chen is waiting by a kinetic sculpture in an oversized charcoal cardigan, adjusting his round glasses with a shy, earnest smile.',
+      background: '/assets/backgrounds/museum.png',
+      nextSceneId: 'era3_julian_sees_eve',
+    },
+    'era3_julian_sees_eve': {
+      id: 'era3_julian_sees_eve',
+      speaker: 'julian',
+      activeSuitor: 'julian',
+      suitorExpression: 'blush',
+      text: 'Eve... hello. Wow. You look... genuinely breathtaking in that camel coat. I almost didn’t recognize you from your profile—you carry yourself with so much grace.',
+      background: '/assets/backgrounds/museum.png',
+      soundEffect: 'playSparkle',
+      nextSceneId: 'era3_eve_response',
+    },
+    'era3_eve_response': {
+      id: 'era3_eve_response',
+      speaker: 'eve',
+      eveExpression: 'smile',
+      activeSuitor: 'julian',
+      text: 'Thank you Julian. You look very dashing yourself. Lead the way—show me your favorite exhibit.',
+      background: '/assets/backgrounds/museum.png',
+      nextSceneId: 'era3_exhibit_walk',
+    },
+    'era3_exhibit_walk': {
+      id: 'era3_exhibit_walk',
+      speaker: 'narrator',
+      text: 'Julian leads you through an interactive exhibit exploring procedural generation and memory. He speaks with quiet, mesmerizing passion about how digital worlds can preserve moments of emotional truth.',
+      background: '/assets/backgrounds/museum.png',
+      nextSceneId: 'era3_disclosure_thought',
+    },
+    'era3_disclosure_thought': {
+      id: 'era3_disclosure_thought',
+      speaker: 'eve',
+      eveExpression: 'nervous',
+      activeSuitor: 'julian',
+      text: '(Because my transition has progressed so far, people now simply assume I am a cis woman unless I tell them. I know Julian is kind, but the disclosure dilemma always tightens my chest. When is the right moment?)',
+      background: '/assets/backgrounds/museum.png',
+      choices: [
+        {
+          text: 'Be completely upfront and open: "Julian, I really value honesty. You know I’m a trans woman, right?"',
+          tone: 'bold',
+          statEffects: { confidence: 15, suitorRespect: { suitor: 'julian', amount: 25 } },
+          nextSceneId: 'era3_julian_respect',
+        },
+        {
+          text: 'Let the romantic connection unfold naturally first over warm tea.',
+          tone: 'chill',
+          statEffects: { comfortRating: 15, suitorAffection: { suitor: 'julian', amount: 15 } },
+          nextSceneId: 'era3_rainy_tea',
+        }
+      ]
+    },
+    'era3_julian_respect': {
+      id: 'era3_julian_respect',
+      speaker: 'julian',
+      activeSuitor: 'julian',
+      suitorExpression: 'smile',
+      text: 'Eve, of course I know. I read your bio before I ever swiped, but more importantly, I’m here because of who you are. Your humor, your mind, your kindness. That is what captivates me.',
+      background: '/assets/backgrounds/museum.png',
+      soundEffect: 'playHeartbeat',
+      nextSceneId: 'era3_hands_touch',
+    },
+    'era3_rainy_tea': {
+      id: 'era3_rainy_tea',
+      speaker: 'narrator',
+      text: 'You sit together at the museum tearoom watching raindrops race down the glass. The warmth of your porcelain mug seeps into your fingers.',
+      background: '/assets/backgrounds/museum.png',
+      nextSceneId: 'era3_hands_touch',
+    },
+    'era3_hands_touch': {
+      id: 'era3_hands_touch',
+      speaker: 'narrator',
+      text: 'Julian places a small handmade wooden USB drive on the table. "I programmed a small lofi sound generator game for you. Every time it rains, it plays chords that match the tempo of falling drops."',
+      background: '/assets/backgrounds/museum.png',
+      soundEffect: 'playSparkle',
+      choices: [
+        {
+          text: 'Reach across the table and squeeze his hand: "Julian... that is the most romantic thing anyone has ever made for me."',
+          tone: 'flirty',
+          statEffects: { confidence: 15, suitorAffection: { suitor: 'julian', amount: 30 }, cash: 100 },
+          nextSceneId: 'era3_observatory_dome',
+        },
+        {
+          text: 'Give him a warm, tender smile as the rain outside calms: "Let’s listen to it right now."',
+          tone: 'chill',
+          statEffects: { comfortRating: 20, suitorAffection: { suitor: 'julian', amount: 20 }, cash: 100 },
+          nextSceneId: 'era3_observatory_dome',
+        }
+      ]
+    },
+    'era3_observatory_dome': {
+      id: 'era3_observatory_dome',
+      speaker: 'narrator',
+      text: 'Julian takes your hand and leads you up a spiraling marble staircase to the museum’s rooftop observatory dome. Below, the city glitters under misty rain like a sea of fallen stars.',
+      background: '/assets/backgrounds/rooftop.png',
+      soundEffect: 'playSparkle',
+      nextSceneId: 'era3_observatory_talk',
+    },
+    'era3_observatory_talk': {
+      id: 'era3_observatory_talk',
+      speaker: 'julian',
+      activeSuitor: 'julian',
+      suitorExpression: 'smile',
+      text: '“When I was younger, I spent so much time building virtual universes because reality felt cold and lonely. But standing here with you, Eve... reality is a million times more beautiful than anything I could ever code.”',
+      background: '/assets/backgrounds/rooftop.png',
+      choices: [
+        {
+          text: 'Step in close, rest your head against his shoulder, and watch the clouds part together.',
+          tone: 'vulnerable',
+          statEffects: { comfortRating: 25, suitorAffection: { suitor: 'julian', amount: 25 } },
+          nextSceneId: 'era3_cozy_apartment_invite',
+        },
+        {
+          text: 'Look into his eyes and whisper: “You don’t have to live in simulations anymore, Julian. I’m right here.”',
+          tone: 'bold',
+          statEffects: { confidence: 20, suitorAffection: { suitor: 'julian', amount: 35 } },
+          nextSceneId: 'era3_cozy_apartment_invite',
+        }
+      ]
+    },
+    'era3_cozy_apartment_invite': {
+      id: 'era3_cozy_apartment_invite',
+      speaker: 'narrator',
+      text: 'An hour later, you are in Julian’s warm kitchen, making fresh vegetable dumplings from scratch. Soft lo-fi piano music plays from a vintage speaker on the windowsill.',
+      background: '/assets/backgrounds/eve_room.png',
+      nextSceneId: 'era3_dumpling_flour',
+    },
+    'era3_dumpling_flour': {
+      id: 'era3_dumpling_flour',
+      speaker: 'narrator',
+      text: 'As you crimp the delicate edges of the dumpling wrappers, you accidentally brush your cheek with a flour-dusted hand. Julian bursts into quiet, affectionate laughter.',
+      background: '/assets/backgrounds/eve_room.png',
+      soundEffect: 'playSparkle',
+      choices: [
+        {
+          text: 'Flick a tiny pinch of flour right back at his nose with a playful laugh!',
+          tone: 'humorous',
+          statEffects: { confidence: 15, suitorAffection: { suitor: 'julian', amount: 20 } },
+          nextSceneId: 'era3_flour_fight',
+        },
+        {
+          text: 'Tilt your chin up softly as Julian steps forward with a clean linen towel.',
+          tone: 'flirty',
+          statEffects: { confidence: 15, suitorAffection: { suitor: 'julian', amount: 25 } },
+          nextSceneId: 'era3_tender_towel',
+        }
+      ]
+    },
+    'era3_flour_fight': {
+      id: 'era3_flour_fight',
+      speaker: 'eve',
+      eveExpression: 'smile',
+      text: 'Julian gasps as white flour dusts the bridge of his nose! He laughs so hard his glasses slip down. For the first time in years, you feel completely at ease—no armor, no dysphoria, just joyful love.',
+      background: '/assets/backgrounds/eve_room.png',
+      soundEffect: 'playVictory',
+      nextSceneId: 'era3_advance_to_era4',
+    },
+    'era3_tender_towel': {
+      id: 'era3_tender_towel',
+      speaker: 'narrator',
+      text: 'Julian’s hand is remarkably gentle as he dabs the flour from your cheek. His thumb lingers against your cheekbone for a heartbeat. His eyes are full of wonder and quiet devotion.',
+      background: '/assets/backgrounds/eve_room.png',
+      soundEffect: 'playHeartbeat',
+      nextSceneId: 'era3_advance_to_era4',
+    },
+    'era3_advance_to_era4': {
+      id: 'era3_advance_to_era4',
+      speaker: 'narrator',
+      text: 'Month 24 arrives. Two full years of hormones, resilience, laughter, tears, and unconditional growth. You stand before your mirror not as an awkward girl hoping for acceptance, but as an undeniable, radiant force of nature. Welcome to Era 4: Self-Actualized Eve!',
+      background: '/assets/backgrounds/eve_room.png',
+      advanceEra: 4,
+      soundEffect: 'playVictory',
+      nextSceneId: 'era4_climax_intro',
+    }
+  }
+};

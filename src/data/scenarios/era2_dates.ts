@@ -1,0 +1,226 @@
+import type { StoryScenario } from '../../types/story';
+
+export const ERA2_SCENARIO: StoryScenario = {
+  id: 'era2_dates',
+  title: 'Chapter 2: Riot Basslines & T4T Magic',
+  chapter: 'Era 2',
+  era: 2,
+  hrtMonth: 6,
+  description: 'Month 6 of transition. Alt-femme style, combat boots, loud music, and meeting Chloe Vasquez at an underground punk basement.',
+  initialSceneId: 'era2_punk_intro',
+  nodes: {
+    'era2_punk_intro': {
+      id: 'era2_punk_intro',
+      speaker: 'narrator',
+      text: 'Neon pink and indigo lights cut through the haze of "The Underground", a gritty indie basement club. The crowd is a sea of leather, patches, and queer joy. On stage, Chloe Vasquez is tearing through a thunderous bass riff.',
+      background: '/assets/backgrounds/punk_club.png',
+      nextSceneId: 'era2_chloe_stage_glance',
+    },
+    'era2_chloe_stage_glance': {
+      id: 'era2_chloe_stage_glance',
+      speaker: 'narrator',
+      text: 'Between songs, Chloe wipes sweat from her forehead, her sharp winged eyeliner gleaming. Her gaze sweeps across the crowd—and locks dead onto you. A wicked, playful smirk spreads across her face.',
+      background: '/assets/backgrounds/punk_club.png',
+      soundEffect: 'playSparkle',
+      nextSceneId: 'era2_after_show_bar',
+    },
+    'era2_after_show_bar': {
+      id: 'era2_after_show_bar',
+      speaker: 'narrator',
+      text: 'After the encore, you are standing by the sticker-covered bar when a cool, calloused hand gently taps your shoulder. It’s Chloe, smelling faintly of clove cigarettes, vanilla, and stage energy.',
+      background: '/assets/backgrounds/punk_club.png',
+      nextSceneId: 'era2_chloe_greeting',
+    },
+    'era2_chloe_greeting': {
+      id: 'era2_chloe_greeting',
+      speaker: 'chloe',
+      activeSuitor: 'chloe',
+      suitorExpression: 'smile',
+      text: 'Hey gorgeous. I saw you nodding along to our bridge in the third song. You’ve got immaculate taste in music—and those platform boots are lethal.',
+      background: '/assets/backgrounds/punk_club.png',
+      choices: [
+        {
+          text: 'Smirk back: "I only came because someone told me the bassist was the coolest girl in the room. They weren’t lying."',
+          tone: 'flirty',
+          minConfidence: 35,
+          statEffects: { confidence: 15, suitorAffection: { suitor: 'chloe', amount: 20 }, suitorRespect: { suitor: 'chloe', amount: 15 } },
+          nextSceneId: 'era2_chloe_flustered',
+        },
+        {
+          text: 'Blush deeply: "You were incredible up there! I’ve never been to a show like this before."',
+          tone: 'vulnerable',
+          statEffects: { comfortRating: 10, suitorAffection: { suitor: 'chloe', amount: 15 } },
+          nextSceneId: 'era2_chloe_sweet',
+        }
+      ]
+    },
+    'era2_chloe_flustered': {
+      id: 'era2_chloe_flustered',
+      speaker: 'chloe',
+      activeSuitor: 'chloe',
+      suitorExpression: 'blush',
+      text: 'Damn, okay! Quick on your feet. I like a girl who doesn’t shy away. Bartender, two ciders on my tab, please.',
+      background: '/assets/backgrounds/punk_club.png',
+      nextSceneId: 'era2_bathroom_dilemma',
+    },
+    'era2_chloe_sweet': {
+      id: 'era2_chloe_sweet',
+      speaker: 'chloe',
+      activeSuitor: 'chloe',
+      suitorExpression: 'smile',
+      text: 'First time? Well, welcome to the sanctuary. Around here, you don’t have to explain yourself to anybody. Bartender, two drinks for me and the pretty lady.',
+      background: '/assets/backgrounds/punk_club.png',
+      nextSceneId: 'era2_bathroom_dilemma',
+    },
+    'era2_bathroom_dilemma': {
+      id: 'era2_bathroom_dilemma',
+      speaker: 'eve',
+      eveExpression: 'nervous',
+      activeSuitor: 'chloe',
+      text: 'After finishing your drink, you realize you need to use the restroom. You look toward the hallway with the gendered doors and feel that icy spike of transition panic in your gut.',
+      background: '/assets/backgrounds/punk_club.png',
+      soundEffect: 'playHeartbeat',
+      choices: [
+        {
+          text: 'Freeze up and consider just holding it until you get home 40 minutes away.',
+          tone: 'vulnerable',
+          statEffects: { dysphoria: 15, comfortRating: -10 },
+          nextSceneId: 'era2_chloe_notices_bathroom',
+        },
+        {
+          text: 'Take a breath and tell Chloe honestly: "Bathrooms in public still freak me out."',
+          tone: 'vulnerable',
+          statEffects: { confidence: 10, suitorRespect: { suitor: 'chloe', amount: 20 } },
+          nextSceneId: 'era2_chloe_notices_bathroom',
+        }
+      ]
+    },
+    'era2_chloe_notices_bathroom': {
+      id: 'era2_chloe_notices_bathroom',
+      speaker: 'chloe',
+      activeSuitor: 'chloe',
+      suitorExpression: 'fierce',
+      text: 'Hey. Trans girl bathroom anxiety? I have been there a thousand times. You walk into that women’s room with your head held high, and I am standing right outside the door. If anyone even blinks sideways at you, they answer to my Doc Martens. Let’s go.',
+      background: '/assets/backgrounds/punk_club.png',
+      soundEffect: 'playVictory',
+      nextSceneId: 'era2_bathroom_success',
+    },
+    'era2_bathroom_success': {
+      id: 'era2_bathroom_success',
+      speaker: 'narrator',
+      text: 'You wash your hands, touch up your lip gloss in the mirror, and step back out. Chloe is leaning against the brick wall, grinning proudly. The knot of anxiety in your chest completely dissolves.',
+      background: '/assets/backgrounds/punk_club.png',
+      nextSceneId: 'era2_street_tacos',
+    },
+    'era2_street_tacos': {
+      id: 'era2_street_tacos',
+      speaker: 'narrator',
+      text: 'At 1:30 AM, the two of you sit on the curb outside a taco truck, passing foil-wrapped carnitas tacos and lime wedges under neon streetlights. Chloe hands you a vintage silver safety-pin earring.',
+      background: '/assets/backgrounds/street_night.png',
+      soundEffect: 'playSparkle',
+      nextSceneId: 'era2_t4t_moment',
+    },
+    'era2_t4t_moment': {
+      id: 'era2_t4t_moment',
+      speaker: 'chloe',
+      activeSuitor: 'chloe',
+      suitorExpression: 'smile',
+      text: 'A little keepsake from our first gig together. Eve... transitioning is raw, and it’s messy, and it’s beautiful. But don’t ever let anyone make you feel like you are less than a complete, stunning woman. You are already there.',
+      background: '/assets/backgrounds/street_night.png',
+      choices: [
+        {
+          text: 'Lean over and kiss her cheek, whispering "Thank you, Chloe."',
+          tone: 'flirty',
+          statEffects: { confidence: 15, suitorAffection: { suitor: 'chloe', amount: 25 }, cash: 80 },
+          nextSceneId: 'era2_chloe_loft_invite',
+        },
+        {
+          text: 'Hold her hand tightly: "I’ve never felt so seen in my entire life."',
+          tone: 'vulnerable',
+          statEffects: { comfortRating: 20, suitorAffection: { suitor: 'chloe', amount: 20 }, cash: 80 },
+          nextSceneId: 'era2_chloe_loft_invite',
+        }
+      ]
+    },
+    'era2_chloe_loft_invite': {
+      id: 'era2_chloe_loft_invite',
+      speaker: 'chloe',
+      activeSuitor: 'chloe',
+      suitorExpression: 'smile',
+      text: '“My loft is two blocks away. Come up for tea. I want to show you my vinyl collection, and maybe teach you your first bassline.”',
+      background: '/assets/backgrounds/street_night.png',
+      soundEffect: 'playSparkle',
+      nextSceneId: 'era2_chloe_loft_livingroom',
+    },
+    'era2_chloe_loft_livingroom': {
+      id: 'era2_chloe_loft_livingroom',
+      speaker: 'narrator',
+      text: 'Chloe’s loft is warm and glowing with string lights, vintage tour posters, and stacks of indie records. A sunburst Fender Precision Bass leans against an old velvet armchair.',
+      background: '/assets/backgrounds/punk_club.png',
+      nextSceneId: 'era2_chloe_hands_bass',
+    },
+    'era2_chloe_hands_bass': {
+      id: 'era2_chloe_hands_bass',
+      speaker: 'chloe',
+      activeSuitor: 'chloe',
+      suitorExpression: 'smile',
+      text: 'Chloe slings the heavy leather strap over your shoulder. “Here. Rest your thumb on the pickup. Feel the weight of it.”',
+      background: '/assets/backgrounds/punk_club.png',
+      nextSceneId: 'era2_chloe_behind_eve',
+    },
+    'era2_chloe_behind_eve': {
+      id: 'era2_chloe_behind_eve',
+      speaker: 'narrator',
+      text: 'Chloe steps in behind you, her chin resting lightly near your shoulder. Her calloused fingers wrap gently over yours, guiding your left index finger to the third fret.',
+      background: '/assets/backgrounds/punk_club.png',
+      choices: [
+        {
+          text: 'Pluck the heavy E string and feel the deep resonance rumble through your ribs.',
+          tone: 'bold',
+          statEffects: { confidence: 15, voiceResonance: 10, suitorAffection: { suitor: 'chloe', amount: 20 } },
+          nextSceneId: 'era2_bass_vibration',
+        },
+        {
+          text: 'Turn your head slightly to meet her gaze, centimeters apart under the fairy lights.',
+          tone: 'flirty',
+          statEffects: { confidence: 20, suitorAffection: { suitor: 'chloe', amount: 30 } },
+          nextSceneId: 'era2_loft_kiss',
+        }
+      ]
+    },
+    'era2_bass_vibration': {
+      id: 'era2_bass_vibration',
+      speaker: 'eve',
+      eveExpression: 'smile',
+      text: 'BWOOOM! The note rumbles through my chest. Chloe laughs, a rich, delighted sound against my ear. “Listen to that growl! You’re a natural rockstar, Eve.”',
+      background: '/assets/backgrounds/punk_club.png',
+      soundEffect: 'playVictory',
+      nextSceneId: 'era2_polaroid_moment',
+    },
+    'era2_loft_kiss': {
+      id: 'era2_loft_kiss',
+      speaker: 'narrator',
+      text: 'Her breath catches. Chloe lets the bass neck rest against her hip as her hand gently traces your jawline, cupping your cheek with tender reverence. She leans in and kisses you—soft, fierce, and unforgettable.',
+      background: '/assets/backgrounds/punk_club.png',
+      soundEffect: 'playSparkle',
+      nextSceneId: 'era2_polaroid_moment',
+    },
+    'era2_polaroid_moment': {
+      id: 'era2_polaroid_moment',
+      speaker: 'narrator',
+      text: 'Before you leave in the early morning light, Chloe pulls out an old Instax camera. “Smile, bass goddess!” FLASH! The photo whirs out: Chloe flashing a peace sign, and you smiling with full, genuine radiance.',
+      background: '/assets/backgrounds/punk_club.png',
+      soundEffect: 'playPhonePing',
+      nextSceneId: 'era2_advance_to_era3',
+    },
+    'era2_advance_to_era3': {
+      id: 'era2_advance_to_era3',
+      speaker: 'narrator',
+      text: 'Months pass in a whirlwind of music, sisterhood, and self-discovery. Month 14 arrives. Laser hair removal is finished, your voice resonance is melodic and natural, and strangers default to “miss” without hesitation. Welcome to Era 3: The Blossoming Femme!',
+      background: '/assets/backgrounds/eve_room.png',
+      advanceEra: 3,
+      soundEffect: 'playVictory',
+      nextSceneId: 'era3_julian_intro',
+    }
+  }
+};

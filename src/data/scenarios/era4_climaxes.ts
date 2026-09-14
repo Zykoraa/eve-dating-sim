@@ -1,0 +1,236 @@
+import type { StoryScenario } from '../../types/story';
+
+export const ERA4_SCENARIO: StoryScenario = {
+  id: 'era4_climaxes',
+  title: 'Chapter 4: The Rooftop Showdown & True Love Finales',
+  chapter: 'Era 4',
+  era: 4,
+  hrtMonth: 24,
+  description: 'Month 24. Self-Actualized Eve. An unforgettable showdown against chasers, followed by the culmination of your chosen romantic path.',
+  initialSceneId: 'era4_climax_intro',
+  nodes: {
+    'era4_climax_intro': {
+      id: 'era4_climax_intro',
+      speaker: 'narrator',
+      text: 'You step out onto the terrace of "The Luminary" rooftop lounge. City lights glitter like spilled diamonds below. You wear your sculpted Little Black Dress, diamond drop earrings, and the effortless, radiant posture of a woman who knows her worth.',
+      background: '/assets/backgrounds/rooftop.png',
+      nextSceneId: 'era4_marcus_appears',
+    },
+    'era4_marcus_appears': {
+      id: 'era4_marcus_appears',
+      speaker: 'narrator',
+      text: 'A man in an expensive tailored Italian suit steps into your path, twirling an old-fashioned glass. It’s Marcus Vance, his trademark predatory smirk firmly in place.',
+      background: '/assets/backgrounds/rooftop.png',
+      soundEffect: 'playTension',
+      nextSceneId: 'era4_marcus_pitch',
+    },
+    'era4_marcus_pitch': {
+      id: 'era4_marcus_pitch',
+      speaker: 'marcus',
+      activeSuitor: 'marcus',
+      suitorExpression: 'smirk',
+      text: 'Well, well, well. Look at you, Eve. You used to be an awkward little secret on Bloom, but now you’re looking like a million bucks. Let’s skip the public chit-chat. My driver is downstairs. Come up to my penthouse—discreet, no questions asked.',
+      background: '/assets/backgrounds/rooftop.png',
+      choices: [
+        {
+          text: 'Initiate the ultimate BOUNDARY CLASH: Put Marcus in his place once and for all.',
+          tone: 'bold',
+          triggerMinigame: 'boundary_clash',
+          nextSceneId: 'era4_marcus_clash_dialogue',
+        }
+      ]
+    },
+    'era4_marcus_clash_dialogue': {
+      id: 'era4_marcus_clash_dialogue',
+      speaker: 'eve',
+      eveExpression: 'fierce',
+      text: 'Marcus. Lower your voice and listen to me very carefully.',
+      background: '/assets/backgrounds/rooftop.png',
+      soundEffect: 'playHeartbeat',
+      nextSceneId: 'era4_marcus_clash_speech',
+    },
+    'era4_marcus_clash_speech': {
+      id: 'era4_marcus_clash_speech',
+      speaker: 'eve',
+      eveExpression: 'fierce',
+      text: 'I am not your midnight experiment. I am not a trophy for your closet, and I am not a dirty little secret to feed your cowardice. You want a woman in secret because you are terrified of what other men think of you. You don’t deserve five seconds of my time. Enjoy your lonely penthouse.',
+      background: '/assets/backgrounds/rooftop.png',
+      soundEffect: 'playVictory',
+      nextSceneId: 'era4_marcus_humiliated',
+    },
+    'era4_marcus_humiliated': {
+      id: 'era4_marcus_humiliated',
+      speaker: 'narrator',
+      text: 'Marcus turns crimson. Nearby guests turn to look at him with disdain. He stutters, drops his napkin, and practically scampers toward the elevator in humiliation.',
+      background: '/assets/backgrounds/rooftop.png',
+      nextSceneId: 'era4_tara_cheers',
+    },
+    'era4_tara_cheers': {
+      id: 'era4_tara_cheers',
+      speaker: 'tara',
+      text: 'YAAAAAS QUEEN! THAT WAS POETRY! THAT WAS CINEMA! I recorded the whole thing for the group chat archives!!',
+      background: '/assets/backgrounds/rooftop.png',
+      soundEffect: 'playSparkle',
+      nextSceneId: 'era4_finale_branch',
+    },
+    'era4_finale_branch': {
+      id: 'era4_finale_branch',
+      speaker: 'narrator',
+      text: 'As the applause fades, you turn to look across the terrace. Someone is waiting for you beneath the canopy of stars. Who does your heart choose?',
+      background: '/assets/backgrounds/rooftop.png',
+      choices: [
+        {
+          text: 'Liam Walker — The sweet, devoted partner who proudly introduces you to the whole world.',
+          tone: 'flirty',
+          nextSceneId: 'ending_liam',
+        },
+        {
+          text: 'Chloe Vasquez — The T4T punk rock soulmate who understands every fiber of your being.',
+          tone: 'bold',
+          nextSceneId: 'ending_chloe',
+        },
+        {
+          text: 'Julian Chen — The brilliant, gentle sweetheart who loves your mind and soul.',
+          tone: 'vulnerable',
+          nextSceneId: 'ending_julian',
+        },
+        {
+          text: 'Eve Herself — The Queen of Her Own Universe (Independent Glow-Up Ending).',
+          tone: 'bold',
+          nextSceneId: 'ending_solo',
+        }
+      ]
+    },
+
+    // --- ENDINGS ---
+    'ending_liam': {
+      id: 'ending_liam',
+      speaker: 'liam',
+      activeSuitor: 'liam',
+      suitorExpression: 'smile',
+      text: 'Liam steps forward, holding a bouquet of rare night-blooming jasmine. "Eve... from the first day I met you at that coffee shop, I knew you were the one. I want to build a life with you, plant a garden with you, and love you forever."',
+      background: '/assets/backgrounds/rooftop.png',
+      soundEffect: 'playSparkle',
+      nextSceneId: 'ending_liam_eve_reply',
+    },
+    'ending_liam_eve_reply': {
+      id: 'ending_liam_eve_reply',
+      speaker: 'eve',
+      eveExpression: 'blush',
+      activeSuitor: 'liam',
+      text: '“Liam... you saw me on the days my voice shook, on the days I wore my oversized hoodie like emotional armor. You never hesitated to hold my hand in the daylight.”',
+      background: '/assets/backgrounds/rooftop.png',
+      nextSceneId: 'ending_liam_dance',
+    },
+    'ending_liam_dance': {
+      id: 'ending_liam_dance',
+      speaker: 'narrator',
+      text: 'Liam gently slips an arm around your waist, drawing you into a slow, breathless dance beneath the starlight canopy. The entire rooftop terrace fades into a dream of soft piano and warm jasmine.',
+      background: '/assets/backgrounds/rooftop.png',
+      soundEffect: 'playHeartbeat',
+      nextSceneId: 'ending_liam_epilogue',
+    },
+    'ending_liam_epilogue': {
+      id: 'ending_liam_epilogue',
+      speaker: 'narrator',
+      text: '★ TRUE ENDING UNLOCKED: "Golden Bloom" ★\nTwo years into your transition, you are surrounded by unconditional love, warmth, and a devoted partner who celebrates every chapter of who you are. Together, you build a sunlit cottage and greenhouse—proof that gentle, patient love will always triumph.',
+      background: '/assets/backgrounds/rooftop.png',
+      soundEffect: 'playVictory',
+    },
+
+    'ending_chloe': {
+      id: 'ending_chloe',
+      speaker: 'chloe',
+      activeSuitor: 'chloe',
+      suitorExpression: 'smile',
+      text: 'Chloe pulls you into a passionate, breathless kiss right on the terrace edge. "You and me, Eve. Against the entire boring world. We’re touring Europe next month, and you’re coming with me as my muse, my girl, my everything."',
+      background: '/assets/backgrounds/rooftop.png',
+      soundEffect: 'playSparkle',
+      nextSceneId: 'ending_chloe_eve_reply',
+    },
+    'ending_chloe_eve_reply': {
+      id: 'ending_chloe_eve_reply',
+      speaker: 'eve',
+      eveExpression: 'fierce',
+      activeSuitor: 'chloe',
+      text: '“I wouldn’t miss it for the world. We’re going to play every stage loud enough to shake the foundations of every city we hit.”',
+      background: '/assets/backgrounds/rooftop.png',
+      nextSceneId: 'ending_chloe_t4t_celebration',
+    },
+    'ending_chloe_t4t_celebration': {
+      id: 'ending_chloe_t4t_celebration',
+      speaker: 'narrator',
+      text: 'Chloe laughs and throws her arm around your shoulders, clinking her cider bottle against your glass. Two trans women thriving, gorgeous, and unstoppable against the velvet night sky.',
+      background: '/assets/backgrounds/rooftop.png',
+      soundEffect: 'playSparkle',
+      nextSceneId: 'ending_chloe_epilogue',
+    },
+    'ending_chloe_epilogue': {
+      id: 'ending_chloe_epilogue',
+      speaker: 'narrator',
+      text: '★ TRUE ENDING UNLOCKED: "Velvet Riot & Queer Joy" ★\nT4T magic forever. Two trans women living unapologetically, creating art, traveling the world, and proving to every queer kid watching that joy is our greatest, most permanent revolution.',
+      background: '/assets/backgrounds/rooftop.png',
+      soundEffect: 'playVictory',
+    },
+
+    'ending_julian': {
+      id: 'ending_julian',
+      speaker: 'julian',
+      activeSuitor: 'julian',
+      suitorExpression: 'blush',
+      text: 'Julian takes your hands gently in his. "Eve, every game I ever built was just a simulation of something I hadn’t found in real life. Until I met you. You are real, and you make the whole world brighter."',
+      background: '/assets/backgrounds/rooftop.png',
+      soundEffect: 'playSparkle',
+      nextSceneId: 'ending_julian_eve_reply',
+    },
+    'ending_julian_eve_reply': {
+      id: 'ending_julian_eve_reply',
+      speaker: 'eve',
+      eveExpression: 'smile',
+      activeSuitor: 'julian',
+      text: '“Julian, you loved my soul before I even figured out how to do my eyeliner properly. You gave me space to blossom at my own pace.”',
+      background: '/assets/backgrounds/rooftop.png',
+      nextSceneId: 'ending_julian_stargaze',
+    },
+    'ending_julian_stargaze': {
+      id: 'ending_julian_stargaze',
+      speaker: 'narrator',
+      text: 'Julian smiles, tears of joy reflecting in his round glasses. He leans down and presses a tender, reverent kiss against your forehead as a shooting star arcs silently across the purple night sky.',
+      background: '/assets/backgrounds/rooftop.png',
+      soundEffect: 'playHeartbeat',
+      nextSceneId: 'ending_julian_epilogue',
+    },
+    'ending_julian_epilogue': {
+      id: 'ending_julian_epilogue',
+      speaker: 'narrator',
+      text: '★ TRUE ENDING UNLOCKED: "Cozy Infinite Horizons" ★\nA quiet, deeply intellectual, and tender love story that proves gentle hearts always win. Together, you build games, share endless rainy mornings, and build a haven of pure mutual respect.',
+      background: '/assets/backgrounds/rooftop.png',
+      soundEffect: 'playVictory',
+    },
+
+    'ending_solo': {
+      id: 'ending_solo',
+      speaker: 'eve',
+      eveExpression: 'smile',
+      text: 'You stand at the glass railing of the rooftop, feeling the cool night wind in your hair. You lift your champagne glass to the city skyline. You didn’t survive transition to seek someone else’s permission. You are Eve. You are whole. You are magnificent.',
+      background: '/assets/backgrounds/rooftop.png',
+      soundEffect: 'playSparkle',
+      nextSceneId: 'ending_solo_reflection',
+    },
+    'ending_solo_reflection': {
+      id: 'ending_solo_reflection',
+      speaker: 'narrator',
+      text: 'You remember Month 1: sitting on your bed, shivering with cheap liquid eyeliner, terrified of sunlight. Look at you now. A queen who commands every room she enters, surrounded by loving friends, owning her story with grace.',
+      background: '/assets/backgrounds/rooftop.png',
+      soundEffect: 'playSparkle',
+      nextSceneId: 'ending_solo_epilogue',
+    },
+    'ending_solo_epilogue': {
+      id: 'ending_solo_epilogue',
+      speaker: 'narrator',
+      text: '★ SPECIAL GOLDEN ENDING: "Queen of Her Own Universe" ★\nSelf-actualization achieved. You love yourself fiercely, completely, and unapologetically. You are not waiting for someone to complete you—you are whole, radiant, and the future is yours.',
+      background: '/assets/backgrounds/rooftop.png',
+      soundEffect: 'playVictory',
+    }
+  }
+};

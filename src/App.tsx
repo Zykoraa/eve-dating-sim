@@ -1,0 +1,35 @@
+import React from 'react';
+import { useGameStore } from './state/useGameStore';
+import { TitleScreen } from './components/ui/TitleScreen';
+import { VisualNovelView } from './components/novel/VisualNovelView';
+import { PhoneModal } from './components/phone/PhoneModal';
+import { VanityMirror } from './components/vanity/VanityMirror';
+import { BoundaryClash } from './components/minigames/BoundaryClash';
+import { SaveLoadModal } from './components/ui/SaveLoadModal';
+import { SettingsModal } from './components/ui/SettingsModal';
+import { GalleryModal } from './components/gallery/GalleryModal';
+
+export const App: React.FC = () => {
+  const { state } = useGameStore();
+
+  if (state.viewMode === 'title') {
+    return <TitleScreen />;
+  }
+
+  return (
+    <main className="relative w-screen h-screen overflow-hidden bg-slate-950 font-sans">
+      {/* Base Visual Novel Engine */}
+      <VisualNovelView />
+
+      {/* Layered Modals and Interactive Systems */}
+      {state.viewMode === 'phone' && <PhoneModal />}
+      {state.viewMode === 'vanity' && <VanityMirror />}
+      {state.viewMode === 'minigame' && state.activeMinigame === 'boundary_clash' && <BoundaryClash />}
+      {state.viewMode === 'save_load' && <SaveLoadModal />}
+      {state.viewMode === 'settings' && <SettingsModal />}
+      {state.viewMode === 'gallery' && <GalleryModal />}
+    </main>
+  );
+};
+
+export default App;
