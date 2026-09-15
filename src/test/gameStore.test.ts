@@ -324,6 +324,59 @@ describe('Game Data & Progression Integrity', () => {
     expect(evictionNode).toBeDefined();
     expect(evictionNode?.choices?.[0].text).toContain('hospital crisis room for 12 hours');
   });
+
+  it('should verify date intimacy branching paths for Liam, Chloe, Julian, Heart Events, and City activity', async () => {
+    const { getDialogueNode } = await import('../data/scenarios/index');
+    const { CITY_ACTIVITIES } = await import('../data/activities');
+
+    // Liam date intimacy
+    const liamFarewell = getDialogueNode('era1_fountain_farewell');
+    expect(liamFarewell?.choices?.some(c => c.text.includes('18+') && c.nextSceneId === 'era1_liam_nsfw_walk')).toBe(true);
+    const liamWalk = getDialogueNode('era1_liam_nsfw_walk');
+    expect(liamWalk).toBeDefined();
+    const liamBedroom = getDialogueNode('era1_liam_nsfw_bedroom');
+    expect(liamBedroom).toBeDefined();
+    const liamClimax = getDialogueNode('era1_liam_nsfw_climax');
+    expect(liamClimax).toBeDefined();
+
+    // Chloe date intimacy
+    const chloeKiss = getDialogueNode('era2_loft_kiss');
+    expect(chloeKiss?.choices?.some(c => c.text.includes('18+') && c.nextSceneId === 'era2_chloe_nsfw_bedroom')).toBe(true);
+    const chloeBedroom = getDialogueNode('era2_chloe_nsfw_bedroom');
+    expect(chloeBedroom).toBeDefined();
+    const chloeTouch = getDialogueNode('era2_chloe_nsfw_touch');
+    expect(chloeTouch).toBeDefined();
+    expect(chloeTouch?.text).toContain('trans women');
+
+    // Julian date intimacy
+    const julianTowel = getDialogueNode('era3_tender_towel');
+    expect(julianTowel?.choices?.some(c => c.text.includes('18+') && c.nextSceneId === 'era3_julian_nsfw_counter_kiss')).toBe(true);
+    const julianCounter = getDialogueNode('era3_julian_nsfw_counter_kiss');
+    expect(julianCounter).toBeDefined();
+    const julianMorning = getDialogueNode('era3_julian_nsfw_morning');
+    expect(julianMorning).toBeDefined();
+
+    // Heart Events Rank 6 intimacy
+    const liamRank6End = getDialogueNode('liam_rank6_end');
+    expect(liamRank6End?.choices?.some(c => c.text.includes('18+'))).toBe(true);
+    const liamCottage = getDialogueNode('liam_rank6_nsfw_cottage');
+    expect(liamCottage).toBeDefined();
+
+    const chloeRank6End = getDialogueNode('chloe_rank6_end');
+    expect(chloeRank6End?.choices?.some(c => c.text.includes('18+'))).toBe(true);
+    const chloeBackstage = getDialogueNode('chloe_rank6_nsfw_backstage');
+    expect(chloeBackstage).toBeDefined();
+
+    const julianRank6End = getDialogueNode('julian_rank6_end');
+    expect(julianRank6End?.choices?.some(c => c.text.includes('18+'))).toBe(true);
+    const julianDome = getDialogueNode('julian_rank6_nsfw_dome');
+    expect(julianDome).toBeDefined();
+
+    // City after-dark activity
+    const afterDarkAct = CITY_ACTIVITIES.find(a => a.id === 'hangout_after_dark');
+    expect(afterDarkAct).toBeDefined();
+    expect(afterDarkAct?.scenarioId).toBe('nsfw_hub');
+  });
 });
 
 

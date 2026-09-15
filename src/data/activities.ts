@@ -1,4 +1,4 @@
-﻿import type { CityActivity } from '../types/game';
+import type { CityActivity } from '../types/game';
 
 export const CITY_ACTIVITIES: CityActivity[] = [
   // --- JOBS & CAREER ---
@@ -176,5 +176,18 @@ export const CITY_ACTIVITIES: CityActivity[] = [
     icon: 'ShoppingBag',
     unlockedEras: [1, 2, 3, 4],
     timeAvailability: ['morning', 'afternoon'],
+  },
+  {
+    id: 'hangout_after_dark',
+    name: 'After-Dark Rendezvous: Adult Romance (18+)',
+    category: 'hangout',
+    location: 'Loft, Cottage & Studio After-Hours',
+    description: 'Sneak away for an uncensored adult romantic encounter with Chloe, Liam, Julian, or Maya, exploring deep affirming bedroom passion.',
+    energyCost: 25,
+    statEffects: { confidence: 25, comfortRating: 25, dysphoria: -20 },
+    icon: 'HeartHandshake',
+    unlockedEras: [1, 2, 3, 4],
+    timeAvailability: ['evening', 'night'],
+    scenarioId: 'nsfw_hub',
   },
 ];

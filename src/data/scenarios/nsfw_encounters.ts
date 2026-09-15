@@ -39,6 +39,11 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
           text: 'Shut down Marcus’s late-night penthouse proposition once and for all (Raw Boundary Beatdown).',
           tone: 'bold',
           nextSceneId: 'nsfw_marcus_shutoff_start',
+        },
+        {
+          text: 'Return home to your apartment sanctuary and rest peacefully in your own bed.',
+          tone: 'chill',
+          nextSceneId: 'nsfw_return_home',
         }
       ]
     },
@@ -122,6 +127,12 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
           tone: 'flirty',
           statEffects: { confidence: 20, dysphoria: -25 },
           nextSceneId: 'nsfw_hub',
+        },
+        {
+          text: 'Kiss her goodbye tenderly at dawn and return home to your apartment sanctuary.',
+          tone: 'vulnerable',
+          statEffects: { confidence: 20, comfortRating: 25 },
+          nextSceneId: 'nsfw_return_home',
         }
       ]
     },
@@ -204,6 +215,12 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
           tone: 'vulnerable',
           statEffects: { confidence: 25, dysphoria: -25 },
           nextSceneId: 'nsfw_hub',
+        },
+        {
+          text: 'Kiss his cheek in the morning and return home to your apartment with a peaceful heart.',
+          tone: 'chill',
+          statEffects: { confidence: 20, comfortRating: 25 },
+          nextSceneId: 'nsfw_return_home',
         }
       ]
     },
@@ -254,7 +271,19 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
       text: 'The intimacy is electric, smart, and intensely communicative. Julian whispers endless quiet praise against your skin until you both shatter together in breathless, dizzying ecstasy.',
       background: '/assets/backgrounds/eve_room.png',
       soundEffect: 'playVictory',
-      nextSceneId: 'nsfw_hub',
+      choices: [
+        {
+          text: 'Rest in Julian’s arms as morning sunlight filters across the tangled sheets, then return to your apartment.',
+          tone: 'vulnerable',
+          statEffects: { confidence: 25, comfortRating: 25 },
+          nextSceneId: 'nsfw_return_home',
+        },
+        {
+          text: 'Return to the midnight city map.',
+          tone: 'chill',
+          nextSceneId: 'nsfw_hub',
+        }
+      ]
     },
 
     // --- MAYA: BOHEMIAN SAPPHIC REVERENCE ---
@@ -291,7 +320,19 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
       text: 'A night of decadent, transcendent bliss where every touch celebrates your womanhood without shame or hesitation. You fall asleep entangled in silk sheets, feeling completely reborn.',
       background: '/assets/backgrounds/rooftop_lounge.png',
       soundEffect: 'playVictory',
-      nextSceneId: 'nsfw_hub',
+      choices: [
+        {
+          text: 'Wake at sunrise bathed in golden gallery light, hug Maya goodbye, and return home to your sanctuary.',
+          tone: 'vulnerable',
+          statEffects: { confidence: 25, comfortRating: 25 },
+          nextSceneId: 'nsfw_return_home',
+        },
+        {
+          text: 'Return to the midnight city map.',
+          tone: 'chill',
+          nextSceneId: 'nsfw_hub',
+        }
+      ]
     },
 
     // --- MARCUS: RAW BOUNDARY BEATDOWN ---
@@ -330,10 +371,30 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
       soundEffect: 'playVictory',
       choices: [
         {
-          text: 'Breathe in the cool city air and smile. You are nobody’s dirty secret.',
+          text: 'Breathe in the cool city air and smile. You are nobody’s dirty secret. Return home to your sanctuary.',
           tone: 'bold',
           statEffects: { confidence: 25 },
+          nextSceneId: 'nsfw_return_home',
+        },
+        {
+          text: 'Return to the midnight city map.',
+          tone: 'chill',
           nextSceneId: 'nsfw_hub',
+        }
+      ]
+    },
+    'nsfw_return_home': {
+      id: 'nsfw_return_home',
+      speaker: 'narrator',
+      text: 'You return home to your warm apartment as morning sunlight begins to paint the horizon in soft lavender and gold. Your heart is serene, your body humming with gender euphoria and peaceful satisfaction. You slide under the down duvet and drift off to sweet, deep rest.',
+      background: '/assets/backgrounds/eve_room.png',
+      soundEffect: 'playSparkle',
+      choices: [
+        {
+          text: 'Rest comfortably in your bed, ready to live your authentic truth.',
+          tone: 'chill',
+          statEffects: { comfortRating: 25, dysphoria: -20 },
+          nextSceneId: 'era1_thrift_weekend_hook',
         }
       ]
     }

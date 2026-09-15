@@ -191,9 +191,16 @@ export const CityMapModal: React.FC = () => {
                     </div>
                   </div>
 
-                  <h3 className="font-bold text-sm text-white group-hover:text-pink-300 transition-colors">
-                    {act.name}
-                  </h3>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h3 className="font-bold text-sm text-white group-hover:text-pink-300 transition-colors">
+                      {act.name}
+                    </h3>
+                    {act.scenarioId && (
+                      <span className="px-1.5 py-0.5 rounded bg-rose-600/30 text-rose-300 border border-rose-500/40 font-bold text-[10px] tracking-wider uppercase">
+                        18+ Adult
+                      </span>
+                    )}
+                  </div>
                   <p className="text-[11px] text-pink-400 font-medium mt-0.5 flex items-center gap-1">
                     <MapPin className="w-3 h-3" /> {act.location}
                   </p>
