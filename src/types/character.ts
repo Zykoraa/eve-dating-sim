@@ -41,3 +41,23 @@ export interface EveEraVisual {
   spriteUrl: string;
   perks: string[];
 }
+
+export interface CustomEveConfig {
+  name: string;
+  pronouns: string;
+  skinTone: string;
+  skinToneName: string;
+  hairColor: string;
+  hairColorName: string;
+  hairStyle: string;
+  eyeColor: string;
+  eyeColorName: string;
+  bodySilhouette: 'slender' | 'soft_curves' | 'curvy' | 'athletic';
+  makeupStyle: string;
+  lipColor: string;
+  lipColorName: string;
+  blushColor: string;
+  blushColorName: string;
+  showStubbleShadow: boolean;
+  beautyMark: boolean;
+}

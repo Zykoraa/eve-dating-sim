@@ -3,6 +3,18 @@ import { EVE_ERAS, CHARACTERS } from '../data/characters';
 import { WARDROBE_ITEMS } from '../data/outfits';
 import { DATING_APP_PROFILES } from '../data/datingProfiles';
 
+if (typeof globalThis.localStorage === 'undefined') {
+  const store: Record<string, string> = {};
+  globalThis.localStorage = {
+    getItem: (key: string) => store[key] || null,
+    setItem: (key: string, val: string) => { store[key] = val; },
+    removeItem: (key: string) => { delete store[key]; },
+    clear: () => { Object.keys(store).forEach((k) => delete store[k]); },
+    key: (idx: number) => Object.keys(store)[idx] || null,
+    length: 0,
+  } as any;
+}
+
 describe('Game Data & Progression Integrity', () => {
   it('should define all Transition Eras (0 through 4) with perks and descriptions', () => {
     expect(EVE_ERAS[0]).toBeDefined();
@@ -223,12 +235,94 @@ describe('Game Data & Progression Integrity', () => {
 
     const beaGunLie = getDialogueNode('eve_calls_out_gun_lie');
     expect(beaGunLie).toBeDefined();
-    expect(beaGunLie?.text).toContain('firearm');
+    expect(beaGunLie?.text).toContain('gun');
+    expect(beaGunLie?.text).toContain('crisis evaluation room');
 
     const { INITIAL_CHAT_THREADS } = await import('../data/datingProfiles');
     const beaThread = INITIAL_CHAT_THREADS.find(t => t.participantId === 'bea');
     expect(beaThread).toBeDefined();
     expect(beaThread?.messages.some(m => m.text.includes('police'))).toBe(true);
+  });
+
+  it('should verify character creation presets, customEve store state and persistence', async () => {
+    const { 
+      SKIN_TONE_OPTIONS, 
+      HAIR_STYLE_OPTIONS, 
+      HAIR_COLOR_OPTIONS, 
+      EYE_COLOR_OPTIONS, 
+      SILHOUETTE_OPTIONS, 
+      DEFAULT_CUSTOM_EVE 
+    } = await import('../data/characterCreationPresets');
+
+    expect(SKIN_TONE_OPTIONS.length).toBeGreaterThanOrEqual(6);
+    expect(HAIR_STYLE_OPTIONS.length).toBeGreaterThanOrEqual(6);
+    expect(HAIR_COLOR_OPTIONS.length).toBeGreaterThanOrEqual(6);
+    expect(EYE_COLOR_OPTIONS.length).toBeGreaterThanOrEqual(6);
+    expect(SILHOUETTE_OPTIONS.length).toBe(4);
+
+    const { useGameStore } = await import('../state/useGameStore');
+    const store = useGameStore.getState();
+
+    expect(store.state.customEve).toBeDefined();
+    expect(store.state.customEve.name).toBe('Eve');
+    expect(store.state.customEve.skinTone).toBe(DEFAULT_CUSTOM_EVE.skinTone);
+
+    // Test updating custom Eve
+    store.updateCustomEve({
+      name: 'Evelyn',
+      hairColor: '#f472b6',
+      hairColorName: 'Cotton Candy Pink',
+      hairStyle: 'era3_long_layers',
+      bodySilhouette: 'curvy',
+    });
+
+    const updated = useGameStore.getState().state.customEve;
+    expect(updated.name).toBe('Evelyn');
+    expect(updated.hairColor).toBe('#f472b6');
+    expect(updated.hairStyle).toBe('era3_long_layers');
+    expect(updated.bodySilhouette).toBe('curvy');
+
+    // Test Save / Load persistence with customEve
+    store.saveGame(3, 'Custom Eve Test Save');
+    const savedData = localStorage.getItem('eve_save_slot_3');
+    expect(savedData).toBeDefined();
+    const parsed = JSON.parse(savedData!);
+    expect(parsed.customEve).toBeDefined();
+    expect(parsed.customEve.name).toBe('Evelyn');
+
+    // Reset and Load
+    store.resetGame();
+    expect(useGameStore.getState().state.customEve.name).toBe('Eve');
+    store.loadGame(3);
+    expect(useGameStore.getState().state.customEve.name).toBe('Evelyn');
+  });
+
+  it('should verify Era 0 12-hour hospital crisis hold nodes and discharge clearance', async () => {
+    const { getDialogueNode } = await import('../data/scenarios/index');
+
+    const detentionNode = getDialogueNode('era0_police_detention');
+    expect(detentionNode).toBeDefined();
+    expect(detentionNode?.text).toContain('protective custody');
+    expect(detentionNode?.text).toContain('involuntary psychiatric evaluation');
+
+    const crisisRoomNode = getDialogueNode('era0_crisis_room_ordeal');
+    expect(crisisRoomNode).toBeDefined();
+    expect(crisisRoomNode?.text).toContain('Hospital Crisis Evaluation Unit');
+    expect(crisisRoomNode?.text).toContain('paper scrubs');
+
+    const hoursPassNode = getDialogueNode('era0_crisis_hours_pass');
+    expect(hoursPassNode).toBeDefined();
+    expect(hoursPassNode?.text).toContain('Twelve hours');
+
+    const psychClearanceNode = getDialogueNode('era0_psych_evaluation_clearance');
+    expect(psychClearanceNode).toBeDefined();
+    expect(psychClearanceNode?.text).toContain('Dr. Vance');
+    expect(psychClearanceNode?.text).toContain('passed every mental status examination');
+    expect(psychClearanceNode?.text).toContain('weaponized emergency services');
+
+    const evictionNode = getDialogueNode('era0_eve_evicts_bea');
+    expect(evictionNode).toBeDefined();
+    expect(evictionNode?.choices?.[0].text).toContain('hospital crisis room for 12 hours');
   });
 });
 

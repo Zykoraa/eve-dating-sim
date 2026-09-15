@@ -12,7 +12,8 @@ import {
   ShoppingBag,
   HeartHandshake,
   Layers,
-  Sparkle
+  Sparkle,
+  Palette
 } from 'lucide-react';
 import { useGameStore } from '../../state/useGameStore';
 import { WARDROBE_ITEMS } from '../../data/outfits';
@@ -20,6 +21,7 @@ import { EVE_ERAS } from '../../data/characters';
 import { soundEngine } from '../../state/useAudioStore';
 import type { OutfitCategory, WardrobeItem } from '../../types/outfits';
 import { getEveOutfitVisual } from '../../utils/outfitVisuals';
+import { EveCompositeSprite } from '../character/EveCompositeSprite';
 import confetti from 'canvas-confetti';
 
 export const VanityMirror: React.FC = () => {
@@ -89,7 +91,17 @@ export const VanityMirror: React.FC = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
+          {/* Character Styling Studio Button */}
+          <button
+            onClick={() => setViewMode('creator')}
+            className="flex items-center gap-1.5 bg-gradient-to-r from-purple-950/80 via-pink-950/70 to-slate-900 border border-pink-500/40 hover:border-pink-400 text-pink-200 px-3.5 py-1.5 rounded-full font-bold text-xs shadow-md transition hover:scale-105"
+            title="Appearance Studio (Custom skin, hair, eyes, body)"
+          >
+            <Palette className="w-3.5 h-3.5 text-pink-400" />
+            <span>Style Studio</span>
+          </button>
+
           <div className="flex items-center gap-1.5 bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 px-3.5 py-1 rounded-full font-bold text-xs md:text-sm shadow-inner">
             <DollarSign className="w-3.5 h-3.5 md:w-4 md:h-4" /> {state.stats.cash}
           </div>
@@ -129,11 +141,13 @@ export const VanityMirror: React.FC = () => {
             {/* Mirror Glass Glare Bar */}
             <div className="absolute inset-x-8 top-0 h-full bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none rounded-2xl" />
 
-            <img 
-              key={visual.spriteUrl}
-              src={visual.spriteUrl} 
-              alt="Eve Reflection"
-              className="max-h-[38vh] md:max-h-[44vh] object-contain drop-shadow-[0_20px_40px_rgba(236,72,153,0.35)] filter contrast-105 transition-all duration-500 animate-fadeIn select-none pointer-events-none"
+            <EveCompositeSprite
+              customConfig={state.customEve}
+              equipped={state.equippedOutfit}
+              era={state.transitionEra}
+              expression="smile"
+              mode="fullbody"
+              className="max-h-[38vh] md:max-h-[44vh] w-auto animate-fadeIn"
             />
 
             {/* Eve's Dynamic Outfit Reflection Monologue */}

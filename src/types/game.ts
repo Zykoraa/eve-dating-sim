@@ -1,5 +1,6 @@
 import type { EquippedOutfit } from './outfits';
 import type { ChatThread, NestMessage } from './phone';
+import type { CustomEveConfig } from './character';
 
 export type TransitionEra = 0 | 1 | 2 | 3 | 4;
 
@@ -29,6 +30,7 @@ export type GameViewMode =
   | 'novel' 
   | 'phone' 
   | 'vanity' 
+  | 'creator'
   | 'minigame' 
   | 'gallery' 
   | 'flowchart'
@@ -157,5 +159,6 @@ export interface SaveSlot {
   diaryEntries?: DiaryEntry[];
   apartmentDecors?: ApartmentDecorItem[];
   suitorRanks?: Record<SuitorId, number>;
+  customEve?: CustomEveConfig;
 }
 

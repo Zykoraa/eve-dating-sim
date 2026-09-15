@@ -20,18 +20,21 @@ import type {
 } from '../types/game';
 import type { EquippedOutfit } from '../types/outfits';
 import type { ChatThread, NestMessage } from '../types/phone';
+import type { CustomEveConfig } from '../types/character';
 import { soundEngine } from './useAudioStore';
 import { INITIAL_CHAT_THREADS } from '../data/datingProfiles';
 import { ALL_SCENARIOS } from '../data/scenarios';
 import { INITIAL_NEST_MESSAGES } from '../utils/nestResponses';
 import { INITIAL_DIARY_ENTRIES, createDaySummaryDiaryEntry } from '../data/diaryEntries';
 import { APARTMENT_DECORS } from '../data/decorItems';
+import { DEFAULT_CUSTOM_EVE } from '../data/characterCreationPresets';
 
 export interface GameState {
   viewMode: GameViewMode;
   previousViewMode: GameViewMode;
   activeMinigame: MinigameType;
   transitionEra: TransitionEra;
+  customEve: CustomEveConfig;
   stats: EveStats;
   equippedOutfit: EquippedOutfit;
   unlockedOutfits: string[];
@@ -210,6 +213,7 @@ const INITIAL_STATE: GameState = {
   previousViewMode: 'title',
   activeMinigame: 'none',
   transitionEra: 0,
+  customEve: DEFAULT_CUSTOM_EVE,
   stats: INITIAL_STATS,
   equippedOutfit: INITIAL_EQUIPPED,
   unlockedOutfits: [
@@ -546,6 +550,17 @@ function notify() {
     notify();
   };
 
+  const updateCustomEve = (partial: Partial<CustomEveConfig>) => {
+    globalState = {
+      ...globalState,
+      customEve: {
+        ...globalState.customEve,
+        ...partial,
+      },
+    };
+    notify();
+  };
+
   const saveGame = (slotId: number, title?: string) => {
     soundEngine.playSparkle();
     const slot: SaveSlot = {
@@ -570,6 +585,7 @@ function notify() {
       diaryEntries: globalState.diaryEntries,
       apartmentDecors: globalState.apartmentDecors,
       suitorRanks: globalState.suitorRanks,
+      customEve: globalState.customEve,
     };
     try {
       localStorage.setItem(`eve_save_slot_${slotId}`, JSON.stringify(slot));
@@ -603,6 +619,7 @@ function notify() {
         diaryEntries: slot.diaryEntries || globalState.diaryEntries,
         apartmentDecors: slot.apartmentDecors || globalState.apartmentDecors,
         suitorRanks: slot.suitorRanks || globalState.suitorRanks,
+        customEve: slot.customEve || DEFAULT_CUSTOM_EVE,
       };
       notify();
       return true;
@@ -809,6 +826,7 @@ export const gameStoreActions = {
   triggerMinigame,
   saveGame,
   loadGame,
+  updateCustomEve,
   resetGame,
   fastTravelToScene,
   toggleAutoPlay,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, FolderOpen, Settings, Heart, Award, GitFork, Home } from 'lucide-react';
+import { Play, FolderOpen, Settings, Heart, Award, GitFork, Home, Palette } from 'lucide-react';
 import { useGameStore } from '../../state/useGameStore';
 import { soundEngine } from '../../state/useAudioStore';
 import type { TransitionEra } from '../../types/game';
@@ -63,6 +63,17 @@ export const TitleScreen: React.FC = () => {
             >
               <Play className="w-5 h-5 fill-white group-hover:scale-110 transition-transform" /> 
               <span>Start New Journey</span>
+            </button>
+
+            <button
+              onClick={() => {
+                soundEngine.playSparkle();
+                setViewMode('creator');
+              }}
+              className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-purple-950/80 via-pink-950/60 to-slate-900 hover:bg-pink-900/60 text-pink-200 font-extrabold text-xs sm:text-sm border border-pink-500/50 hover:border-pink-400 backdrop-blur-md transition flex items-center justify-center gap-2.5 shadow-lg hover:scale-105 cursor-pointer"
+            >
+              <Palette className="w-4 h-4 text-pink-400 animate-pulse" />
+              <span>Character Creator & Styling Studio</span>
             </button>
 
             <button

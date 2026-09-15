@@ -15,6 +15,7 @@ import { ApartmentHub } from './components/apartment/ApartmentHub';
 import { CityMapModal } from './components/city/CityMapModal';
 import { DiaryModal } from './components/diary/DiaryModal';
 import { DailySummaryModal } from './components/summary/DailySummaryModal';
+import { CharacterCreatorModal } from './components/character/CharacterCreatorModal';
 
 export const App: React.FC = () => {
   const { state } = useGameStore();
@@ -29,6 +30,7 @@ export const App: React.FC = () => {
       <VisualNovelView />
 
       {/* Layered Modals and Interactive Systems */}
+      {state.viewMode === 'creator' && <CharacterCreatorModal />}
       {state.viewMode === 'phone' && <PhoneModal />}
       {state.viewMode === 'vanity' && <VanityMirror />}
       {state.viewMode === 'flowchart' && <FlowchartModal />}

@@ -15,14 +15,15 @@ import {
   GitFork,
   FastForward,
   Heart,
-  Compass
+  Compass,
+  Palette
 } from 'lucide-react';
 import { useGameStore } from '../../state/useGameStore';
 import { getDialogueNode } from '../../data/scenarios';
 import { EVE_ERAS, CHARACTERS } from '../../data/characters';
 import { soundEngine } from '../../state/useAudioStore';
-import { getEveOutfitVisual } from '../../utils/outfitVisuals';
 import { ParticleAtmosphere } from './ParticleAtmosphere';
+import { EveCompositeSprite } from '../character/EveCompositeSprite';
 import type { ChoiceOption } from '../../types/story';
 import type { SuitorId } from '../../types/game';
 import confetti from 'canvas-confetti';
@@ -187,7 +188,6 @@ export const VisualNovelView: React.FC = () => {
   };
 
   const currentEraData = EVE_ERAS[state.transitionEra];
-  const eveVisual = getEveOutfitVisual(state.equippedOutfit, state.transitionEra);
   
   const charKey = activeNode?.activeSuitor || (
     activeNode?.speaker && activeNode.speaker !== 'eve' && activeNode.speaker !== 'narrator'
@@ -321,6 +321,16 @@ export const VisualNovelView: React.FC = () => {
             )}
           </button>
 
+          {/* Styling / Character Creator Button */}
+          <button 
+            onClick={() => setViewMode('creator')}
+            className="flex items-center gap-1.5 bg-gradient-to-r from-purple-900/60 to-pink-900/60 hover:from-purple-800 hover:to-pink-800 text-pink-200 text-xs px-2.5 py-1.5 rounded-xl border border-pink-500/40 transition-all hover:scale-105"
+            title="Character Creator & Appearance Studio"
+          >
+            <Palette className="w-3.5 h-3.5 text-pink-400" />
+            <span className="hidden sm:inline">Customize</span>
+          </button>
+
           {/* Vanity Mirror Button */}
           <button 
             onClick={() => setViewMode('vanity')}
@@ -393,10 +403,13 @@ export const VisualNovelView: React.FC = () => {
       <div className="absolute inset-0 z-10 flex items-end justify-center px-4 md:px-16 pointer-events-none pb-28 md:pb-36">
         {/* Eve Character Sprite (Left / Center) */}
         <div className="relative max-h-[62vh] md:max-h-[68vh] flex justify-end transition-all duration-700 transform hover:scale-105">
-          <img 
-            src={eveVisual.spriteUrl} 
-            alt="Eve" 
-            className="max-h-[60vh] md:max-h-[66vh] object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.8)] filter contrast-105"
+          <EveCompositeSprite
+            customConfig={state.customEve}
+            equipped={state.equippedOutfit}
+            era={state.transitionEra}
+            expression={activeNode?.eveExpression || 'neutral'}
+            mode="fullbody"
+            className="max-h-[60vh] md:max-h-[66vh] w-auto animate-fadeIn"
           />
         </div>
 
@@ -514,7 +527,7 @@ export const VisualNovelView: React.FC = () => {
                   backgroundColor: 'rgba(30, 27, 75, 0.5)'
                 }}
               >
-                {activeNode?.speakerTitle || (activeNode?.speaker === 'eve' ? 'Eve' : suitorProfile?.name || activeNode?.speaker)}
+                {activeNode?.speakerTitle || (activeNode?.speaker === 'eve' ? (state.customEve?.name || 'Eve') : suitorProfile?.name || activeNode?.speaker)}
               </span>
               <span className="text-[11px] text-slate-400 font-mono flex items-center gap-1">
                 {state.autoPlay && <span className="text-pink-400 font-bold">[Auto-Playing] • </span>}

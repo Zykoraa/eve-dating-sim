@@ -203,7 +203,7 @@ export const CHARACTERS: Record<SuitorId | 'eve' | 'tara' | 'bea', CharacterProf
     pronouns: 'She/Her',
     tagline: 'Your deceitful ex-partner who weaponized the police the moment you chose yourself.',
     occupation: 'Corporate PR Specialist & Toxic Ex',
-    bio: 'Your partner for two years up until the exact day you decided to take HRT. When she realized you were transitioning, she turned venomous: dialed 911, lied that you had a firearm, and tried to destroy your life before being kicked out. Still hovering around with fake apologies and dishonest attempts to "fix things," but you see right through her.',
+    bio: 'Your partner for two years up until the exact day you decided to take HRT. When she realized you were transitioning, she turned venomous: dialed 911, lied that you had a firearm, and had the police handcuff you and lock you in a hospital crisis room for 12 hours before doctors cleared you. You returned home, kicked her out, and changed the locks. She is still hovering around with fake apologies and dishonest attempts to "fix things," but you see right through her.',
     aesthetic: 'Beige Cashmere Trench, Gold Chain, Sharp Brunette Bob, Chilling Faux-Innocent Smirk',
     greenFlags: ['Zero. Every single apology is calculated manipulation.'],
     redFlags: [

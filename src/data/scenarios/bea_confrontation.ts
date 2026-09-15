@@ -63,7 +63,7 @@ export const BEA_CONFRONTATION_SCENARIO: StoryScenario = {
       speaker: 'eve',
       eveExpression: 'fierce',
       activeSuitor: 'bea',
-      text: '“You didn’t \'move out\' because of stress, Bea. You got escorted off my property by three armed police officers because you called 911 and fabricated a lie claiming I had a firearm and was going to shoot myself.”',
+      text: '“You didn’t \'move out\' because of stress, Bea. You called 911, fabricated a lie that I had a gun and was going to hurt myself, and watched in cold satisfaction as police handcuffed me and locked me in a hospital crisis evaluation room for twelve agonizing hours. And when the doctors cleared me and I walked back in to kick you out, you acted like you were the victim.”',
       background: '/assets/backgrounds/street_night.png',
       soundEffect: 'playTension',
       nextSceneId: 'bea_darvo_reaction',

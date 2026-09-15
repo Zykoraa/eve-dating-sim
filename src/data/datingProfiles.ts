@@ -332,7 +332,7 @@ export const INITIAL_CHAT_THREADS: ChatThread[] = [
     ],
     pendingChoices: [
       {
-        text: 'You lied to the police saying I had a gun. You could have gotten me murdered. Never contact me again or I will file for a restraining order.',
+        text: 'You lied to the police saying I had a gun and had me locked in a crisis room for 12 hours. You could have gotten me killed. Never contact me again or I will file for a restraining order.',
         tone: 'boundary',
         statImpact: { confidence: 25 },
         suitorReply: 'You blocked Bea’s number permanently. The knot of fear in your stomach unravels. Your home is a sanctuary now.'
