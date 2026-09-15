@@ -51,7 +51,7 @@ export const DailySummaryModal: React.FC = () => {
           <div className="p-3 rounded-2xl bg-slate-900/90 border border-white/5">
             <Coins className="w-5 h-5 text-emerald-400 mx-auto mb-1" />
             <span className="text-[10px] text-slate-400 block">Savings</span>
-            <span className="font-bold text-sm text-emerald-300"></span>
+            <span className="font-bold text-sm text-emerald-300">${state.stats.cash}</span>
           </div>
 
           <div className="p-3 rounded-2xl bg-slate-900/90 border border-white/5">

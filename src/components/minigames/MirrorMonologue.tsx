@@ -69,7 +69,7 @@ const MONOLOGUE_ROUNDS: IntrusiveRound[] = [
 ];
 
 export const MirrorMonologue: React.FC = () => {
-  const { modifyStats, setViewMode } = useGameStore();
+  const { state, modifyStats, setViewMode } = useGameStore();
   const [roundIdx, setRoundIdx] = useState(0);
   const [resolved, setResolved] = useState(false);
   const [selectedMantra, setSelectedMantra] = useState<string | null>(null);
@@ -172,7 +172,7 @@ export const MirrorMonologue: React.FC = () => {
             </div>
 
             <button
-              onClick={() => setViewMode('novel')}
+              onClick={() => setViewMode(state.previousViewMode || 'vanity')}
               className="w-full py-3 mt-4 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold text-xs shadow-lg hover:brightness-110 transition"
             >
               Step Forward with Unshakable Grace

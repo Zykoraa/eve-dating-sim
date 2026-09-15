@@ -395,7 +395,7 @@ export const VisualNovelView: React.FC = () => {
         {suitorProfile && (
           <div className="relative max-h-[64vh] md:max-h-[70vh] flex justify-start transition-all duration-700 transform animate-float">
             <img 
-              src={suitorProfile.avatarUrl} 
+              src={suitorProfile.spriteUrl || suitorProfile.avatarUrl} 
               alt={suitorProfile.name} 
               className="max-h-[62vh] md:max-h-[68vh] object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.8)] filter contrast-105"
             />
@@ -410,7 +410,7 @@ export const VisualNovelView: React.FC = () => {
       <div className="relative z-30 w-full max-w-5xl mx-auto px-3 sm:px-4 pb-3 sm:pb-5">
         {/* Branching Choices Overlay */}
         {activeNode?.choices && (
-          <div className="mb-3 max-h-[35vh] overflow-y-auto space-y-2 pr-1 no-scrollbar animate-fadeIn">
+          <div className="mb-3 max-h-[44vh] overflow-y-auto space-y-2.5 pr-2 animate-fadeIn">
             {activeNode.choices.map((choice, idx) => {
               const isLocked = choice.minConfidence && state.stats.confidence < choice.minConfidence;
               return (

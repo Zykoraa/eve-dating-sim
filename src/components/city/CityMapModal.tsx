@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { 
   MapPin, 
   Sparkles, 
@@ -17,6 +17,7 @@ import {
   Filter
 } from 'lucide-react';
 import { useGameStore } from '../../state/useGameStore';
+import { soundEngine } from '../../state/useAudioStore';
 import { CITY_ACTIVITIES } from '../../data/activities';
 import type { CityActivity } from '../../types/game';
 
@@ -24,6 +25,7 @@ export const CityMapModal: React.FC = () => {
   const { state, setViewMode, performCityActivity } = useGameStore();
   const [filterCategory, setFilterCategory] = useState<string>('all');
   const [selectedActivity, setSelectedActivity] = useState<CityActivity | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
 
   const era = state.transitionEra;
   const calendar = state.calendar;
@@ -50,13 +52,18 @@ export const CityMapModal: React.FC = () => {
 
   const handleExecuteActivity = (act: CityActivity) => {
     if (calendar.energy < act.energyCost) {
-      alert('Not enough energy! Rest at home or sleep to restore energy.');
+      soundEngine.playTension();
+      setNotice('Not enough energy! Rest at home or sleep to restore energy.');
+      setTimeout(() => setNotice(null), 3500);
       return;
     }
     if (act.cashCost && state.stats.cash < act.cashCost) {
-      alert('Not enough cash for this activity!');
+      soundEngine.playTension();
+      setNotice('Not enough cash for this activity!');
+      setTimeout(() => setNotice(null), 3500);
       return;
     }
+    soundEngine.playSparkle();
     performCityActivity(act);
     setSelectedActivity(null);
   };
@@ -72,6 +79,13 @@ export const CityMapModal: React.FC = () => {
         />
         <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm" />
       </div>
+
+      {/* Floating Notice Toast */}
+      {notice && (
+        <div className="absolute top-20 left-1/2 -translate-x-1/2 z-50 bg-gradient-to-r from-red-600/90 to-rose-600/90 border border-red-400 text-white px-5 py-2.5 rounded-2xl text-xs font-bold shadow-2xl animate-bounce backdrop-blur-md">
+          {notice}
+        </div>
+      )}
 
       {/* Top Header Navigation Bar */}
       <header className="relative z-10 p-4 border-b border-white/10 bg-slate-950/90 backdrop-blur-md flex flex-wrap items-center justify-between gap-4">

@@ -73,6 +73,7 @@ export const CHARACTERS: Record<SuitorId | 'eve' | 'tara', CharacterProfile> = {
     themeColor: '#ec4899',
     accentColor: '#f43f5e',
     avatarUrl: '/assets/characters/eve_avatar.png',
+    spriteUrl: '/assets/characters/eve_era1.png',
   },
   liam: {
     id: 'liam',
@@ -90,6 +91,7 @@ export const CHARACTERS: Record<SuitorId | 'eve' | 'tara', CharacterProfile> = {
     themeColor: '#10b981',
     accentColor: '#059669',
     avatarUrl: '/assets/characters/liam_avatar.png',
+    spriteUrl: '/assets/characters/liam.png',
   },
   chloe: {
     id: 'chloe',
@@ -107,6 +109,7 @@ export const CHARACTERS: Record<SuitorId | 'eve' | 'tara', CharacterProfile> = {
     themeColor: '#8b5cf6',
     accentColor: '#7c3aed',
     avatarUrl: '/assets/characters/chloe_avatar.png',
+    spriteUrl: '/assets/characters/chloe.png',
   },
   julian: {
     id: 'julian',
@@ -124,6 +127,7 @@ export const CHARACTERS: Record<SuitorId | 'eve' | 'tara', CharacterProfile> = {
     themeColor: '#3b82f6',
     accentColor: '#2563eb',
     avatarUrl: '/assets/characters/julian_avatar.png',
+    spriteUrl: '/assets/characters/julian.png',
   },
   maya: {
     id: 'maya',
@@ -141,6 +145,7 @@ export const CHARACTERS: Record<SuitorId | 'eve' | 'tara', CharacterProfile> = {
     themeColor: '#f59e0b',
     accentColor: '#d97706',
     avatarUrl: '/assets/characters/maya_avatar.png',
+    spriteUrl: '/assets/characters/maya.png',
   },
   marcus: {
     id: 'marcus',
@@ -158,6 +163,7 @@ export const CHARACTERS: Record<SuitorId | 'eve' | 'tara', CharacterProfile> = {
     themeColor: '#ef4444',
     accentColor: '#dc2626',
     avatarUrl: '/assets/characters/marcus_avatar.png',
+    spriteUrl: '/assets/characters/marcus.png',
   },
   tara: {
     id: 'tara',
@@ -175,5 +181,6 @@ export const CHARACTERS: Record<SuitorId | 'eve' | 'tara', CharacterProfile> = {
     themeColor: '#ec4899',
     accentColor: '#be185d',
     avatarUrl: '/assets/characters/tara_avatar.png',
+    spriteUrl: '/assets/characters/tara.png',
   }
 };

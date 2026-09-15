@@ -1,11 +1,11 @@
-﻿import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Sparkles, Check, RotateCcw, X, Award } from 'lucide-react';
 import { useGameStore } from '../../state/useGameStore';
 import { soundEngine } from '../../state/useAudioStore';
 import confetti from 'canvas-confetti';
 
 export const EyelinerMinigame: React.FC = () => {
-  const { modifyStats, setViewMode } = useGameStore();
+  const { state, modifyStats, setViewMode } = useGameStore();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [drawnPoints, setDrawnPoints] = useState<{ x: number; y: number }[]>([]);
@@ -157,7 +157,7 @@ export const EyelinerMinigame: React.FC = () => {
           </div>
 
           <button
-            onClick={() => setViewMode('vanity')}
+            onClick={() => setViewMode(state.previousViewMode || 'vanity')}
             className="p-1.5 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white"
           >
             <X className="w-5 h-5" />
@@ -202,7 +202,7 @@ export const EyelinerMinigame: React.FC = () => {
           </button>
 
           <button
-            onClick={() => setViewMode('vanity')}
+            onClick={() => setViewMode(state.previousViewMode || 'vanity')}
             className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-lg shadow-pink-500/20 hover:brightness-110 transition"
           >
             <Check className="w-3.5 h-3.5" />

@@ -438,7 +438,12 @@ function notify() {
   };
 
   const triggerMinigame = (game: MinigameType) => {
-    globalState = { ...globalState, activeMinigame: game, viewMode: game !== 'none' ? 'minigame' : 'novel' };
+    globalState = { 
+      ...globalState, 
+      activeMinigame: game, 
+      previousViewMode: globalState.viewMode !== 'minigame' ? globalState.viewMode : globalState.previousViewMode,
+      viewMode: game !== 'none' ? 'minigame' : (globalState.previousViewMode || 'novel') 
+    };
     notify();
   };
 

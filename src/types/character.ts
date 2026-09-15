@@ -28,6 +28,7 @@ export interface CharacterProfile {
   themeColor: string;
   accentColor: string;
   avatarUrl: string;
+  spriteUrl?: string;
 }
 
 export interface EveEraVisual {

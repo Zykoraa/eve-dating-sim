@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { 
   Sparkles, 
   Smartphone, 
@@ -137,19 +137,21 @@ export const ApartmentHub: React.FC = () => {
 
         {/* Center Column: Eve's Character Presence */}
         <div className="flex flex-col items-center justify-center text-center space-y-4">
-          <div className="relative w-56 h-80 sm:w-64 sm:h-96 rounded-3xl overflow-hidden p-1 bg-gradient-to-b from-pink-500/40 via-purple-500/20 to-transparent shadow-2xl border border-white/10 group">
-            <img
-              src={era === 1 
-                ? '/assets/characters/eve_era1.png' 
-                : era === 2 
-                ? '/assets/characters/eve_era2.png'
-                : era === 3
-                ? '/assets/characters/eve_era3.png'
-                : '/assets/characters/eve_era4.png'}
-              alt="Eve"
-              className="w-full h-full object-cover object-top rounded-3xl transition-transform duration-500 group-hover:scale-105"
-            />
-            <div className="absolute bottom-3 inset-x-3 p-2 rounded-xl bg-slate-950/80 backdrop-blur-md text-xs border border-white/10">
+          <div className="relative w-56 h-80 sm:w-64 sm:h-96 rounded-3xl overflow-hidden p-2 bg-gradient-to-b from-purple-950/60 via-slate-900/80 to-pink-950/40 shadow-2xl border border-white/10 group flex flex-col items-center justify-between">
+            <div className="flex-1 flex items-center justify-center w-full">
+              <img
+                src={era === 1 
+                  ? '/assets/characters/eve_era1.png' 
+                  : era === 2 
+                  ? '/assets/characters/eve_era2.png'
+                  : era === 3
+                  ? '/assets/characters/eve_era3.png'
+                  : '/assets/characters/eve_era4.png'}
+                alt="Eve"
+                className="max-h-[300px] object-contain drop-shadow-[0_15px_30px_rgba(236,72,153,0.35)] transition-transform duration-500 group-hover:scale-105 select-none"
+              />
+            </div>
+            <div className="w-full p-2 rounded-xl bg-slate-950/85 backdrop-blur-md text-xs border border-white/10">
               <p className="font-bold text-pink-300">Eve Blossoming</p>
               <p className="text-[10px] text-slate-400">“Taking each day as it comes.”</p>
             </div>

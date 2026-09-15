@@ -198,11 +198,11 @@ export const InstaGlamApp: React.FC = () => {
             </div>
 
             {/* Post Image */}
-            <div className="relative aspect-square max-h-56 bg-slate-950 flex items-center justify-center overflow-hidden">
+            <div className="relative aspect-square max-h-56 bg-gradient-to-tr from-purple-950/80 via-slate-900 to-pink-950/40 flex items-center justify-center overflow-hidden p-2">
               <img
                 src={post.photoUrl}
                 alt="Post media"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.7)]"
               />
             </div>
 
