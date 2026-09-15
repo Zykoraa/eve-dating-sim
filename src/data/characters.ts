@@ -69,7 +69,7 @@ export const EVE_ERAS: Record<number, EveEraVisual> = {
   }
 };
 
-export const CHARACTERS: Record<SuitorId | 'eve' | 'tara', CharacterProfile> = {
+export const CHARACTERS: Record<SuitorId | 'eve' | 'tara' | 'bea', CharacterProfile> = {
   eve: {
     id: 'eve',
     name: 'Eve',
@@ -195,5 +195,29 @@ export const CHARACTERS: Record<SuitorId | 'eve' | 'tara', CharacterProfile> = {
     accentColor: '#be185d',
     avatarUrl: '/assets/characters/tara_avatar.png',
     spriteUrl: '/assets/characters/tara.png',
+  },
+  bea: {
+    id: 'bea',
+    name: 'Bea (Beatrice) Hall',
+    age: 24,
+    pronouns: 'She/Her',
+    tagline: 'Your deceitful ex-partner who weaponized the police the moment you chose yourself.',
+    occupation: 'Corporate PR Specialist & Toxic Ex',
+    bio: 'Your partner for two years up until the exact day you decided to take HRT. When she realized you were transitioning, she turned venomous: dialed 911, lied that you had a firearm, and tried to destroy your life before being kicked out. Still hovering around with fake apologies and dishonest attempts to "fix things," but you see right through her.',
+    aesthetic: 'Beige Cashmere Trench, Gold Chain, Sharp Brunette Bob, Chilling Faux-Innocent Smirk',
+    greenFlags: ['Zero. Every single apology is calculated manipulation.'],
+    redFlags: [
+      'POLICE WEAPONIZER: Called 911 with a fabricated gun claim when you came out',
+      'DARVO Specialist: Denies, Attacks, and Reverses Victim and Offender',
+      'Refuses accountability: Blames you for "forcing her" to call the cops',
+      'Disrespects boundaries: Shows up unannounced and monitors your socials',
+      'Pathologically dishonest: Plays the innocent victim to mutual acquaintances'
+    ],
+    idealDate: 'Trapping you in a cafe to make a theatrical scene so you feel guilty for being a woman.',
+    favoriteTopics: ['How your transition "inconvenienced" her', 'Why you owe her an apology for making her move out', 'Gaslighting you about past events'],
+    themeColor: '#475569',
+    accentColor: '#334155',
+    avatarUrl: '/assets/characters/bea_avatar.png',
+    spriteUrl: '/assets/characters/bea.png',
   }
 };

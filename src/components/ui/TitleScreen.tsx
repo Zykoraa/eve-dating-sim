@@ -138,6 +138,12 @@ export const TitleScreen: React.FC = () => {
                 Ch 3: Julian & Maya
               </button>
               <button 
+                onClick={() => handleChapterJump('bea_ambush_start', 'bea_confrontation', 1)}
+                className="px-2 py-0.5 rounded bg-slate-900/80 hover:bg-slate-800 text-amber-300 border border-amber-500/40 transition"
+              >
+                Ex: Facing Bea
+              </button>
+              <button 
                 onClick={() => handleChapterJump('era4_climax_intro', 'era4_climaxes', 4)}
                 className="px-2 py-0.5 rounded bg-slate-900/80 hover:bg-pink-900/60 text-pink-300 border border-slate-800 transition"
               >

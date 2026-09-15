@@ -299,5 +299,50 @@ export const INITIAL_CHAT_THREADS: ChatThread[] = [
         suitorReply: 'Hey Eve, yes of course I saw! You are gorgeous and I’d love nothing more than to meet you in person. How about coffee tomorrow?'
       }
     ]
+  },
+  {
+    id: 'bea',
+    participantId: 'bea',
+    participantName: 'Bea (Toxic Ex ⚠️)',
+    participantAvatar: '/assets/characters/bea_avatar.png',
+    lastMessage: 'Eve, you can’t just cut me out after 2 years. We need to talk.',
+    unread: true,
+    messages: [
+      {
+        id: 'b1',
+        sender: 'bea',
+        senderName: 'Bea',
+        text: 'Eve. Look, about what happened with the police that night... I was terrified and under immense stress because of your decision. You have to see my side.',
+        timestamp: '3 days ago'
+      },
+      {
+        id: 'b2',
+        sender: 'bea',
+        senderName: 'Bea',
+        text: 'You forced me to move out and took all the furniture. I still have your spare keys. Can we meet for lunch tomorrow? I miss how we used to be before this whole "Eve" thing.',
+        timestamp: 'Yesterday'
+      },
+      {
+        id: 'b3',
+        sender: 'bea',
+        senderName: 'Bea',
+        text: 'Eve, you can’t just cut me out after 2 years. We need to talk.',
+        timestamp: '2 hours ago'
+      }
+    ],
+    pendingChoices: [
+      {
+        text: 'You lied to the police saying I had a gun. You could have gotten me murdered. Never contact me again or I will file for a restraining order.',
+        tone: 'boundary',
+        statImpact: { confidence: 25 },
+        suitorReply: 'You blocked Bea’s number permanently. The knot of fear in your stomach unravels. Your home is a sanctuary now.'
+      },
+      {
+        text: 'Leave the keys with the building super. Do not set foot near my apartment. We are completely done.',
+        tone: 'direct',
+        statImpact: { confidence: 15 },
+        suitorReply: 'Bea: "Fine! Throw away two years of our life over hormones! Don’t come crying back to me when no one wants you!" [Blocked]'
+      }
+    ]
   }
 ];

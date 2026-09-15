@@ -3,6 +3,7 @@ import { ChevronLeft } from 'lucide-react';
 import { useGameStore } from '../../state/useGameStore';
 import { soundEngine } from '../../state/useAudioStore';
 import type { ChatResponseChoice } from '../../types/phone';
+import type { SuitorId } from '../../types/game';
 
 export const MessagesApp: React.FC = () => {
   const { state, modifyStats, updateSuitor, updateChatThreads } = useGameStore();
@@ -37,10 +38,11 @@ export const MessagesApp: React.FC = () => {
       modifyStats({
         confidence: choice.statImpact.confidence,
       });
-      if (activeThread.participantId !== 'the_nest' && activeThread.participantId !== 'tara') {
-        updateSuitor(activeThread.participantId, {
-          affection: (state.suitors[activeThread.participantId]?.affection || 0) + (choice.statImpact.suitorAffection || 0),
-          respect: (state.suitors[activeThread.participantId]?.respect || 0) + (choice.statImpact.suitorRespect || 0),
+      if (activeThread.participantId in state.suitors) {
+        const sId = activeThread.participantId as SuitorId;
+        updateSuitor(sId, {
+          affection: (state.suitors[sId]?.affection || 0) + (choice.statImpact.suitorAffection || 0),
+          respect: (state.suitors[sId]?.respect || 0) + (choice.statImpact.suitorRespect || 0),
         });
       }
     }

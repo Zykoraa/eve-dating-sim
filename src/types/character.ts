@@ -13,7 +13,7 @@ export type CharacterExpression =
   | 'eyeroll';
 
 export interface CharacterProfile {
-  id: SuitorId | 'eve' | 'tara';
+  id: SuitorId | 'eve' | 'tara' | 'bea';
   name: string;
   age: number;
   pronouns: string;

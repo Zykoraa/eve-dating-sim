@@ -1,4 +1,5 @@
 import { ERA0_COMING_OUT_SCENARIO } from './era0_coming_out';
+import { BEA_CONFRONTATION_SCENARIO } from './bea_confrontation';
 import { PROLOGUE_SCENARIO } from './prologue';
 import { ERA1_SCENARIO } from './era1_dates';
 import { ERA2_SCENARIO } from './era2_dates';
@@ -9,10 +10,12 @@ import { NSFW_ENCOUNTERS_SCENARIO } from './nsfw_encounters';
 import type { DialogueNode, StoryScenario } from '../../types/story';
 
 export { ERA0_COMING_OUT_SCENARIO } from './era0_coming_out';
+export { BEA_CONFRONTATION_SCENARIO } from './bea_confrontation';
 export { NSFW_ENCOUNTERS_SCENARIO } from './nsfw_encounters';
 
 export const ALL_SCENARIOS: Record<string, StoryScenario> = {
   era0_coming_out: ERA0_COMING_OUT_SCENARIO,
+  bea_confrontation: BEA_CONFRONTATION_SCENARIO,
   prologue: PROLOGUE_SCENARIO,
   era1_dates: ERA1_SCENARIO,
   era2_dates: ERA2_SCENARIO,

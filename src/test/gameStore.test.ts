@@ -206,6 +206,30 @@ describe('Game Data & Progression Integrity', () => {
     expect(nsfwHub).toBeDefined();
     expect(nsfwHub?.choices?.length).toBeGreaterThanOrEqual(4);
   });
+
+  it('should verify Bea character profile, chat thread, and confrontation scenario', async () => {
+    const { CHARACTERS } = await import('../data/characters');
+    expect(CHARACTERS.bea).toBeDefined();
+    expect(CHARACTERS.bea.name).toContain('Bea');
+    expect(CHARACTERS.bea.redFlags.some((f: string) => f.includes('POLICE WEAPONIZER'))).toBe(true);
+    expect(CHARACTERS.bea.spriteUrl).toBe('/assets/characters/bea.png');
+
+    const { getDialogueNode, ALL_SCENARIOS } = await import('../data/scenarios/index');
+    expect(ALL_SCENARIOS.bea_confrontation).toBeDefined();
+
+    const beaAmbush = getDialogueNode('bea_ambush_start');
+    expect(beaAmbush).toBeDefined();
+    expect(beaAmbush?.text).toContain('bakery');
+
+    const beaGunLie = getDialogueNode('eve_calls_out_gun_lie');
+    expect(beaGunLie).toBeDefined();
+    expect(beaGunLie?.text).toContain('firearm');
+
+    const { INITIAL_CHAT_THREADS } = await import('../data/datingProfiles');
+    const beaThread = INITIAL_CHAT_THREADS.find(t => t.participantId === 'bea');
+    expect(beaThread).toBeDefined();
+    expect(beaThread?.messages.some(m => m.text.includes('police'))).toBe(true);
+  });
 });
 
 

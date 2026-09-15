@@ -24,6 +24,7 @@ import { soundEngine } from '../../state/useAudioStore';
 import { getEveOutfitVisual } from '../../utils/outfitVisuals';
 import { ParticleAtmosphere } from './ParticleAtmosphere';
 import type { ChoiceOption } from '../../types/story';
+import type { SuitorId } from '../../types/game';
 import confetti from 'canvas-confetti';
 
 export const VisualNovelView: React.FC = () => {
@@ -187,7 +188,15 @@ export const VisualNovelView: React.FC = () => {
 
   const currentEraData = EVE_ERAS[state.transitionEra];
   const eveVisual = getEveOutfitVisual(state.equippedOutfit, state.transitionEra);
-  const suitorProfile = activeNode?.activeSuitor ? CHARACTERS[activeNode.activeSuitor] : null;
+  
+  const charKey = activeNode?.activeSuitor || (
+    activeNode?.speaker && activeNode.speaker !== 'eve' && activeNode.speaker !== 'narrator'
+      ? activeNode.speaker
+      : null
+  );
+  const suitorProfile = charKey && (charKey in CHARACTERS) 
+    ? CHARACTERS[charKey as keyof typeof CHARACTERS] 
+    : null;
 
   return (
     <div className={`relative w-full h-screen overflow-hidden bg-slate-950 flex flex-col justify-between ${shake ? 'animate-shake' : ''}`}>
@@ -216,15 +225,15 @@ export const VisualNovelView: React.FC = () => {
           </div>
 
           {/* Suitor Dual Metric Pill (Affection & Respect) */}
-          {suitorProfile && activeNode?.activeSuitor && state.suitors[activeNode.activeSuitor] && (
+          {suitorProfile && activeNode?.activeSuitor && (activeNode.activeSuitor in state.suitors) && (
             <div className="hidden lg:flex items-center gap-3 bg-slate-900/80 border border-purple-500/30 px-3 py-1 rounded-full text-xs">
               <span className="text-pink-300 font-bold flex items-center gap-1" title="Romance Affection">
                 <Heart className="w-3.5 h-3.5 fill-pink-400 text-pink-400" />
-                {state.suitors[activeNode.activeSuitor].affection}%
+                {state.suitors[activeNode.activeSuitor as SuitorId].affection}%
               </span>
               <span className="text-purple-300 font-bold flex items-center gap-1" title="Mutual Respect (Guards against chaser dynamics)">
                 <Sparkles className="w-3.5 h-3.5 text-purple-400" />
-                {state.suitors[activeNode.activeSuitor].respect}% Respect
+                {state.suitors[activeNode.activeSuitor as SuitorId].respect}% Respect
               </span>
             </div>
           )}

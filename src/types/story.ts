@@ -30,12 +30,12 @@ export interface ChoiceOption {
 
 export interface DialogueNode {
   id: string;
-  speaker: 'eve' | 'narrator' | SuitorId | 'tara' | 'waiter' | 'stranger' | 'bouncer' | 'bartender' | 'parent' | 'friend' | string;
+  speaker: 'eve' | 'narrator' | SuitorId | 'tara' | 'bea' | 'cop' | 'waiter' | 'stranger' | 'bouncer' | 'bartender' | 'parent' | 'friend' | string;
   speakerTitle?: string;
   text: string;
   eveExpression?: CharacterExpression;
   suitorExpression?: CharacterExpression;
-  activeSuitor?: SuitorId;
+  activeSuitor?: SuitorId | 'tara' | 'bea' | string;
   background: string;
   ambientSound?: string;
   soundEffect?: string;

@@ -21,7 +21,7 @@ export interface DatingAppProfile {
 
 export interface ChatMessage {
   id: string;
-  sender: 'eve' | 'suitor' | 'tara' | 'system' | 'group_member';
+  sender: 'eve' | 'suitor' | 'tara' | 'bea' | 'other' | 'system' | 'group_member';
   senderName?: string;
   senderAvatar?: string;
   text: string;
@@ -31,7 +31,7 @@ export interface ChatMessage {
 
 export interface ChatResponseChoice {
   text: string;
-  tone: 'flirty' | 'witty' | 'direct' | 'cautious' | 'boundary';
+  tone: 'flirty' | 'witty' | 'direct' | 'cautious' | 'boundary' | 'chill';
   statImpact?: {
     confidence?: number;
     suitorAffection?: number;
@@ -43,7 +43,7 @@ export interface ChatResponseChoice {
 
 export interface ChatThread {
   id: string;
-  participantId: SuitorId | 'the_nest' | 'tara';
+  participantId: SuitorId | 'the_nest' | 'tara' | 'bea' | string;
   participantName: string;
   participantAvatar: string;
   lastMessage: string;
