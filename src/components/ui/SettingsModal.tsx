@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Settings, Volume2, VolumeX, Type, RotateCcw, X, Eye, ShieldAlert, Sliders } from 'lucide-react';
+import { Settings, Volume2, VolumeX, Type, RotateCcw, X, Eye, ShieldAlert, Sliders, Flame } from 'lucide-react';
 import { useGameStore } from '../../state/useGameStore';
 import { soundEngine } from '../../state/useAudioStore';
 
@@ -17,6 +17,7 @@ export const SettingsModal: React.FC = () => {
     autoAdvanceDelayMs: 2200,
     bgmVolume: 0.6,
     sfxVolume: 0.8,
+    adultContentEnabled: true,
   };
 
   const handleVolumeChange = (newVal: number) => {
@@ -183,6 +184,29 @@ export const SettingsModal: React.FC = () => {
           </div>
         </div>
 
+        {/* Adult & Sensual Content (18+) */}
+        <div className="space-y-2 bg-rose-950/30 p-3.5 rounded-2xl border border-rose-500/30">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Flame className="w-4 h-4 text-rose-400" />
+              <div>
+                <span className="text-xs font-bold text-rose-200 block">18+ Adult Language & Sensual Romance</span>
+                <span className="text-[10px] text-rose-300/80">Uncensored queer language, raw intimate dating & T4T bedroom encounters</span>
+              </div>
+            </div>
+            <button
+              onClick={() => updateSettings({ adultContentEnabled: !settings.adultContentEnabled })}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition ${
+                settings.adultContentEnabled
+                  ? 'bg-rose-600 text-white border-rose-400 shadow-md'
+                  : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-white'
+              }`}
+            >
+              {settings.adultContentEnabled ? 'Enabled (18+)' : 'Censored / Mild'}
+            </button>
+          </div>
+        </div>
+
         {/* Auto-Advance Delay */}
         <div className="space-y-2 bg-slate-950/50 p-3.5 rounded-2xl border border-white/5">
           <div className="flex justify-between text-xs font-bold text-slate-300">
@@ -207,7 +231,7 @@ export const SettingsModal: React.FC = () => {
           {confirmReset ? (
             <div className="bg-red-950/50 border border-red-500/50 p-4 rounded-2xl text-center space-y-3">
               <p className="text-xs text-red-200 font-bold">
-                Are you sure you want to reset all progress back to Month 1?
+                Are you sure you want to reset all progress back to Month 0 (Pre-Transition)?
               </p>
               <div className="flex justify-center gap-3">
                 <button

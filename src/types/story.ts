@@ -24,12 +24,13 @@ export interface ChoiceOption {
   openPhone?: boolean;
   openVanity?: boolean;
   advanceEra?: TransitionEra;
+  soundEffect?: string;
   nextSceneId: string;
 }
 
 export interface DialogueNode {
   id: string;
-  speaker: 'eve' | 'narrator' | SuitorId | 'tara' | 'waiter' | 'stranger' | 'bouncer' | 'bartender';
+  speaker: 'eve' | 'narrator' | SuitorId | 'tara' | 'waiter' | 'stranger' | 'bouncer' | 'bartender' | 'parent' | 'friend' | string;
   speakerTitle?: string;
   text: string;
   eveExpression?: CharacterExpression;

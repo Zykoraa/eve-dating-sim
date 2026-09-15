@@ -2,8 +2,8 @@ import type { StoryScenario } from '../../types/story';
 
 export const PROLOGUE_SCENARIO: StoryScenario = {
   id: 'prologue',
-  title: 'Chapter 0: The Mirror & The First Bloom',
-  chapter: 'Prologue',
+  title: 'Chapter 1: The Mirror & The First Bloom',
+  chapter: 'Chapter 1',
   era: 1,
   hrtMonth: 1,
   description: 'Month 1 of medical transition. The egg has cracked, the estrogen has begun, and the terrifying world of modern dating awaits.',

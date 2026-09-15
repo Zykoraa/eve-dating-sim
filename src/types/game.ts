@@ -1,7 +1,7 @@
 import type { EquippedOutfit } from './outfits';
 import type { ChatThread, NestMessage } from './phone';
 
-export type TransitionEra = 1 | 2 | 3 | 4;
+export type TransitionEra = 0 | 1 | 2 | 3 | 4;
 
 export interface EveStats {
   confidence: number;      // 0 to 100: Influences dialogue assertiveness & romantic options
@@ -128,6 +128,7 @@ export interface GameSettings {
   dyslexiaFont: boolean;
   fontSize: 'sm' | 'md' | 'lg' | 'xl';
   contentIntensity: 'gentle' | 'standard' | 'authentic';
+  adultContentEnabled: boolean;
   autoAdvanceDelayMs: number;
   bgmVolume: number;
   sfxVolume: number;

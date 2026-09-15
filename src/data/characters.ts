@@ -2,6 +2,19 @@ import type { CharacterProfile, EveEraVisual } from '../types/character';
 import type { SuitorId } from '../types/game';
 
 export const EVE_ERAS: Record<number, EveEraVisual> = {
+  0: {
+    era: 0,
+    title: 'The Closeted Chrysalis',
+    subtitle: 'Pre-Transition • Month 0 • Boy-Mode & The Cracked Shell',
+    description: 'Pre-HRT, hiding inside oversized shapeless dark hoodies, worn jeans, and messy unstyled hair. Looking into the mirror with heavy dysphoria and the terrifying realization: "I cannot live as a boy anymore."',
+    defaultHair: 'era0_messy_mop',
+    defaultMakeup: 'era0_bare_face',
+    spriteUrl: '/assets/characters/eve_era0.png',
+    perks: [
+      'Boy-Mode Camouflage: Blend into the background when society feels unsafe.',
+      'Raw Hunger for Life: The burning desperation to exist fuels your courage.',
+    ]
+  },
   1: {
     era: 1,
     title: 'The Awkward Egg',

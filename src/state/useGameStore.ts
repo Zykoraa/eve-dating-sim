@@ -62,13 +62,13 @@ export interface GameState {
 }
 
 const INITIAL_STATS: EveStats = {
-  confidence: 35,
-  dysphoria: 45,
-  hrtMonth: 1,
-  voiceResonance: 20,
-  glamRating: 25,
-  comfortRating: 60,
-  cash: 180,
+  confidence: 25,
+  dysphoria: 65,
+  hrtMonth: 0,
+  voiceResonance: 15,
+  glamRating: 10,
+  comfortRating: 40,
+  cash: 120,
 };
 
 const INITIAL_SUITORS: Record<SuitorId, SuitorAffection> = {
@@ -120,12 +120,12 @@ const INITIAL_SUITORS: Record<SuitorId, SuitorAffection> = {
 };
 
 const INITIAL_EQUIPPED: EquippedOutfit = {
-  hair: 'era1_messy_bangs',
-  makeup: 'era1_first_eyeliner',
-  top: 'era1_oversized_hoodie',
-  bottom: 'era1_pleated_skirt',
-  shoes: 'era1_worn_sneakers',
-  accessory: 'era1_choker',
+  hair: 'era0_messy_mop',
+  makeup: 'era0_bare_face',
+  top: 'era0_navy_hoodie',
+  bottom: 'era0_loose_jeans',
+  shoes: 'era0_worn_skaters',
+  accessory: 'era0_headphones',
 };
 
 const INITIAL_INSTA_POSTS: InstaPost[] = [
@@ -202,16 +202,23 @@ const INITIAL_SETTINGS: GameSettings = {
   autoAdvanceDelayMs: 2200,
   bgmVolume: 0.6,
   sfxVolume: 0.8,
+  adultContentEnabled: true,
 };
 
 const INITIAL_STATE: GameState = {
   viewMode: 'title',
   previousViewMode: 'title',
   activeMinigame: 'none',
-  transitionEra: 1,
+  transitionEra: 0,
   stats: INITIAL_STATS,
   equippedOutfit: INITIAL_EQUIPPED,
   unlockedOutfits: [
+    'era0_messy_mop',
+    'era0_bare_face',
+    'era0_navy_hoodie',
+    'era0_loose_jeans',
+    'era0_worn_skaters',
+    'era0_headphones',
     'era1_messy_bangs',
     'era1_first_eyeliner',
     'era1_oversized_hoodie',
@@ -231,8 +238,8 @@ const INITIAL_STATE: GameState = {
     met_liam: false,
     dodged_marcus_redflag: false,
   },
-  currentScenarioId: 'prologue',
-  currentSceneId: 'prologue_start',
+  currentScenarioId: 'era0_coming_out',
+  currentSceneId: 'era0_start',
   dialogueHistory: [],
   unlockedCGs: [],
   unlockedEndings: [],
@@ -243,7 +250,7 @@ const INITIAL_STATE: GameState = {
   nestMessages: INITIAL_NEST_MESSAGES,
   textSpeedMs: 25,
   autoPlay: false,
-  visitedScenes: ['prologue_start'],
+  visitedScenes: ['era0_start'],
   instaPosts: INITIAL_INSTA_POSTS,
   dailyRoutines: INITIAL_ROUTINES,
   settings: INITIAL_SETTINGS,
@@ -325,7 +332,7 @@ function notify() {
     const s = { ...globalState.stats };
     if (diff.confidence !== undefined) s.confidence = Math.max(0, Math.min(100, s.confidence + diff.confidence));
     if (diff.dysphoria !== undefined) s.dysphoria = Math.max(0, Math.min(100, s.dysphoria + diff.dysphoria));
-    if (diff.hrtMonth !== undefined) s.hrtMonth = Math.max(1, s.hrtMonth + diff.hrtMonth);
+    if (diff.hrtMonth !== undefined) s.hrtMonth = Math.max(0, s.hrtMonth + diff.hrtMonth);
     if (diff.voiceResonance !== undefined) s.voiceResonance = Math.max(0, Math.min(100, s.voiceResonance + diff.voiceResonance));
     if (diff.glamRating !== undefined) s.glamRating = Math.max(0, Math.min(100, s.glamRating + diff.glamRating));
     if (diff.comfortRating !== undefined) s.comfortRating = Math.max(0, Math.min(100, s.comfortRating + diff.comfortRating));
@@ -338,12 +345,13 @@ function notify() {
   const advanceEra = (era: TransitionEra, newHrtMonth?: number) => {
     soundEngine.playVictory();
     const cashBonus = era === 2 ? 100 : era === 3 ? 150 : era === 4 ? 200 : 0;
+    const defaultHrtMonth = era === 0 ? 0 : era === 1 ? 1 : era === 2 ? 6 : era === 3 ? 14 : 24;
     globalState = {
       ...globalState,
       transitionEra: era,
       stats: {
         ...globalState.stats,
-        hrtMonth: newHrtMonth || (era === 2 ? 6 : era === 3 ? 14 : era === 4 ? 24 : 1),
+        hrtMonth: newHrtMonth !== undefined ? newHrtMonth : defaultHrtMonth,
         confidence: Math.min(100, globalState.stats.confidence + 15),
         dysphoria: Math.max(10, globalState.stats.dysphoria - 10),
         voiceResonance: Math.min(100, globalState.stats.voiceResonance + 20),

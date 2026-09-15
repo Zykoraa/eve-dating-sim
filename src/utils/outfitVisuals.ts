@@ -74,14 +74,26 @@ export function getEveOutfitVisual(equipped: EquippedOutfit, era: TransitionEra)
   const hasHoodie = equipped.top === 'era1_oversized_hoodie';
   const hasCardigan = equipped.top === 'era1_thrift_cardigan';
 
-  let spriteUrl = `/assets/characters/eve_era${era}.png`;
-  let themeAura = 'from-pink-500/25 via-purple-500/15 to-transparent';
-  let glowBorderColor = '#ec4899';
-  let styleTag = `Era ${era} Signature`;
+  let spriteUrl = era === 0 ? '/assets/characters/eve_era0.png' : `/assets/characters/eve_era${era}.png`;
+  let themeAura = era === 0 
+    ? 'from-slate-800/40 via-slate-900/30 to-slate-950/50' 
+    : 'from-pink-500/25 via-purple-500/15 to-transparent';
+  let glowBorderColor = era === 0 ? '#64748b' : '#ec4899';
+  let styleTag = era === 0 ? 'Closeted Boy-Mode Disguise' : `Era ${era} Signature`;
   let dominantVibe: EveOutfitVisualInfo['dominantVibe'] = 'cozy';
-  let eveThought = '“Every single step in front of this mirror brings me closer to the woman I know I am.”';
+  let eveThought = era === 0 
+    ? '“I look in this mirror and feel like a ghost in someone else’s boy clothes. I want so badly to let her out.”'
+    : '“Every single step in front of this mirror brings me closer to the woman I know I am.”';
+  const hasEra0Hoodie = equipped.top === 'era0_navy_hoodie';
 
-  if (hasLBD || era4Score >= 6) {
+  if (era === 0 || hasEra0Hoodie) {
+    spriteUrl = '/assets/characters/eve_era0.png';
+    themeAura = 'from-slate-800/50 via-slate-900/40 to-slate-950/60';
+    glowBorderColor = '#64748b';
+    styleTag = 'Closeted Boy-Mode Disguise';
+    dominantVibe = 'cozy';
+    eveThought = '“I look in this mirror and feel like a ghost in someone else’s boy clothes. I want so badly to let her out.”';
+  } else if (hasLBD || era4Score >= 6) {
     spriteUrl = '/assets/characters/eve_era4.png';
     themeAura = 'from-rose-500/35 via-pink-600/25 to-amber-500/30';
     glowBorderColor = '#f43f5e';

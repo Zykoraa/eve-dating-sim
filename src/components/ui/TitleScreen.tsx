@@ -2,17 +2,19 @@ import React from 'react';
 import { Play, FolderOpen, Settings, Heart, Award, GitFork, Home } from 'lucide-react';
 import { useGameStore } from '../../state/useGameStore';
 import { soundEngine } from '../../state/useAudioStore';
+import type { TransitionEra } from '../../types/game';
 
 export const TitleScreen: React.FC = () => {
   const { setViewMode, setScene, advanceEra } = useGameStore();
 
   const handleStartGame = () => {
     soundEngine.playSparkle();
-    setScene('prologue_start', 'prologue');
+    advanceEra(0, 0);
+    setScene('era0_start', 'era0_coming_out');
     setViewMode('novel');
   };
 
-  const handleChapterJump = (sceneId: string, scenarioId: string, era: 1 | 2 | 3 | 4) => {
+  const handleChapterJump = (sceneId: string, scenarioId: string, era: TransitionEra) => {
     soundEngine.playClick();
     advanceEra(era);
     setScene(sceneId, scenarioId);
@@ -33,9 +35,15 @@ export const TitleScreen: React.FC = () => {
       <div className="relative z-10 w-full max-w-6xl grid grid-cols-1 md:grid-cols-12 gap-8 items-center h-full">
         {/* Left Column: Game Title & Interactive Menu */}
         <div className="md:col-span-7 flex flex-col justify-center space-y-6">
-          <div className="inline-flex items-center gap-2 bg-pink-950/80 border border-pink-500/50 px-4 py-1.5 rounded-full text-xs font-bold text-pink-300 backdrop-blur-md shadow-lg w-fit">
-            <Heart className="w-3.5 h-3.5 fill-pink-400 text-pink-400" /> 
-            <span>An Interactive MTF Romance Visual Novel</span>
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="inline-flex items-center gap-2 bg-pink-950/80 border border-pink-500/50 px-4 py-1.5 rounded-full text-xs font-bold text-pink-300 backdrop-blur-md shadow-lg w-fit">
+              <Heart className="w-3.5 h-3.5 fill-pink-400 text-pink-400" /> 
+              <span>An Interactive MTF Romance Visual Novel</span>
+            </div>
+            <div className="inline-flex items-center gap-1.5 bg-rose-950/90 border border-rose-500/60 px-3 py-1.5 rounded-full text-xs font-extrabold text-rose-300 backdrop-blur-md shadow-lg tracking-wide uppercase">
+              <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
+              <span>18+ Adults Only • Raw Romance & Intimacy</span>
+            </div>
           </div>
 
           <div>
@@ -106,28 +114,44 @@ export const TitleScreen: React.FC = () => {
             <div className="pt-3 border-t border-slate-800/80 flex flex-wrap items-center gap-2 text-[11px] text-slate-400">
               <span className="font-semibold text-slate-300">Jump to Chapter:</span>
               <button 
+                onClick={() => handleChapterJump('era0_start', 'era0_coming_out', 0)}
+                className="px-2 py-0.5 rounded bg-slate-900/80 hover:bg-slate-800 text-slate-300 border border-slate-700 transition"
+              >
+                Ch 0: Coming Out (Boy-Mode)
+              </button>
+              <button 
                 onClick={() => handleChapterJump('era1_cafe_intro', 'era1_dates', 1)}
                 className="px-2 py-0.5 rounded bg-slate-900/80 hover:bg-pink-900/60 text-pink-300 border border-slate-800 transition"
               >
-                Era 1: Liam
+                Ch 1: Liam
               </button>
               <button 
                 onClick={() => handleChapterJump('era2_punk_intro', 'era2_dates', 2)}
                 className="px-2 py-0.5 rounded bg-slate-900/80 hover:bg-pink-900/60 text-pink-300 border border-slate-800 transition"
               >
-                Era 2: Chloe
+                Ch 2: Chloe
               </button>
               <button 
                 onClick={() => handleChapterJump('era3_julian_intro', 'era3_dates', 3)}
                 className="px-2 py-0.5 rounded bg-slate-900/80 hover:bg-pink-900/60 text-pink-300 border border-slate-800 transition"
               >
-                Era 3: Julian
+                Ch 3: Julian & Maya
               </button>
               <button 
                 onClick={() => handleChapterJump('era4_climax_intro', 'era4_climaxes', 4)}
                 className="px-2 py-0.5 rounded bg-slate-900/80 hover:bg-pink-900/60 text-pink-300 border border-slate-800 transition"
               >
-                Era 4: Climax
+                Ch 4: Climax
+              </button>
+              <button 
+                onClick={() => {
+                  soundEngine.playSparkle();
+                  setScene('nsfw_hub', 'nsfw_encounters');
+                  setViewMode('novel');
+                }}
+                className="px-2 py-0.5 rounded bg-rose-950/90 hover:bg-rose-900 text-rose-300 border border-rose-500/60 font-bold transition flex items-center gap-1 shadow-md shadow-rose-900/30"
+              >
+                <span>🔥 18+ After Dark</span>
               </button>
             </div>
           </div>

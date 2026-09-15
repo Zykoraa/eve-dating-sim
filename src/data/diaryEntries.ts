@@ -1,4 +1,4 @@
-﻿import type { DiaryEntry } from '../types/game';
+import type { DiaryEntry, TransitionEra } from '../types/game';
 
 export const INITIAL_DIARY_ENTRIES: DiaryEntry[] = [
   {
@@ -26,7 +26,7 @@ export const INITIAL_DIARY_ENTRIES: DiaryEntry[] = [
 
 export function createDaySummaryDiaryEntry(
   day: number,
-  era: 1 | 2 | 3 | 4,
+  era: TransitionEra,
   activityName: string,
   statsDelta: { confidence: number; dysphoria: number }
 ): DiaryEntry {
@@ -57,6 +57,6 @@ export function createDaySummaryDiaryEntry(
     dateStr: `Day ${day} — Era ${era}`,
     content: pickedText,
     mood,
-    sticker: era === 1 ? '🌱' : era === 2 ? '🎸' : era === 3 ? '🌸' : '👑',
+    sticker: era === 0 ? '🌧️' : era === 1 ? '🌱' : era === 2 ? '🎸' : era === 3 ? '🌸' : '👑',
   };
 }

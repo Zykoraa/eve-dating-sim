@@ -3,6 +3,22 @@ import type { WardrobeItem } from '../types/outfits';
 export const WARDROBE_ITEMS: WardrobeItem[] = [
   // --- HAIR STYLES ---
   {
+    id: 'era0_messy_mop',
+    name: 'Unkempt Boy-Mode Shag',
+    category: 'hair',
+    description: 'Overgrown, unstyled masculine haircut that you used to hide behind.',
+    flavorText: 'You stopped caring about haircuts months ago. It just felt like maintaining a stranger’s head.',
+    minEra: 0,
+    glamBonus: 2,
+    comfortBonus: 10,
+    dysphoriaShieldBonus: 5,
+    cost: 0,
+    unlocked: true,
+    idealVenues: ['apartment'],
+    icon: 'Scissors',
+    previewColor: '#451a03',
+  },
+  {
     id: 'era1_messy_bangs',
     name: 'Awkward Growth Bangs',
     category: 'hair',
@@ -69,6 +85,22 @@ export const WARDROBE_ITEMS: WardrobeItem[] = [
 
   // --- MAKEUP STYLES ---
   {
+    id: 'era0_bare_face',
+    name: 'Bare Skin & Five O’Clock Shadow',
+    category: 'makeup',
+    description: 'No makeup. Raw, exposed skin with faint stubble shadow that sparks dysphoria.',
+    flavorText: 'You scrubbed your face with bar soap. Looking in the mirror feels like looking at someone else’s mugshot.',
+    minEra: 0,
+    glamBonus: 0,
+    comfortBonus: 5,
+    dysphoriaShieldBonus: 0,
+    cost: 0,
+    unlocked: true,
+    idealVenues: ['apartment'],
+    icon: 'Eye',
+    previewColor: '#64748b',
+  },
+  {
     id: 'era1_first_eyeliner',
     name: 'Drugstore Winged Liner',
     category: 'makeup',
@@ -134,6 +166,22 @@ export const WARDROBE_ITEMS: WardrobeItem[] = [
   },
 
   // --- TOPS & OUTFITS ---
+  {
+    id: 'era0_navy_hoodie',
+    name: 'Shapeless Navy Boy Hoodie',
+    category: 'top',
+    description: 'A heavy, baggy Men’s XL hoodie designed to swallow your body whole and hide everything.',
+    flavorText: 'The classic egg uniform. If nobody can see your body silhouette, maybe you can pretend it doesn’t exist.',
+    minEra: 0,
+    glamBonus: 0,
+    comfortBonus: 20,
+    dysphoriaShieldBonus: 10,
+    cost: 0,
+    unlocked: true,
+    idealVenues: ['apartment'],
+    icon: 'Shirt',
+    previewColor: '#1e293b',
+  },
   {
     id: 'era1_oversized_hoodie',
     name: 'The "Dysphoria Armor" Hoodie',
@@ -249,6 +297,22 @@ export const WARDROBE_ITEMS: WardrobeItem[] = [
 
   // --- BOTTOMS ---
   {
+    id: 'era0_loose_jeans',
+    name: 'Loose Men’s Washed Denim',
+    category: 'bottom',
+    description: 'Straight-leg stiff jeans that sit awkwardly on your hips.',
+    flavorText: 'Bought off the men’s clearance rack years ago. Boxy, uncomfortable, but unremarkably invisible.',
+    minEra: 0,
+    glamBonus: 0,
+    comfortBonus: 15,
+    dysphoriaShieldBonus: 5,
+    cost: 0,
+    unlocked: true,
+    idealVenues: ['apartment'],
+    icon: 'Sparkles',
+    previewColor: '#3b82f6',
+  },
+  {
     id: 'era1_pleated_skirt',
     name: 'The Canon Skater Skirt',
     category: 'bottom',
@@ -315,6 +379,22 @@ export const WARDROBE_ITEMS: WardrobeItem[] = [
 
   // --- SHOES ---
   {
+    id: 'era0_worn_skaters',
+    name: 'Scuffed Skate Sneakers',
+    category: 'shoes',
+    description: 'Old canvas skate shoes with frayed laces and worn-down soles.',
+    flavorText: 'You’ve walked hundreds of miles in these shoes while lost in your own thoughts, dreaming of another life.',
+    minEra: 0,
+    glamBonus: 0,
+    comfortBonus: 15,
+    dysphoriaShieldBonus: 5,
+    cost: 0,
+    unlocked: true,
+    idealVenues: ['apartment'],
+    icon: 'Footprints',
+    previewColor: '#475569',
+  },
+  {
     id: 'era1_worn_sneakers',
     name: 'Worn-in Canvas Sneakers',
     category: 'shoes',
@@ -380,6 +460,22 @@ export const WARDROBE_ITEMS: WardrobeItem[] = [
   },
 
   // --- ACCESSORIES ---
+  {
+    id: 'era0_headphones',
+    name: 'Over-Ear Noise Canceling Headphones',
+    category: 'accessory',
+    description: 'Bulky matte black headphones worn around your neck like a defensive wall.',
+    flavorText: 'Your personal bubble against the loud, demanding world. Blast midwest emo or hyperpop at maximum volume.',
+    minEra: 0,
+    glamBonus: 2,
+    comfortBonus: 25,
+    dysphoriaShieldBonus: 20,
+    cost: 0,
+    unlocked: true,
+    idealVenues: ['apartment'],
+    icon: 'Headphones',
+    previewColor: '#1e293b',
+  },
   {
     id: 'era1_choker',
     name: 'Velvet Ribbon Choker',

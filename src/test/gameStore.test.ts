@@ -4,12 +4,14 @@ import { WARDROBE_ITEMS } from '../data/outfits';
 import { DATING_APP_PROFILES } from '../data/datingProfiles';
 
 describe('Game Data & Progression Integrity', () => {
-  it('should define all 4 Transition Eras with perks and descriptions', () => {
+  it('should define all Transition Eras (0 through 4) with perks and descriptions', () => {
+    expect(EVE_ERAS[0]).toBeDefined();
     expect(EVE_ERAS[1]).toBeDefined();
     expect(EVE_ERAS[2]).toBeDefined();
     expect(EVE_ERAS[3]).toBeDefined();
     expect(EVE_ERAS[4]).toBeDefined();
 
+    expect(EVE_ERAS[0].title).toBe('The Closeted Chrysalis');
     expect(EVE_ERAS[1].title).toBe('The Awkward Egg');
     expect(EVE_ERAS[4].title).toBe('Radiant & Unapologetic');
   });
@@ -48,6 +50,11 @@ describe('Game Data & Progression Integrity', () => {
 
   it('should correctly map outfit visuals and reflections dynamically', async () => {
     const { getEveOutfitVisual } = await import('../utils/outfitVisuals');
+    
+    const visualEra0 = getEveOutfitVisual({ hair: 'era0_messy_mop', top: 'era0_navy_hoodie', makeup: 'era0_bare_face', shoes: 'era0_worn_skaters' }, 0);
+    expect(visualEra0.spriteUrl).toContain('eve_era0.png');
+    expect(visualEra0.styleTag).toBe('Closeted Boy-Mode Disguise');
+
     const visualEra1 = getEveOutfitVisual({ hair: 'era1_messy_bangs', top: 'era1_thrift_cardigan', makeup: '', shoes: '' }, 1);
     expect(visualEra1.spriteUrl).toContain('eve_era1.png');
     expect(visualEra1.eveThought).toBeDefined();
@@ -85,7 +92,10 @@ describe('Game Data & Progression Integrity', () => {
     const store = useGameStore.getState();
 
     // Verify initial state
-    expect(store.state.visitedScenes).toContain('prologue_start');
+    expect(store.state.visitedScenes).toContain('era0_start');
+    expect(store.state.transitionEra).toBe(0);
+    expect(store.state.stats.hrtMonth).toBe(0);
+    expect(store.state.settings.adultContentEnabled).toBe(true);
     expect(store.state.dailyRoutines.streakDays).toBeGreaterThanOrEqual(1);
 
     // Toggle a routine
@@ -181,6 +191,20 @@ describe('Game Data & Progression Integrity', () => {
     const julianRank2 = getDialogueNode('julian_rank2_start');
     expect(julianRank2).toBeDefined();
     expect(julianRank2?.text).toContain('pixel art');
+  });
+
+  it('should verify Era 0 Coming Out scenario and 18+ Adult Encounters scenario', async () => {
+    const { getDialogueNode, ALL_SCENARIOS } = await import('../data/scenarios/index');
+    expect(ALL_SCENARIOS.era0_coming_out).toBeDefined();
+    expect(ALL_SCENARIOS.nsfw_encounters).toBeDefined();
+
+    const era0Start = getDialogueNode('era0_start');
+    expect(era0Start).toBeDefined();
+    expect(era0Start?.text).toContain('bathroom');
+
+    const nsfwHub = getDialogueNode('nsfw_hub');
+    expect(nsfwHub).toBeDefined();
+    expect(nsfwHub?.choices?.length).toBeGreaterThanOrEqual(4);
   });
 });
 
