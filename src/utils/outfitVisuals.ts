@@ -1,6 +1,8 @@
 import type { EquippedOutfit, WardrobeItem } from '../types/outfits';
 import type { TransitionEra, SuitorId } from '../types/game';
+import type { CustomEveConfig } from '../types/character';
 import { WARDROBE_ITEMS } from '../data/outfits';
+import { VISUAL_OUTFIT_PRESETS } from '../data/characterCreationPresets';
 
 export interface SuitorAffinityReaction {
   suitorId: SuitorId;
@@ -31,7 +33,11 @@ export interface EveOutfitVisualInfo {
   suitorReactions: SuitorAffinityReaction[];
 }
 
-export function getEveOutfitVisual(equipped: EquippedOutfit, era: TransitionEra): EveOutfitVisualInfo {
+export function getEveOutfitVisual(
+  equipped: Partial<EquippedOutfit>, 
+  era: TransitionEra,
+  customConfig?: CustomEveConfig
+): EveOutfitVisualInfo {
   const itemMap = new Map<string, WardrobeItem>();
   for (const item of WARDROBE_ITEMS) {
     itemMap.set(item.id, item);
@@ -73,19 +79,21 @@ export function getEveOutfitVisual(equipped: EquippedOutfit, era: TransitionEra)
   const hasTrench = equipped.top === 'era3_turtleneck_trench';
   const hasHoodie = equipped.top === 'era1_oversized_hoodie';
   const hasCardigan = equipped.top === 'era1_thrift_cardigan';
+  const hasMomJeans = equipped.bottom === 'era1_mom_jeans';
+  const hasEra0Hoodie = equipped.top === 'era0_navy_hoodie';
 
   let spriteUrl = era === 0 ? '/assets/characters/eve_era0.png' : `/assets/characters/eve_era${era}.png`;
   let themeAura = era === 0 
     ? 'from-slate-800/40 via-slate-900/30 to-slate-950/50' 
     : 'from-pink-500/25 via-purple-500/15 to-transparent';
-  let glowBorderColor = era === 0 ? '#64748b' : '#ec4899';
+  let glowBorderColor = era === 0 ? '#64748b' : (customConfig?.auraGlowColor || '#ec4899');
   let styleTag = era === 0 ? 'Closeted Boy-Mode Disguise' : `Era ${era} Signature`;
   let dominantVibe: EveOutfitVisualInfo['dominantVibe'] = 'cozy';
   let eveThought = era === 0 
     ? '“I look in this mirror and feel like a ghost in someone else’s boy clothes. I want so badly to let her out.”'
     : '“Every single step in front of this mirror brings me closer to the woman I know I am.”';
-  const hasEra0Hoodie = equipped.top === 'era0_navy_hoodie';
 
+  // Specific outfit styling resolution with transparent high-res anime assets
   if (era === 0 || hasEra0Hoodie) {
     spriteUrl = '/assets/characters/eve_era0.png';
     themeAura = 'from-slate-800/50 via-slate-900/40 to-slate-950/60';
@@ -100,20 +108,27 @@ export function getEveOutfitVisual(equipped: EquippedOutfit, era: TransitionEra)
     styleTag = 'High-Glam Silhouette';
     dominantVibe = 'high_glam';
     eveThought = '“I look in the mirror and catch my breath. The silhouette is hypnotic, elegant, and completely mine.”';
-  } else if (hasVelvet || hasTrench || era3Score >= 5) {
-    spriteUrl = '/assets/characters/eve_era3.png';
-    themeAura = 'from-amber-500/30 via-yellow-600/20 to-emerald-600/25';
-    glowBorderColor = '#f59e0b';
-    styleTag = 'Tailored Elegance & Grace';
+  } else if (hasVelvet) {
+    spriteUrl = '/assets/characters/eve_outfit_slipdress.png';
+    themeAura = 'from-emerald-600/35 via-teal-700/25 to-emerald-950/40';
+    glowBorderColor = '#059669';
+    styleTag = 'Emerald Silk-Velvet Slip';
     dominantVibe = 'tailored_chic';
-    eveThought = '“Polished, confident, and magnetic. Strangers default to ‘miss’ before I even speak a word.”';
+    eveThought = '“Emerald velvet against my skin, shimmering under dim candlelight. It makes me feel utterly alluring and divine.”';
   } else if (hasSundress) {
-    spriteUrl = '/assets/characters/eve_era2.png';
-    themeAura = 'from-amber-400/30 via-emerald-400/20 to-teal-500/20';
-    glowBorderColor = '#10b981';
+    spriteUrl = '/assets/characters/eve_outfit_sundress.png';
+    themeAura = 'from-amber-400/35 via-yellow-500/25 to-emerald-500/20';
+    glowBorderColor = '#eab308';
     styleTag = 'Sun-Drenched Floral Glow';
     dominantVibe = 'sundress_soft';
     eveThought = '“The daisy fabric moves with the breeze. Soft, carefree, and radiating pure summertime euphoria.”';
+  } else if (hasTrench || era3Score >= 5) {
+    spriteUrl = '/assets/characters/eve_era3.png';
+    themeAura = 'from-amber-500/30 via-yellow-600/20 to-emerald-600/25';
+    glowBorderColor = '#d97706';
+    styleTag = 'Tailored Elegance & Grace';
+    dominantVibe = 'tailored_chic';
+    eveThought = '“Polished, confident, and magnetic. Strangers default to ‘miss’ before I even speak a word.”';
   } else if (hasPunkLeather || era2Score >= 4) {
     spriteUrl = '/assets/characters/eve_era2.png';
     themeAura = 'from-purple-700/40 via-violet-600/25 to-pink-600/30';
@@ -121,6 +136,20 @@ export function getEveOutfitVisual(equipped: EquippedOutfit, era: TransitionEra)
     styleTag = 'Alt-Punk Rebellion';
     dominantVibe = 'alt_punk';
     eveThought = '“Chloe would be so proud. Razor-sharp eyeliner, heavy boots, and zero tolerance for fools.”';
+  } else if (hasHoodie) {
+    spriteUrl = '/assets/characters/eve_outfit_hoodie.png';
+    themeAura = 'from-slate-700/40 via-slate-800/30 to-slate-900/40';
+    glowBorderColor = '#64748b';
+    styleTag = 'Dysphoria Armor Hoodie';
+    dominantVibe = 'cozy';
+    eveThought = '“My trusted emotional fortress. Zero perception anxiety, just warm plush cotton and safety.”';
+  } else if (hasCardigan && hasMomJeans) {
+    spriteUrl = '/assets/characters/eve_outfit_vintage.png';
+    themeAura = 'from-purple-400/30 via-pink-300/20 to-indigo-400/25';
+    glowBorderColor = '#c084fc';
+    styleTag = 'Vintage Lavender Thrifter';
+    dominantVibe = 'cozy';
+    eveThought = '“Smells like vintage cedar and lavender tea. Gentle, sweet, and comforting on tender days.”';
   } else if (hasCardigan) {
     spriteUrl = '/assets/characters/eve_era1.png';
     themeAura = 'from-purple-400/30 via-pink-300/20 to-indigo-400/25';
@@ -128,13 +157,18 @@ export function getEveOutfitVisual(equipped: EquippedOutfit, era: TransitionEra)
     styleTag = 'Vintage Lavender Thrifter';
     dominantVibe = 'cozy';
     eveThought = '“Smells like vintage cedar and lavender tea. Gentle, sweet, and comforting on tender days.”';
-  } else if (hasHoodie) {
-    spriteUrl = '/assets/characters/eve_era1.png';
-    themeAura = 'from-slate-700/40 via-slate-800/30 to-slate-900/40';
-    glowBorderColor = '#64748b';
-    styleTag = 'Dysphoria Armor Hoodie';
-    dominantVibe = 'cozy';
-    eveThought = '“My trusted emotional fortress. Zero perception anxiety, just warm plush cotton and safety.”';
+  } else if (customConfig?.selectedOutfitId) {
+    const preset = VISUAL_OUTFIT_PRESETS.find((p) => p.id === customConfig.selectedOutfitId);
+    if (preset) {
+      spriteUrl = preset.spriteUrl;
+      styleTag = preset.name;
+      dominantVibe = preset.vibe;
+      glowBorderColor = preset.paletteColor;
+    }
+  }
+
+  if (customConfig?.auraGlowColor) {
+    glowBorderColor = customConfig.auraGlowColor;
   }
 
   // Calculate suitor reactions based on outfit

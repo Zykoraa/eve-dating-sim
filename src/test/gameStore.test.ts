@@ -74,6 +74,46 @@ describe('Game Data & Progression Integrity', () => {
     const visualEra4 = getEveOutfitVisual({ hair: '', fullbody: 'era4_little_black_dress', makeup: '', shoes: '' }, 4);
     expect(visualEra4.spriteUrl).toContain('eve_era4.png');
     expect(visualEra4.styleTag).toBe('High-Glam Silhouette');
+
+    // Test newly added authentic transparent visual novel sprites
+    const visualSundress = getEveOutfitVisual({ hair: 'era2_wavy_bob', fullbody: 'era2_floral_sundress' }, 2);
+    expect(visualSundress.spriteUrl).toContain('eve_outfit_sundress.png');
+    expect(visualSundress.dominantVibe).toBe('sundress_soft');
+
+    const visualSlipDress = getEveOutfitVisual({ hair: 'era3_long_layers', fullbody: 'era3_velvet_slip_dress' }, 3);
+    expect(visualSlipDress.spriteUrl).toContain('eve_outfit_slipdress.png');
+    expect(visualSlipDress.styleTag).toBe('Emerald Silk-Velvet Slip');
+
+    const visualHoodie = getEveOutfitVisual({ hair: 'era1_messy_bangs', top: 'era1_oversized_hoodie' }, 1);
+    expect(visualHoodie.spriteUrl).toContain('eve_outfit_hoodie.png');
+    expect(visualHoodie.styleTag).toBe('Dysphoria Armor Hoodie');
+
+    const visualVintage = getEveOutfitVisual({ hair: 'era1_messy_bangs', top: 'era1_thrift_cardigan', bottom: 'era1_mom_jeans' }, 1);
+    expect(visualVintage.spriteUrl).toContain('eve_outfit_vintage.png');
+    expect(visualVintage.styleTag).toBe('Vintage Lavender Thrifter');
+  });
+
+  it('should verify all 9 selectable Visual Novel outfit presets exist and have valid artwork paths', async () => {
+    const { VISUAL_OUTFIT_PRESETS } = await import('../data/characterCreationPresets');
+    expect(VISUAL_OUTFIT_PRESETS.length).toBe(9);
+
+    const presetIds = VISUAL_OUTFIT_PRESETS.map((p) => p.id);
+    expect(presetIds).toContain('outfit_era0_boymode');
+    expect(presetIds).toContain('outfit_era1_thrift_sweater');
+    expect(presetIds).toContain('outfit_era1_dysphoria_hoodie');
+    expect(presetIds).toContain('outfit_era1_vintage_cardigan');
+    expect(presetIds).toContain('outfit_era2_riot_grrrl');
+    expect(presetIds).toContain('outfit_era2_daisy_sundress');
+    expect(presetIds).toContain('outfit_era3_camel_trench');
+    expect(presetIds).toContain('outfit_era3_velvet_slip');
+    expect(presetIds).toContain('outfit_era4_little_black_dress');
+
+    VISUAL_OUTFIT_PRESETS.forEach((preset) => {
+      expect(preset.spriteUrl).toMatch(/^\/assets\/characters\/.+\.png$/);
+      expect(preset.statBonuses.glam).toBeGreaterThanOrEqual(5);
+      expect(preset.statBonuses.comfort).toBeGreaterThanOrEqual(20);
+      expect(preset.statBonuses.shield).toBeGreaterThanOrEqual(15);
+    });
   });
 
   it('should generate context-aware compassionate responses when asking for support in The Nest', async () => {

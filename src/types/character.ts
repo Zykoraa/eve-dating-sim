@@ -60,4 +60,10 @@ export interface CustomEveConfig {
   blushColorName: string;
   showStubbleShadow: boolean;
   beautyMark: boolean;
+  selectedOutfitId?: string;
+  selectedSpriteUrl?: string;
+  voiceFocus?: 'bright' | 'warm' | 'sultry';
+  vibeArchetype?: 'romantic' | 'rebel' | 'dreamer' | 'siren';
+  auraGlowColor?: string;
+  previewEra?: TransitionEra;
 }

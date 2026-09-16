@@ -30,7 +30,7 @@ export const VanityMirror: React.FC = () => {
   const [showSuitorAffinities, setShowSuitorAffinities] = useState(false);
 
   const currentEra = EVE_ERAS[state.transitionEra];
-  const visual = getEveOutfitVisual(state.equippedOutfit, state.transitionEra);
+  const visual = getEveOutfitVisual(state.equippedOutfit, state.transitionEra, state.customEve);
   const itemsForCategory = WARDROBE_ITEMS.filter((i) => i.category === selectedCategory);
 
   const handleEquip = (item: WardrobeItem) => {
@@ -57,7 +57,8 @@ export const VanityMirror: React.FC = () => {
         ...(item.category === 'fullbody' ? { top: '', bottom: '' } : {}),
         ...(item.category === 'top' || item.category === 'bottom' ? { fullbody: '' } : {}),
       },
-      state.transitionEra
+      state.transitionEra,
+      state.customEve
     );
 
     modifyStats({
