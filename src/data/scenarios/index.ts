@@ -12,6 +12,8 @@ import { ERA1_BEA_AFTERMATH_SCENARIO } from './era1_bea_aftermath';
 import { ERA1_FIRST_SWIMSUIT_SCENARIO } from './era1_first_swimsuit';
 import { ERA2_CABARET_AND_INK_SCENARIO } from './era2_cabaret_and_ink';
 import { ERA3_NAME_CHANGE_SCENARIO } from './era3_name_change';
+import { APARTMENT_SLEEPOVERS_SCENARIO } from './apartment_sleepovers';
+import { FRIENDSGIVING_SCENARIO } from './friendsgiving';
 import type { DialogueNode, StoryScenario } from '../../types/story';
 
 export { ERA0_COMING_OUT_SCENARIO } from './era0_coming_out';
@@ -22,6 +24,8 @@ export { ERA1_FIRST_SWIMSUIT_SCENARIO } from './era1_first_swimsuit';
 export { ERA2_CABARET_AND_INK_SCENARIO } from './era2_cabaret_and_ink';
 export { ERA3_NAME_CHANGE_SCENARIO } from './era3_name_change';
 export { NSFW_ENCOUNTERS_SCENARIO } from './nsfw_encounters';
+export { APARTMENT_SLEEPOVERS_SCENARIO } from './apartment_sleepovers';
+export { FRIENDSGIVING_SCENARIO } from './friendsgiving';
 
 export const ALL_SCENARIOS: Record<string, StoryScenario> = {
   era0_coming_out: ERA0_COMING_OUT_SCENARIO,
@@ -40,6 +44,8 @@ export const ALL_SCENARIOS: Record<string, StoryScenario> = {
   era3_name_change_court: ERA3_NAME_CHANGE_SCENARIO,
   era4_climaxes: ERA4_SCENARIO,
   nsfw_encounters: NSFW_ENCOUNTERS_SCENARIO,
+  apartment_sleepovers: APARTMENT_SLEEPOVERS_SCENARIO,
+  friendsgiving: FRIENDSGIVING_SCENARIO,
   ...HEART_EVENTS_SCENARIOS,
 };
 

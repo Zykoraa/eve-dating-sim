@@ -214,6 +214,7 @@ const INITIAL_SETTINGS: GameSettings = {
   autoAdvanceDelayMs: 2200,
   bgmVolume: 0.6,
   sfxVolume: 0.8,
+  ambientVolume: 0.5,
   adultContentEnabled: true,
 };
 
@@ -565,6 +566,7 @@ function notify() {
   const updateSettings = (newSettings: Partial<GameSettings>) => {
     soundEngine.playClick();
     if (newSettings.sfxVolume !== undefined) soundEngine.setVolume(newSettings.sfxVolume);
+    if (newSettings.ambientVolume !== undefined) soundEngine.setAmbientVolume(newSettings.ambientVolume);
     globalState = {
       ...globalState,
       settings: { ...globalState.settings, ...newSettings }

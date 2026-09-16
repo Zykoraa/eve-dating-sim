@@ -1,4 +1,4 @@
-﻿import type { ApartmentDecorItem } from '../types/game';
+import type { ApartmentDecorItem } from '../types/game';
 
 export const APARTMENT_DECORS: ApartmentDecorItem[] = [
   {
@@ -59,6 +59,16 @@ export const APARTMENT_DECORS: ApartmentDecorItem[] = [
     description: 'Hand-thrown stoneware mug glazed in gradients of dusk purple and gold luster.',
     statPerk: '-10 Dysphoria during morning routine',
     icon: 'Coffee',
+    unlocked: false,
+  },
+  {
+    id: 'decor_leather_wristband',
+    name: 'Jesse’s Braided Leather Wristband & Bike Key',
+    category: 'art',
+    giver: 'Jesse Nolan',
+    description: 'Supple hand-braided oil-tanned leather cuff stamped with a silver crescent moon, holding a brass spare key to the bike shop.',
+    statPerk: '+10 Comfort & Boundary Armor',
+    icon: 'Key',
     unlocked: false,
   },
   {

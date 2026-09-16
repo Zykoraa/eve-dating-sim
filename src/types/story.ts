@@ -25,6 +25,7 @@ export interface ChoiceOption {
   openVanity?: boolean;
   advanceEra?: TransitionEra;
   unlockCG?: string;
+  unlockDecor?: string;
   soundEffect?: string;
   nextSceneId: string;
 }
@@ -46,6 +47,7 @@ export interface DialogueNode {
   shakeScreen?: boolean;
   choices?: ChoiceOption[];
   advanceEra?: TransitionEra;
+  unlockDecor?: string;
   setFlag?: { key: string; value: boolean };
   nextSceneId?: string;
 }

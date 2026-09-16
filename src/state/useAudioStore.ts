@@ -401,6 +401,257 @@ class SoundEngine {
       return true;
     }
   }
+
+  // ==========================================
+  // Procedural Ambient Soundscapes (Rain, Fireplace, Vinyl, City)
+  // ==========================================
+  private ambientType: 'rain' | 'fireplace' | 'vinyl' | 'city' | 'none' = 'none';
+  private ambientGain: GainNode | null = null;
+  private ambientNodes: (AudioNode | number)[] = [];
+  private ambientVolume: number = 0.5;
+
+  public setAmbientVolume(vol: number) {
+    this.ambientVolume = Math.max(0, Math.min(1, vol));
+    if (this.ambientGain && this.ctx) {
+      this.ambientGain.gain.setValueAtTime(this.isMuted ? 0 : this.ambientVolume * 0.4, this.ctx.currentTime);
+    }
+  }
+
+  public getAmbientVolume(): number {
+    return this.ambientVolume;
+  }
+
+  public getCurrentAmbient(): 'rain' | 'fireplace' | 'vinyl' | 'city' | 'none' {
+    return this.ambientType;
+  }
+
+  public stopAmbient() {
+    this.ambientType = 'none';
+    this.ambientNodes.forEach((node) => {
+      if (typeof node === 'number') {
+        clearInterval(node);
+      } else {
+        try {
+          if ('stop' in node && typeof (node as AudioScheduledSourceNode).stop === 'function') {
+            (node as AudioScheduledSourceNode).stop();
+          }
+          node.disconnect();
+        } catch {}
+      }
+    });
+    this.ambientNodes = [];
+    if (this.ambientGain) {
+      try {
+        this.ambientGain.disconnect();
+      } catch {}
+      this.ambientGain = null;
+    }
+  }
+
+  public playAmbient(type: 'rain' | 'fireplace' | 'vinyl' | 'city' | 'none') {
+    if (type === 'none') {
+      this.stopAmbient();
+      return;
+    }
+    if (this.ambientType === type) return;
+
+    this.stopAmbient();
+    this.ambientType = type;
+
+    if (this.isMuted) return;
+
+    try {
+      this.initCtx();
+      if (!this.ctx) return;
+
+      const now = this.ctx.currentTime;
+      this.ambientGain = this.ctx.createGain();
+      this.ambientGain.gain.setValueAtTime(this.ambientVolume * 0.35, now);
+      this.ambientGain.connect(this.ctx.destination);
+
+      const sampleRate = this.ctx.sampleRate || 44100;
+
+      if (type === 'rain') {
+        // Continuous rainfall: Brownian/pink filtered noise buffer with sporadic droplet pings
+        const bufferSize = sampleRate * 3;
+        const noiseBuffer = this.ctx.createBuffer(1, bufferSize, sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        let b0 = 0, b1 = 0, b2 = 0;
+        for (let i = 0; i < bufferSize; i++) {
+          const white = Math.random() * 2 - 1;
+          b0 = 0.99 * b0 + white * 0.05;
+          b1 = 0.95 * b1 + white * 0.1;
+          b2 = 0.85 * b2 + white * 0.2;
+          output[i] = (b0 + b1 + b2) * 0.25;
+        }
+
+        const whiteNoise = this.ctx.createBufferSource();
+        whiteNoise.buffer = noiseBuffer;
+        whiteNoise.loop = true;
+
+        const rainFilter = this.ctx.createBiquadFilter();
+        rainFilter.type = 'lowpass';
+        rainFilter.frequency.setValueAtTime(750, now);
+
+        const highPass = this.ctx.createBiquadFilter();
+        highPass.type = 'highpass';
+        highPass.frequency.setValueAtTime(160, now);
+
+        whiteNoise.connect(rainFilter);
+        rainFilter.connect(highPass);
+        highPass.connect(this.ambientGain);
+        whiteNoise.start(now);
+        this.ambientNodes.push(whiteNoise);
+
+        // Random delicate raindrop patters on window glass
+        const dropInterval = window.setInterval(() => {
+          if (!this.ctx || !this.ambientGain || this.ambientType !== 'rain') return;
+          try {
+            const dropTime = this.ctx.currentTime;
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            const freq = 1200 + Math.random() * 800;
+            osc.frequency.setValueAtTime(freq, dropTime);
+            osc.frequency.exponentialRampToValueAtTime(300, dropTime + 0.04);
+            gain.gain.setValueAtTime(this.ambientVolume * 0.04 * Math.random(), dropTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, dropTime + 0.04);
+            osc.connect(gain);
+            gain.connect(this.ambientGain);
+            osc.start(dropTime);
+            osc.stop(dropTime + 0.05);
+          } catch {}
+        }, 320);
+        this.ambientNodes.push(dropInterval);
+
+      } else if (type === 'fireplace') {
+        // Hearthside embers: warm rumble + sporadic crackle snaps
+        const bufferSize = sampleRate * 2;
+        const noiseBuffer = this.ctx.createBuffer(1, bufferSize, sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        let lastOut = 0.0;
+        for (let i = 0; i < bufferSize; i++) {
+          const white = Math.random() * 2 - 1;
+          output[i] = (lastOut + 0.02 * white) / 1.02;
+          lastOut = output[i];
+          output[i] *= 2.5;
+        }
+
+        const rumbleSource = this.ctx.createBufferSource();
+        rumbleSource.buffer = noiseBuffer;
+        rumbleSource.loop = true;
+
+        const rumbleFilter = this.ctx.createBiquadFilter();
+        rumbleFilter.type = 'lowpass';
+        rumbleFilter.frequency.setValueAtTime(300, now);
+
+        rumbleSource.connect(rumbleFilter);
+        rumbleFilter.connect(this.ambientGain);
+        rumbleSource.start(now);
+        this.ambientNodes.push(rumbleSource);
+
+        // Fire ember crackle pops
+        const crackleInterval = window.setInterval(() => {
+          if (!this.ctx || !this.ambientGain || this.ambientType !== 'fireplace') return;
+          if (Math.random() > 0.4) return;
+          try {
+            const cTime = this.ctx.currentTime;
+            const popOsc = this.ctx.createOscillator();
+            const popGain = this.ctx.createGain();
+            popOsc.type = 'sawtooth';
+            popOsc.frequency.setValueAtTime(800 + Math.random() * 1200, cTime);
+            popGain.gain.setValueAtTime(this.ambientVolume * (0.05 + Math.random() * 0.08), cTime);
+            popGain.gain.exponentialRampToValueAtTime(0.0001, cTime + 0.02);
+            popOsc.connect(popGain);
+            popGain.connect(this.ambientGain);
+            popOsc.start(cTime);
+            popOsc.stop(cTime + 0.03);
+          } catch {}
+        }, 180);
+        this.ambientNodes.push(crackleInterval);
+
+      } else if (type === 'vinyl') {
+        // Vintage record vinyl: subtle low motor hum + dust surface noise + periodic groove ticks
+        const humOsc = this.ctx.createOscillator();
+        const humGain = this.ctx.createGain();
+        humOsc.type = 'sine';
+        humOsc.frequency.setValueAtTime(60, now);
+        humGain.gain.setValueAtTime(this.ambientVolume * 0.03, now);
+        humOsc.connect(humGain);
+        humGain.connect(this.ambientGain);
+        humOsc.start(now);
+        this.ambientNodes.push(humOsc);
+
+        // Periodic vinyl rotation tick (approx 33 RPM = 1.8s per rev)
+        const tickInterval = window.setInterval(() => {
+          if (!this.ctx || !this.ambientGain || this.ambientType !== 'vinyl') return;
+          try {
+            const tTime = this.ctx.currentTime;
+            const tickOsc = this.ctx.createOscillator();
+            const tickGain = this.ctx.createGain();
+            tickOsc.type = 'triangle';
+            tickOsc.frequency.setValueAtTime(1400, tTime);
+            tickGain.gain.setValueAtTime(this.ambientVolume * 0.06, tTime);
+            tickGain.gain.exponentialRampToValueAtTime(0.0001, tTime + 0.015);
+            tickOsc.connect(tickGain);
+            tickGain.connect(this.ambientGain);
+            tickOsc.start(tTime);
+            tickOsc.stop(tTime + 0.02);
+          } catch {}
+        }, 1818);
+        this.ambientNodes.push(tickInterval);
+
+        // Random dust surface ticks
+        const dustInterval = window.setInterval(() => {
+          if (!this.ctx || !this.ambientGain || this.ambientType !== 'vinyl') return;
+          if (Math.random() > 0.5) return;
+          try {
+            const dTime = this.ctx.currentTime;
+            const dustOsc = this.ctx.createOscillator();
+            const dustGain = this.ctx.createGain();
+            dustOsc.type = 'triangle';
+            dustOsc.frequency.setValueAtTime(2000 + Math.random() * 1500, dTime);
+            dustGain.gain.setValueAtTime(this.ambientVolume * (0.02 + Math.random() * 0.04), dTime);
+            dustGain.gain.exponentialRampToValueAtTime(0.0001, dTime + 0.01);
+            dustOsc.connect(dustGain);
+            dustGain.connect(this.ambientGain);
+            dustOsc.start(dTime);
+            dustOsc.stop(dTime + 0.015);
+          } catch {}
+        }, 220);
+        this.ambientNodes.push(dustInterval);
+
+      } else if (type === 'city') {
+        // Muffled neon city street hum: low traffic drone + gentle resonant wind
+        const trafficOsc1 = this.ctx.createOscillator();
+        const trafficGain1 = this.ctx.createGain();
+        trafficOsc1.type = 'sawtooth';
+        trafficOsc1.frequency.setValueAtTime(85, now);
+
+        const filter1 = this.ctx.createBiquadFilter();
+        filter1.type = 'lowpass';
+        filter1.frequency.setValueAtTime(140, now);
+
+        trafficGain1.gain.setValueAtTime(this.ambientVolume * 0.08, now);
+        trafficOsc1.connect(filter1);
+        filter1.connect(trafficGain1);
+        trafficGain1.connect(this.ambientGain);
+        trafficOsc1.start(now);
+        this.ambientNodes.push(trafficOsc1);
+
+        // Gentle city neon drone
+        const neonOsc = this.ctx.createOscillator();
+        const neonGain = this.ctx.createGain();
+        neonOsc.type = 'sine';
+        neonOsc.frequency.setValueAtTime(220, now);
+        neonGain.gain.setValueAtTime(this.ambientVolume * 0.02, now);
+        neonOsc.connect(neonGain);
+        neonGain.connect(this.ambientGain);
+        neonOsc.start(now);
+        this.ambientNodes.push(neonOsc);
+      }
+    } catch {}
+  }
 }
 
 export const soundEngine = new SoundEngine();

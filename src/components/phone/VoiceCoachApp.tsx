@@ -5,7 +5,7 @@ import { soundEngine } from '../../state/useAudioStore';
 import confetti from 'canvas-confetti';
 
 export const VoiceCoachApp: React.FC = () => {
-  const { state, modifyStats } = useGameStore();
+  const { state, modifyStats, triggerMinigame } = useGameStore();
   const [pitchHz, setPitchHz] = useState(195);
   const [isExercising, setIsExercising] = useState(false);
   const [feedback, setFeedback] = useState('Adjust your pitch slider or enable real mic tracking.');
@@ -197,6 +197,20 @@ export const VoiceCoachApp: React.FC = () => {
         <span className="text-xs bg-purple-950/60 border border-purple-500/40 text-purple-300 px-2 py-0.5 rounded-full font-mono">
           Level {Math.floor(state.stats.voiceResonance / 20) + 1}
         </span>
+      </div>
+
+      {/* Launch Full Interactive Minigame */}
+      <div className="mt-3 p-3.5 rounded-2xl bg-gradient-to-r from-indigo-950/90 via-purple-950/80 to-pink-950/90 border border-indigo-500/40 shadow-lg flex items-center justify-between gap-3">
+        <div>
+          <h4 className="text-xs font-bold text-indigo-200">Interactive Call Simulation Minigame</h4>
+          <p className="text-[10px] text-slate-300 mt-0.5">Practice realistic phone scenarios (Ordering coffee, HRT pharmacy refills, voicemails) with resonance scoring!</p>
+        </div>
+        <button
+          onClick={() => triggerMinigame('voice_tuner')}
+          className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-pink-500 to-indigo-600 text-white font-bold text-xs shadow-md hover:brightness-110 flex-shrink-0 cursor-pointer"
+        >
+          Launch Practice
+        </button>
       </div>
 
       {/* Main Pitch Tuner Meter */}

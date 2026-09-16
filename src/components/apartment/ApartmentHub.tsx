@@ -17,7 +17,7 @@ import { useGameStore } from '../../state/useGameStore';
 import { soundEngine } from '../../state/useAudioStore';
 
 export const ApartmentHub: React.FC = () => {
-  const { state, setViewMode, advanceDay, advanceTime } = useGameStore();
+  const { state, setViewMode, setScene, advanceDay, advanceTime } = useGameStore();
   const [selectedDecor, setSelectedDecor] = useState<string | null>(null);
 
   const era = state.transitionEra;
@@ -157,21 +157,48 @@ export const ApartmentHub: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap justify-center">
             <button
               onClick={handleRest}
-              className="px-4 py-2 rounded-xl bg-slate-900 border border-white/10 text-xs text-slate-300 hover:text-white hover:border-white/30 transition-all flex items-center gap-1.5 cursor-pointer"
+              className="px-3.5 py-2 rounded-xl bg-slate-900 border border-white/10 text-xs text-slate-300 hover:text-white hover:border-white/30 transition-all flex items-center gap-1.5 cursor-pointer"
             >
               <Coffee className="w-3.5 h-3.5 text-amber-400" />
-              <span>Rest & Hydrate (-10 Eng)</span>
+              <span>Rest (-10 Eng)</span>
             </button>
 
             <button
               onClick={handleSleep}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold text-xs hover:brightness-110 shadow-lg shadow-purple-600/30 transition-all flex items-center gap-1.5 cursor-pointer"
+              className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold text-xs hover:brightness-110 shadow-lg shadow-purple-600/30 transition-all flex items-center gap-1.5 cursor-pointer"
             >
               <Moon className="w-3.5 h-3.5 text-indigo-200" />
               <span>Sleep & End Day</span>
+            </button>
+          </div>
+
+          {/* Intimate Sleepover & Holiday Host Buttons */}
+          <div className="w-full flex flex-col gap-2 pt-1">
+            <button
+              onClick={() => {
+                soundEngine.playSparkle();
+                setScene('sleepover_hub', 'apartment_sleepovers');
+                setViewMode('novel');
+              }}
+              className="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-pink-900/60 via-rose-900/60 to-purple-900/60 border border-pink-500/40 text-pink-200 hover:text-white hover:border-pink-400 text-xs font-bold transition-all shadow flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02]"
+            >
+              <Heart className="w-3.5 h-3.5 text-pink-400" />
+              <span>Invite Suitor Over (Sleepover & Pillow Talk)</span>
+            </button>
+
+            <button
+              onClick={() => {
+                soundEngine.playVictory();
+                setScene('friendsgiving_start', 'friendsgiving');
+                setViewMode('novel');
+              }}
+              className="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-amber-950/70 via-purple-950/70 to-pink-950/70 border border-amber-500/40 text-amber-200 hover:text-white hover:border-amber-400 text-xs font-bold transition-all shadow flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02]"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <span>Host Trans Friendsgiving (Chosen Family)</span>
             </button>
           </div>
         </div>

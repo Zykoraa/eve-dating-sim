@@ -41,6 +41,7 @@ export const VisualNovelView: React.FC = () => {
     triggerMinigame,
     unlockEnding,
     unlockCG,
+    unlockApartmentDecor,
     toggleAutoPlay
   } = useGameStore();
 
@@ -71,12 +72,24 @@ export const VisualNovelView: React.FC = () => {
     }
     if (activeNode.soundEffect === 'playTension') soundEngine.playTension();
 
+    if (activeNode.ambientSound) {
+      if (activeNode.ambientSound === 'stop' || activeNode.ambientSound === 'none') {
+        soundEngine.stopAmbient();
+      } else {
+        soundEngine.playAmbient(activeNode.ambientSound as any);
+      }
+    }
+
     if (activeNode.id.startsWith('ending_')) {
       unlockEnding(activeNode.id);
     }
 
     if (activeNode.cgUrl) {
       unlockCG(activeNode.cgUrl);
+    }
+
+    if (activeNode.unlockDecor) {
+      unlockApartmentDecor(activeNode.unlockDecor);
     }
 
     // Typewriter
@@ -183,6 +196,7 @@ export const VisualNovelView: React.FC = () => {
     if (choice.setFlag) setFlag(choice.setFlag.key, choice.setFlag.value);
     if (choice.advanceEra) advanceEra(choice.advanceEra);
     if (choice.unlockCG) unlockCG(choice.unlockCG);
+    if (choice.unlockDecor) unlockApartmentDecor(choice.unlockDecor);
     if (choice.triggerMinigame) triggerMinigame(choice.triggerMinigame);
     if (choice.openPhone) setViewMode('phone');
     if (choice.openVanity) setViewMode('vanity');
@@ -469,11 +483,26 @@ export const VisualNovelView: React.FC = () => {
           {/* Suitor Character Sprite (Right) */}
           {suitorProfile && (
             <div className="relative max-h-[64vh] md:max-h-[70vh] flex justify-start transition-all duration-700 transform animate-float">
-              <img 
-                src={suitorProfile.spriteUrl || suitorProfile.avatarUrl} 
-                alt={suitorProfile.name} 
-                className="max-h-[62vh] md:max-h-[68vh] object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.8)] filter contrast-105"
-              />
+              {(() => {
+                const isSleepwearScene = Boolean(
+                  activeNode?.isIntimate || 
+                  activeNode?.id?.includes('sleepover') || 
+                  activeNode?.id?.includes('morning') || 
+                  activeNode?.id?.includes('bed') || 
+                  activeNode?.id?.includes('pillow') || 
+                  activeNode?.lightingMood === 'candlelight'
+                );
+                const sprite = (isSleepwearScene && suitorProfile.sleepwearSpriteUrl)
+                  ? suitorProfile.sleepwearSpriteUrl
+                  : (suitorProfile.spriteUrl || suitorProfile.avatarUrl);
+                return (
+                  <img 
+                    src={sprite} 
+                    alt={suitorProfile.name} 
+                    className="max-h-[62vh] md:max-h-[68vh] object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.8)] filter contrast-105"
+                  />
+                );
+              })()}
             </div>
           )}
         </div>

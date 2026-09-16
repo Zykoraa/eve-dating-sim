@@ -23,6 +23,7 @@ export interface SuitorAffection {
   respect: number;         // 0 to 100: Crucial metric (especially vs chasers like Marcus)
   unlockedDates: number;
   status: 'locked' | 'matched' | 'dating' | 'partner' | 'rejected' | 'dumped';
+  relationshipStyle?: 'monogamous' | 'polyamorous' | 'solo_poly' | 'exploring';
   flags: Record<string, boolean>;
 }
 
@@ -134,6 +135,7 @@ export interface GameSettings {
   autoAdvanceDelayMs: number;
   bgmVolume: number;
   sfxVolume: number;
+  ambientVolume?: number;
 }
 
 export interface SaveSlot {

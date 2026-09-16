@@ -650,6 +650,152 @@ describe('Game Data & Progression Integrity', () => {
     store.triggerMinigame('none');
     expect(useGameStore.getState().state.activeMinigame).toBe('none');
   });
+
+  it('should verify procedural ambient soundscapes and audio store methods', async () => {
+    const { soundEngine } = await import('../state/useAudioStore');
+    expect(soundEngine).toBeDefined();
+
+    // Verify ambient type tracking
+    soundEngine.playAmbient('rain');
+    expect(soundEngine.getCurrentAmbient()).toBe('rain');
+
+    soundEngine.playAmbient('fireplace');
+    expect(soundEngine.getCurrentAmbient()).toBe('fireplace');
+
+    soundEngine.playAmbient('vinyl');
+    expect(soundEngine.getCurrentAmbient()).toBe('vinyl');
+
+    soundEngine.playAmbient('city');
+    expect(soundEngine.getCurrentAmbient()).toBe('city');
+
+    soundEngine.setAmbientVolume(0.75);
+    expect(soundEngine.getAmbientVolume()).toBe(0.75);
+
+    soundEngine.stopAmbient();
+    expect(soundEngine.getCurrentAmbient()).toBe('none');
+  });
+
+  it('should verify all 5 suitor keepsakes exist in APARTMENT_DECORS and are unlockable', async () => {
+    const { APARTMENT_DECORS } = await import('../data/decorItems');
+    const { useGameStore } = await import('../state/useGameStore');
+
+    const liamOrchid = APARTMENT_DECORS.find(d => d.id === 'decor_orchid');
+    const chloePick = APARTMENT_DECORS.find(d => d.id === 'decor_bass_pick');
+    const julianCat = APARTMENT_DECORS.find(d => d.id === 'decor_cat_plush');
+    const mayaMug = APARTMENT_DECORS.find(d => d.id === 'decor_ceramic_mug');
+    const jesseWristband = APARTMENT_DECORS.find(d => d.id === 'decor_leather_wristband');
+
+    expect(liamOrchid).toBeDefined();
+    expect(liamOrchid?.giver).toBe('Liam Walker');
+
+    expect(chloePick).toBeDefined();
+    expect(chloePick?.giver).toBe('Chloe Vasquez');
+
+    expect(julianCat).toBeDefined();
+    expect(julianCat?.giver).toBe('Julian Chen');
+
+    expect(mayaMug).toBeDefined();
+    expect(mayaMug?.giver).toBe('Maya Lindqvist');
+
+    expect(jesseWristband).toBeDefined();
+    expect(jesseWristband?.giver).toBe('Jesse Nolan');
+
+    // Test store action unlockApartmentDecor
+    const store = useGameStore.getState();
+    store.unlockApartmentDecor('decor_leather_wristband');
+    const updated = useGameStore.getState().state.apartmentDecors.find(d => d.id === 'decor_leather_wristband');
+    expect(updated?.unlocked).toBe(true);
+  });
+
+  it('should verify Apartment Sleepovers scenario data integrity and suitor branches', async () => {
+    const { APARTMENT_SLEEPOVERS_SCENARIO } = await import('../data/scenarios/apartment_sleepovers');
+    const { getDialogueNode } = await import('../data/scenarios');
+
+    expect(APARTMENT_SLEEPOVERS_SCENARIO).toBeDefined();
+    expect(APARTMENT_SLEEPOVERS_SCENARIO.id).toBe('apartment_sleepovers');
+
+    // Verify all 5 suitor starting nodes exist and have ambient audio + mood lighting
+    const liamNode = getDialogueNode('sleepover_liam_start', 'apartment_sleepovers');
+    expect(liamNode).toBeDefined();
+    expect(liamNode?.ambientSound).toBe('rain');
+    expect(liamNode?.lightingMood).toBe('warm_amber');
+
+    const chloeNode = getDialogueNode('sleepover_chloe_start', 'apartment_sleepovers');
+    expect(chloeNode).toBeDefined();
+    expect(chloeNode?.ambientSound).toBe('vinyl');
+
+    const julianNode = getDialogueNode('sleepover_julian_start', 'apartment_sleepovers');
+    expect(julianNode).toBeDefined();
+    expect(julianNode?.ambientSound).toBe('city');
+
+    const jesseNode = getDialogueNode('sleepover_jesse_start', 'apartment_sleepovers');
+    expect(jesseNode).toBeDefined();
+    expect(jesseNode?.ambientSound).toBe('fireplace');
+
+    const mayaNode = getDialogueNode('sleepover_maya_start', 'apartment_sleepovers');
+    expect(mayaNode).toBeDefined();
+    expect(mayaNode?.ambientSound).toBe('vinyl');
+
+    // Verify decor unlocks in gift nodes
+    const liamGiftNode = getDialogueNode('sleepover_liam_gift_desc', 'apartment_sleepovers');
+    expect(liamGiftNode?.unlockDecor).toBe('decor_orchid');
+
+    const chloeGiftNode = getDialogueNode('sleepover_chloe_gift_desc', 'apartment_sleepovers');
+    expect(chloeGiftNode?.unlockDecor).toBe('decor_bass_pick');
+
+    const jesseGiftNode = getDialogueNode('sleepover_jesse_gift_desc', 'apartment_sleepovers');
+    expect(jesseGiftNode?.unlockDecor).toBe('decor_leather_wristband');
+
+    // Verify intimacy_touch minigame choice triggers
+    const liamIntimacyNode = getDialogueNode('sleepover_liam_intimacy_prompt', 'apartment_sleepovers');
+    expect(liamIntimacyNode?.choices?.some(c => c.triggerMinigame === 'intimacy_touch')).toBe(true);
+  });
+
+  it('should verify Trans Friendsgiving scenario integrity and chosen family toasts', async () => {
+    const { FRIENDSGIVING_SCENARIO } = await import('../data/scenarios/friendsgiving');
+    const { getDialogueNode } = await import('../data/scenarios');
+
+    expect(FRIENDSGIVING_SCENARIO).toBeDefined();
+    expect(FRIENDSGIVING_SCENARIO.id).toBe('friendsgiving');
+
+    const startNode = getDialogueNode('friendsgiving_start', 'friendsgiving');
+    expect(startNode).toBeDefined();
+    expect(startNode?.ambientSound).toBe('vinyl');
+
+    // Verify chosen family toast options
+    const toastNode = getDialogueNode('friendsgiving_toast_prompt', 'friendsgiving');
+    expect(toastNode).toBeDefined();
+    expect(toastNode?.choices?.length).toBe(3);
+    expect(toastNode?.choices?.some(c => c.setFlag?.key === 'friendsgiving_toast_resilience')).toBe(true);
+    expect(toastNode?.choices?.some(c => c.setFlag?.key === 'friendsgiving_toast_family')).toBe(true);
+    expect(toastNode?.choices?.some(c => c.setFlag?.key === 'friendsgiving_toast_joy')).toBe(true);
+
+    // Verify polaroid wall decor unlock
+    const polaroidNode = getDialogueNode('friendsgiving_polaroid_moment', 'friendsgiving');
+    expect(polaroidNode?.unlockDecor).toBe('decor_polaroid_wall');
+  });
+
+  it('should verify Suitor Sleepwear Sprites and CharacterProfile configuration', async () => {
+    const { CHARACTERS } = await import('../data/characters');
+
+    expect(CHARACTERS.liam.sleepwearSpriteUrl).toBe('/assets/characters/liam_sleepwear.png');
+    expect(CHARACTERS.chloe.sleepwearSpriteUrl).toBe('/assets/characters/chloe_sleepwear.png');
+    expect(CHARACTERS.julian.sleepwearSpriteUrl).toBe('/assets/characters/julian_sleepwear.png');
+    expect(CHARACTERS.jesse.sleepwearSpriteUrl).toBe('/assets/characters/jesse_sleepwear.png');
+    expect(CHARACTERS.maya.sleepwearSpriteUrl).toBe('/assets/characters/maya_sleepwear.png');
+  });
+
+  it('should verify VoiceTunerMinigame trigger and state integration', async () => {
+    const { useGameStore } = await import('../state/useGameStore');
+    const store = useGameStore.getState();
+
+    store.triggerMinigame('voice_tuner');
+    expect(useGameStore.getState().state.activeMinigame).toBe('voice_tuner');
+    expect(useGameStore.getState().state.viewMode).toBe('minigame');
+
+    store.triggerMinigame('none');
+    expect(useGameStore.getState().state.activeMinigame).toBe('none');
+  });
 });
 
 

@@ -104,6 +104,7 @@ export const CHARACTERS: Record<CharacterId, CharacterProfile> = {
     accentColor: '#059669',
     avatarUrl: '/assets/characters/liam_avatar.png',
     spriteUrl: '/assets/characters/liam.png',
+    sleepwearSpriteUrl: '/assets/characters/liam_sleepwear.png',
   },
   chloe: {
     id: 'chloe',
@@ -122,6 +123,7 @@ export const CHARACTERS: Record<CharacterId, CharacterProfile> = {
     accentColor: '#7c3aed',
     avatarUrl: '/assets/characters/chloe_avatar.png',
     spriteUrl: '/assets/characters/chloe.png',
+    sleepwearSpriteUrl: '/assets/characters/chloe_sleepwear.png',
   },
   julian: {
     id: 'julian',
@@ -140,6 +142,7 @@ export const CHARACTERS: Record<CharacterId, CharacterProfile> = {
     accentColor: '#2563eb',
     avatarUrl: '/assets/characters/julian_avatar.png',
     spriteUrl: '/assets/characters/julian.png',
+    sleepwearSpriteUrl: '/assets/characters/julian_sleepwear.png',
   },
   maya: {
     id: 'maya',
@@ -158,6 +161,7 @@ export const CHARACTERS: Record<CharacterId, CharacterProfile> = {
     accentColor: '#d97706',
     avatarUrl: '/assets/characters/maya_avatar.png',
     spriteUrl: '/assets/characters/maya.png',
+    sleepwearSpriteUrl: '/assets/characters/maya_sleepwear.png',
   },
   marcus: {
     id: 'marcus',
@@ -244,6 +248,7 @@ export const CHARACTERS: Record<CharacterId, CharacterProfile> = {
     accentColor: '#0891b2',
     avatarUrl: '/assets/characters/jesse_avatar.png',
     spriteUrl: '/assets/characters/jesse.png',
+    sleepwearSpriteUrl: '/assets/characters/jesse_sleepwear.png',
   },
   roxy: {
     id: 'roxy',

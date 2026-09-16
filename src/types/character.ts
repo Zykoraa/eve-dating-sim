@@ -31,6 +31,7 @@ export interface CharacterProfile {
   accentColor: string;
   avatarUrl: string;
   spriteUrl?: string;
+  sleepwearSpriteUrl?: string;
 }
 
 export interface EveEraVisual {

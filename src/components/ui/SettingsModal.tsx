@@ -1,11 +1,28 @@
 import React, { useState } from 'react';
-import { Settings, Volume2, VolumeX, Type, RotateCcw, X, Eye, ShieldAlert, Sliders, Flame } from 'lucide-react';
+import { 
+  Settings, 
+  Volume2, 
+  VolumeX, 
+  Type, 
+  RotateCcw, 
+  X, 
+  Eye, 
+  ShieldAlert, 
+  Sliders, 
+  Flame, 
+  CloudRain, 
+  Disc, 
+  Building, 
+  Radio
+} from 'lucide-react';
 import { useGameStore } from '../../state/useGameStore';
 import { soundEngine } from '../../state/useAudioStore';
 
 export const SettingsModal: React.FC = () => {
   const { state, setViewMode, resetGame, updateSettings } = useGameStore();
   const [vol, setVol] = useState(soundEngine.getVolume() * 100);
+  const [ambVol, setAmbVol] = useState(soundEngine.getAmbientVolume() * 100);
+  const [activeAmb, setActiveAmb] = useState(soundEngine.getCurrentAmbient());
   const [isMuted, setIsMuted] = useState(soundEngine.getMuted());
   const [textSpeed, setTextSpeed] = useState(state.textSpeedMs);
   const [confirmReset, setConfirmReset] = useState(false);
@@ -17,6 +34,7 @@ export const SettingsModal: React.FC = () => {
     autoAdvanceDelayMs: 2200,
     bgmVolume: 0.6,
     sfxVolume: 0.8,
+    ambientVolume: 0.5,
     adultContentEnabled: true,
   };
 
@@ -24,6 +42,23 @@ export const SettingsModal: React.FC = () => {
     setVol(newVal);
     soundEngine.setVolume(newVal / 100);
     updateSettings({ sfxVolume: newVal / 100 });
+  };
+
+  const handleAmbientVolumeChange = (newVal: number) => {
+    setAmbVol(newVal);
+    soundEngine.setAmbientVolume(newVal / 100);
+    updateSettings({ ambientVolume: newVal / 100 });
+  };
+
+  const handleAmbientSelect = (type: 'rain' | 'fireplace' | 'vinyl' | 'city' | 'none') => {
+    soundEngine.playClick();
+    if (activeAmb === type) {
+      soundEngine.stopAmbient();
+      setActiveAmb('none');
+    } else {
+      soundEngine.playAmbient(type);
+      setActiveAmb(type);
+    }
   };
 
   const handleMuteToggle = () => {
@@ -80,6 +115,82 @@ export const SettingsModal: React.FC = () => {
               }`}
             >
               {isMuted ? 'Unmute' : 'Mute'}
+            </button>
+          </div>
+        </div>
+
+        {/* Ambient Soundscapes & Procedural ASMR Loops */}
+        <div className="space-y-3 bg-gradient-to-br from-indigo-950/30 to-purple-950/20 p-3.5 rounded-2xl border border-indigo-500/20">
+          <div className="flex justify-between text-xs font-bold text-slate-300">
+            <span className="flex items-center gap-1.5">
+              <Radio className="w-4 h-4 text-indigo-400" />
+              Ambient Soundscapes & ASMR Loops:
+            </span>
+            <span className="text-indigo-400 font-mono">
+              {activeAmb !== 'none' ? `${activeAmb.toUpperCase()} (${Math.round(ambVol)}%)` : 'Off'}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <input
+              type="range"
+              min="0"
+              max="100"
+              disabled={isMuted}
+              value={ambVol}
+              onChange={(e) => handleAmbientVolumeChange(Number(e.target.value))}
+              className="flex-1 accent-indigo-500 cursor-pointer"
+            />
+          </div>
+
+          {/* Soundscape presets */}
+          <div className="grid grid-cols-4 gap-2 pt-1">
+            <button
+              onClick={() => handleAmbientSelect('rain')}
+              className={`p-2 rounded-xl text-xs font-medium border flex flex-col items-center gap-1 transition ${
+                activeAmb === 'rain'
+                  ? 'bg-cyan-950/80 border-cyan-400 text-cyan-200 shadow-md scale-105'
+                  : 'bg-slate-800/80 border-slate-700/80 text-slate-300 hover:text-white'
+              }`}
+            >
+              <CloudRain className="w-4 h-4 text-cyan-400" />
+              <span>Rain Glass</span>
+            </button>
+
+            <button
+              onClick={() => handleAmbientSelect('fireplace')}
+              className={`p-2 rounded-xl text-xs font-medium border flex flex-col items-center gap-1 transition ${
+                activeAmb === 'fireplace'
+                  ? 'bg-amber-950/80 border-amber-400 text-amber-200 shadow-md scale-105'
+                  : 'bg-slate-800/80 border-slate-700/80 text-slate-300 hover:text-white'
+              }`}
+            >
+              <Flame className="w-4 h-4 text-amber-400" />
+              <span>Fireplace</span>
+            </button>
+
+            <button
+              onClick={() => handleAmbientSelect('vinyl')}
+              className={`p-2 rounded-xl text-xs font-medium border flex flex-col items-center gap-1 transition ${
+                activeAmb === 'vinyl'
+                  ? 'bg-purple-950/80 border-purple-400 text-purple-200 shadow-md scale-105'
+                  : 'bg-slate-800/80 border-slate-700/80 text-slate-300 hover:text-white'
+              }`}
+            >
+              <Disc className="w-4 h-4 text-purple-400" />
+              <span>Vinyl Loop</span>
+            </button>
+
+            <button
+              onClick={() => handleAmbientSelect('city')}
+              className={`p-2 rounded-xl text-xs font-medium border flex flex-col items-center gap-1 transition ${
+                activeAmb === 'city'
+                  ? 'bg-rose-950/80 border-rose-400 text-rose-200 shadow-md scale-105'
+                  : 'bg-slate-800/80 border-slate-700/80 text-slate-300 hover:text-white'
+              }`}
+            >
+              <Building className="w-4 h-4 text-rose-400" />
+              <span>City Neon</span>
             </button>
           </div>
         </div>
