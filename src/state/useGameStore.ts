@@ -120,6 +120,15 @@ const INITIAL_SUITORS: Record<SuitorId, SuitorAffection> = {
     status: 'locked',
     flags: {},
   },
+  jesse: {
+    id: 'jesse',
+    name: 'Jesse Nolan',
+    affection: 10,
+    respect: 65,
+    unlockedDates: 0,
+    status: 'locked',
+    flags: {},
+  },
 };
 
 const INITIAL_EQUIPPED: EquippedOutfit = {
@@ -274,6 +283,7 @@ const INITIAL_STATE: GameState = {
     julian: 1,
     maya: 1,
     marcus: 1,
+    jesse: 1,
   },
   lastCompletedActivity: null,
 };
@@ -300,24 +310,36 @@ function notify() {
 
   const setScene = (sceneId: string, scenarioId?: string) => {
     let targetScenarioId = scenarioId;
+    let targetSceneId = sceneId;
+
     if (!targetScenarioId) {
-      for (const [sId, sData] of Object.entries(ALL_SCENARIOS)) {
-        if (sData.nodes[sceneId]) {
-          targetScenarioId = sId;
-          break;
+      if (ALL_SCENARIOS[sceneId]) {
+        targetScenarioId = sceneId;
+        if (!ALL_SCENARIOS[sceneId].nodes[sceneId]) {
+          targetSceneId = ALL_SCENARIOS[sceneId].initialSceneId;
+        }
+      } else {
+        for (const [sId, sData] of Object.entries(ALL_SCENARIOS)) {
+          if (sData.nodes[sceneId]) {
+            targetScenarioId = sId;
+            break;
+          }
         }
       }
+    } else if (ALL_SCENARIOS[targetScenarioId] && !ALL_SCENARIOS[targetScenarioId].nodes[targetSceneId]) {
+      targetSceneId = ALL_SCENARIOS[targetScenarioId].initialSceneId;
     }
-    const targetEra = targetScenarioId ? ALL_SCENARIOS[targetScenarioId]?.era : undefined;
-    const shouldAdvanceEra = targetEra && targetEra > globalState.transitionEra;
 
-    const visited = globalState.visitedScenes.includes(sceneId)
+    const targetEra = targetScenarioId ? ALL_SCENARIOS[targetScenarioId]?.era : undefined;
+    const shouldAdvanceEra = targetEra !== undefined && targetEra > globalState.transitionEra;
+
+    const visited = globalState.visitedScenes.includes(targetSceneId)
       ? globalState.visitedScenes
-      : [...globalState.visitedScenes, sceneId];
+      : [...globalState.visitedScenes, targetSceneId];
 
     globalState = {
       ...globalState,
-      currentSceneId: sceneId,
+      currentSceneId: targetSceneId,
       visitedScenes: visited,
       ...(targetScenarioId ? { currentScenarioId: targetScenarioId } : {}),
       ...(shouldAdvanceEra ? { transitionEra: targetEra } : {}),

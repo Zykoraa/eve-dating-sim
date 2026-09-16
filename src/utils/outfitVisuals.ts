@@ -212,6 +212,14 @@ export function getEveOutfitVisual(
         ? 'Marcus smirks, scanning you up and down: "Damn, Eve. You belong in a penthouse lounge tonight."'
         : 'Marcus shrugs: "Not bad. Could be higher-end though."',
       bonus: hasLBD ? 20 : -5,
+    },
+    {
+      suitorId: 'jesse',
+      name: 'Jesse',
+      reaction: hasPunkLeather || hasHoodie || hasMomJeans
+        ? 'Jesse gives a slow, appreciative nod with a half-smile: "Damn, Eve. You wear that with serious attitude. Looks amazing on you."'
+        : 'Jesse leans against their bike with an easy grin: "Looking sharp, Eve."',
+      bonus: (hasPunkLeather || hasHoodie || hasMomJeans) ? 22 : 8,
     }
   ];
 

@@ -417,6 +417,155 @@ describe('Game Data & Progression Integrity', () => {
     expect(afterDarkAct).toBeDefined();
     expect(afterDarkAct?.scenarioId).toBe('nsfw_hub');
   });
+
+  it('should verify new characters (Jesse, Roxie, Dr. Shaw) and dating/chat integration', async () => {
+    const { CHARACTERS } = await import('../data/characters');
+    const { DATING_APP_PROFILES, INITIAL_CHAT_THREADS } = await import('../data/datingProfiles');
+    const { useGameStore } = await import('../state/useGameStore');
+
+    // Characters definition
+    expect(CHARACTERS.jesse).toBeDefined();
+    expect(CHARACTERS.jesse.name).toBe('Jesse Nolan');
+    expect(CHARACTERS.jesse.pronouns).toBe('They/He');
+    expect(CHARACTERS.jesse.spriteUrl).toContain('jesse.png');
+
+    expect(CHARACTERS.roxy).toBeDefined();
+    expect(CHARACTERS.roxy.name).toBe('Roxie (Roxanne) Cruz');
+    expect(CHARACTERS.roxy.spriteUrl).toContain('roxy.png');
+
+    expect(CHARACTERS.dr_shaw).toBeDefined();
+    expect(CHARACTERS.dr_shaw.name).toBe('Dr. Evelyn Shaw, MD');
+    expect(CHARACTERS.dr_shaw.spriteUrl).toContain('dr_shaw.png');
+
+    // Dating app & chat
+    const jesseDating = DATING_APP_PROFILES.find(p => p.suitorId === 'jesse');
+    expect(jesseDating).toBeDefined();
+    expect(jesseDating?.bio).toContain('Chrome & Thorn');
+
+    const jesseChat = INITIAL_CHAT_THREADS.find(t => t.id === 'jesse');
+    expect(jesseChat).toBeDefined();
+    expect(jesseChat?.participantName).toContain('Jesse Nolan');
+
+    const roxyChat = INITIAL_CHAT_THREADS.find(t => t.id === 'roxy');
+    expect(roxyChat).toBeDefined();
+
+    const shawChat = INITIAL_CHAT_THREADS.find(t => t.id === 'dr_shaw');
+    expect(shawChat).toBeDefined();
+
+    // Game state suitors
+    const state = useGameStore.getState().state;
+    expect(state.suitors.jesse).toBeDefined();
+    expect(state.suitorRanks.jesse).toBe(1);
+  });
+
+  it('should verify all 5 new scenarios and their dialogue node flows', async () => {
+    const { ALL_SCENARIOS, getDialogueNode } = await import('../data/scenarios/index');
+
+    // 1. era0_family_dinner
+    expect(ALL_SCENARIOS.era0_family_dinner).toBeDefined();
+    const familyStart = getDialogueNode('era0_family_dinner_start');
+    expect(familyStart).toBeDefined();
+    const familyDecision = getDialogueNode('era0_family_eve_decision');
+    expect(familyDecision?.choices?.[0].text).toContain('My name is Eve, and I am a woman');
+
+    // 2. era1_bea_aftermath
+    expect(ALL_SCENARIOS.era1_bea_aftermath).toBeDefined();
+    const crisisFlashback = getDialogueNode('era1_bea_crisis_flashback');
+    expect(crisisFlashback?.text).toContain('handcuffs');
+    const doctorRelease = getDialogueNode('era1_bea_doctor_release');
+    expect(doctorRelease?.speaker).toBe('dr_shaw');
+    const darvoSpeech = getDialogueNode('era1_bea_darvo_speech');
+    expect(darvoSpeech?.speaker).toBe('bea');
+
+    // 3. era1_first_swimsuit
+    expect(ALL_SCENARIOS.era1_first_swimsuit).toBeDefined();
+    const swimsuitStart = getDialogueNode('era1_swimsuit_start');
+    expect(swimsuitStart?.background).toContain('boardwalk.png');
+    const swimsuitSpeech = getDialogueNode('era1_swimsuit_tara_speech');
+    expect(swimsuitSpeech?.choices?.[0].text).toContain('not hiding anymore');
+
+    // 4. era2_cabaret_and_ink
+    expect(ALL_SCENARIOS.era2_cabaret_and_ink).toBeDefined();
+    const cabaretIntro = getDialogueNode('era2_cabaret_intro');
+    expect(cabaretIntro?.background).toContain('cabaret.png');
+    const tattooBranch = getDialogueNode('era2_jesse_intro_branch');
+    expect(tattooBranch?.background).toContain('tattoo_shop.png');
+    const tattooNode = getDialogueNode('era2_jesse_tattoo');
+    expect(tattooNode).toBeDefined();
+    const overlookRide = getDialogueNode('era2_overlook_midnight_ride');
+    expect(overlookRide?.background).toContain('overlook.png');
+
+    // 5. era3_name_change
+    expect(ALL_SCENARIOS.era3_name_change).toBeDefined();
+    const courtSteps = getDialogueNode('era3_courthouse_steps');
+    expect(courtSteps?.background).toContain('courthouse.png');
+    const courtNode = getDialogueNode('era3_name_change_court');
+    expect(courtNode).toBeDefined();
+    const judgeCalls = getDialogueNode('era3_judge_calls_case');
+    expect(judgeCalls?.text).toContain('legal change of name');
+  });
+
+  it('should verify Jesse adult romance route in nsfw_encounters', async () => {
+    const { getDialogueNode } = await import('../data/scenarios/index');
+
+    const hub = getDialogueNode('nsfw_hub');
+    expect(hub?.choices?.some(c => c.text.includes('Jesse') && c.nextSceneId === 'nsfw_jesse_start')).toBe(true);
+
+    const jesseStart = getDialogueNode('nsfw_jesse_start');
+    expect(jesseStart).toBeDefined();
+    expect(jesseStart?.speaker).toBe('jesse');
+
+    const jesseKiss = getDialogueNode('nsfw_jesse_kiss');
+    expect(jesseKiss?.choices?.length).toBeGreaterThanOrEqual(2);
+
+    const jesseTouch = getDialogueNode('nsfw_jesse_touch');
+    expect(jesseTouch?.text).toContain('violet butterfly');
+
+    const jesseBed = getDialogueNode('nsfw_jesse_bed');
+    expect(jesseBed?.text).toContain('Every single curve of you');
+
+    const jesseClimax = getDialogueNode('nsfw_jesse_climax');
+    expect(jesseClimax).toBeDefined();
+
+    const jesseAftercare = getDialogueNode('nsfw_jesse_aftercare');
+    expect(jesseAftercare?.choices?.some(c => c.nextSceneId === 'nsfw_return_home')).toBe(true);
+  });
+
+  it('should verify new city activities and execution flow', async () => {
+    const { CITY_ACTIVITIES } = await import('../data/activities');
+    const { useGameStore } = await import('../state/useGameStore');
+
+    const jesseAct = CITY_ACTIVITIES.find(a => a.id === 'hangout_jesse_garage');
+    expect(jesseAct).toBeDefined();
+    expect(jesseAct?.scenarioId).toBe('era2_jesse_tattoo');
+
+    const roxyAct = CITY_ACTIVITIES.find(a => a.id === 'hangout_roxy_cabaret');
+    expect(roxyAct).toBeDefined();
+    expect(roxyAct?.scenarioId).toBe('era2_cabaret_debut');
+
+    const courtAct = CITY_ACTIVITIES.find(a => a.id === 'activity_courthouse_prep');
+    expect(courtAct).toBeDefined();
+    expect(courtAct?.scenarioId).toBe('era3_name_change_court');
+
+    const pierAct = CITY_ACTIVITIES.find(a => a.id === 'hangout_boardwalk_sunset');
+    expect(pierAct).toBeDefined();
+    expect(pierAct?.scenarioId).toBe('era1_first_swimsuit');
+
+    const spaAct = CITY_ACTIVITIES.find(a => a.id === 'wellness_spa_retreat');
+    expect(spaAct).toBeDefined();
+
+    const clinicAct = CITY_ACTIVITIES.find(a => a.id === 'wellness_clinic_visit');
+    expect(clinicAct).toBeDefined();
+
+    // Test executing an activity via store action
+    const store = useGameStore.getState();
+    const initialEnergy = store.state.calendar.energy;
+    store.performCityActivity(spaAct!);
+
+    const updatedState = useGameStore.getState().state;
+    expect(updatedState.lastCompletedActivity).toBe(spaAct!.name);
+    expect(updatedState.calendar.energy).toBe(initialEnergy - spaAct!.energyCost);
+  });
 });
 
 

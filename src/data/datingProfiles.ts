@@ -125,6 +125,34 @@ export const DATING_APP_PROFILES: DatingAppProfile[] = [
     redFlagsCount: 5,
     matchScore: 30,
   },
+  {
+    id: 'jesse_profile',
+    suitorId: 'jesse',
+    isFakeOrChaser: false,
+    name: 'Jesse 🏍️',
+    age: 25,
+    distance: '2 miles away',
+    occupation: 'Tattoo Artist & Custom Motorcycle Mechanic',
+    bio: 'Butch looking for someone sweet, witty, and passionate. Working with my hands at Chrome & Thorn all day. Will tattoo your favorite poetry, cook you late-night street tacos, and give you a helmet for midnight highway rides.',
+    photos: ['/assets/characters/jesse_avatar.png'],
+    prompts: [
+      {
+        question: 'The way to win me over',
+        answer: 'Authenticity. Say what you mean, wear what makes you feel like fire, and don’t apologize for taking up space.'
+      },
+      {
+        question: 'My favorite spot in the city',
+        answer: 'Whispering Pines Overlook at 1:30 AM with the engine cooling and the city glowing below.'
+      },
+      {
+        question: 'Trans & queer dating note',
+        answer: 'T4T and queer solidarity. Your body is your own sacred artwork—I’m just here to appreciate it.'
+      }
+    ],
+    transDisclosureOpinion: 'Butch/Femme T4T devotion & profound respect',
+    redFlagsCount: 0,
+    matchScore: 96,
+  },
   // --- Funny NPC Profiles to swipe on ---
   {
     id: 'chad_fish',
@@ -342,6 +370,120 @@ export const INITIAL_CHAT_THREADS: ChatThread[] = [
         tone: 'direct',
         statImpact: { confidence: 15 },
         suitorReply: 'Bea: "Fine! Throw away two years of our life over hormones! Don’t come crying back to me when no one wants you!" [Blocked]'
+      }
+    ]
+  },
+  {
+    id: 'jesse',
+    participantId: 'jesse',
+    participantName: 'Jesse Nolan 🏍️',
+    participantAvatar: '/assets/characters/jesse_avatar.png',
+    lastMessage: 'Saw your sketch of the violet butterfly. You’ve got a real eye for line work, Eve.',
+    unread: true,
+    messages: [
+      {
+        id: 'j1',
+        sender: 'suitor',
+        senderName: 'Jesse',
+        text: 'Hey Eve. Saw your sketch of the violet butterfly. You’ve got a real eye for line work.',
+        timestamp: '8:12 PM'
+      },
+      {
+        id: 'j2',
+        sender: 'suitor',
+        senderName: 'Jesse',
+        text: 'If you want to come by Chrome & Thorn this week, I can prep the stencil. First design is on the house for a kindred spirit.',
+        timestamp: '8:14 PM'
+      }
+    ],
+    pendingChoices: [
+      {
+        text: 'I’d love that, Jesse! I’ve been wanting a tattoo to commemorate starting HRT.',
+        tone: 'cautious',
+        statImpact: { confidence: 10, suitorAffection: 15, suitorRespect: 10 },
+        suitorReply: 'Jesse: "That’s sacred territory. I’ll make sure the studio is private and peaceful for you. Bring your favorite playlist."'
+      },
+      {
+        text: 'Only if I get to see that cafe racer you ride up close 😉',
+        tone: 'flirty',
+        statImpact: { confidence: 12, suitorAffection: 20, suitorRespect: 5 },
+        suitorReply: 'Jesse: "Deal. Put on your boots and hold on tight—I’ll take you over the suspension bridge at midnight."'
+      }
+    ]
+  },
+  {
+    id: 'roxy',
+    participantId: 'roxy',
+    participantName: 'Roxie Cruz 💃✨',
+    participantAvatar: '/assets/characters/roxy_avatar.png',
+    lastMessage: 'Darling! The Velvet Siren needs your radiance on Friday night!',
+    unread: true,
+    messages: [
+      {
+        id: 'r1',
+        sender: 'group_member',
+        senderName: 'Roxie',
+        text: 'EVE, mi reina! Chloe told me all about you and showed me your design portfolio!',
+        timestamp: '3:30 PM'
+      },
+      {
+        id: 'r2',
+        sender: 'group_member',
+        senderName: 'Roxie',
+        text: 'Darling! The Velvet Siren needs your radiance on Friday night! We’re hosting the Chrysalis Ball and you are sitting front row in my VIP booth.',
+        timestamp: '3:32 PM'
+      }
+    ],
+    pendingChoices: [
+      {
+        text: 'Roxie! I’m so honored! But what should I wear? I’m still figuring out my style!',
+        tone: 'cautious',
+        statImpact: { confidence: 15, suitorRespect: 10 },
+        suitorReply: 'Roxie: "Honey, wear that yellow daisy sundress or the riot punk leather! I have 3 makeup artists backstage ready to make your cheekbones cut glass!"'
+      },
+      {
+        text: 'Count me in! I’ll bring Tara and we’ll cheer loud enough to blow the roof off!',
+        tone: 'witty',
+        statImpact: { confidence: 15, suitorAffection: 10 },
+        suitorReply: 'Roxie: "YES! That’s the sisterhood spirit! Champagne is already on ice for my girls!"'
+      }
+    ]
+  },
+  {
+    id: 'dr_shaw',
+    participantId: 'dr_shaw',
+    participantName: 'Dr. Evelyn Shaw (St. Jude Clinic) 🩺',
+    participantAvatar: '/assets/characters/dr_shaw_avatar.png',
+    lastMessage: 'Good morning Eve! Your latest hormone bloodwork results just came in.',
+    unread: true,
+    messages: [
+      {
+        id: 'ds1',
+        sender: 'group_member',
+        senderName: 'Dr. Shaw',
+        text: 'Good morning Eve! Your latest hormone bloodwork results just came in.',
+        timestamp: '9:15 AM'
+      },
+      {
+        id: 'ds2',
+        sender: 'group_member',
+        senderName: 'Dr. Shaw',
+        text: 'Estradiol: 215 pg/mL, Testosterone: 18 ng/dL. These are textbook ideal feminine physiology levels. Your body is responding so gracefully. How have you been feeling emotionally?',
+        timestamp: '9:16 AM'
+      }
+    ],
+    pendingChoices: [
+      {
+        text: 'Dr. Shaw, thank you so much! I actually cried happy tears reading this. My chest is tender and my skin is so soft.',
+        tone: 'cautious',
+        statImpact: { confidence: 20, suitorRespect: 15 },
+        suitorReply: 'Dr. Shaw: "Those happy tears are well-earned, Eve. You’ve done the brave work of choosing yourself. I’ve renewed your prescription for 6 months. Keep blossoming!"'
+      },
+      {
+        text: 'Such a relief! Also, could we discuss starting progesterone at my next appointment?',
+        tone: 'direct',
+        statImpact: { confidence: 15, suitorRespect: 10 },
+        suitorReply: 'Dr. Shaw: "Absolutely. Micronized bio-identical progesterone can do wonders for mood stability, breast tissue rounding, and sleep. Let’s review it on Tuesday!"'
       }
     ]
   }

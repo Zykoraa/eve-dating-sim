@@ -42,6 +42,7 @@ export interface DialogueNode {
   shakeScreen?: boolean;
   choices?: ChoiceOption[];
   advanceEra?: TransitionEra;
+  setFlag?: { key: string; value: boolean };
   nextSceneId?: string;
 }
 

@@ -139,6 +139,9 @@ export const VisualNovelView: React.FC = () => {
       addDialogueHistory(activeNode.speakerTitle || activeNode.speaker, activeNode.text);
     } else if (!activeNode.choices && activeNode.nextSceneId) {
       soundEngine.playClick();
+      if (activeNode.setFlag) {
+        setFlag(activeNode.setFlag.key, activeNode.setFlag.value);
+      }
       if (activeNode.advanceEra) {
         advanceEra(activeNode.advanceEra);
       }

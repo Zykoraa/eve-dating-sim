@@ -14,7 +14,7 @@ export interface EveStats {
   cash: number;            // Money for outfits, makeup, and date activities
 }
 
-export type SuitorId = 'liam' | 'chloe' | 'julian' | 'maya' | 'marcus';
+export type SuitorId = 'liam' | 'chloe' | 'julian' | 'maya' | 'marcus' | 'jesse';
 
 export interface SuitorAffection {
   id: SuitorId;

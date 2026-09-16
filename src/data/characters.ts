@@ -1,5 +1,4 @@
-import type { CharacterProfile, EveEraVisual } from '../types/character';
-import type { SuitorId } from '../types/game';
+import type { CharacterProfile, CharacterId, EveEraVisual } from '../types/character';
 
 export const EVE_ERAS: Record<number, EveEraVisual> = {
   0: {
@@ -69,7 +68,7 @@ export const EVE_ERAS: Record<number, EveEraVisual> = {
   }
 };
 
-export const CHARACTERS: Record<SuitorId | 'eve' | 'tara' | 'bea', CharacterProfile> = {
+export const CHARACTERS: Record<CharacterId, CharacterProfile> = {
   eve: {
     id: 'eve',
     name: 'Eve',
@@ -219,5 +218,79 @@ export const CHARACTERS: Record<SuitorId | 'eve' | 'tara' | 'bea', CharacterProf
     accentColor: '#334155',
     avatarUrl: '/assets/characters/bea_avatar.png',
     spriteUrl: '/assets/characters/bea.png',
+  },
+  jesse: {
+    id: 'jesse',
+    name: 'Jesse Nolan',
+    age: 25,
+    pronouns: 'They/He',
+    tagline: 'Butch motorcycle mechanic & tattoo artist who believes skin is sacred canvas.',
+    occupation: 'Tattoo Artist & Custom Bike Builder at Chrome & Thorn',
+    bio: 'Grew up working on vintage engines and discovered tattooing as a way to help people reclaim their bodies. Quiet, calm, observant, and fiercely loyal. Rides a matte black cafe racer. Looking for someone genuine, creative, and willing to hold on tight when the highway opens up.',
+    aesthetic: 'Leather Moto Vest, Inked Arm Sleeves, White Ribbed Tank, Smoldering Hazel Eyes',
+    greenFlags: [
+      'Always checks verbal consent before touching',
+      'Builds custom protective hand guards for your bike rides',
+      'Deeply respectful of bodily autonomy and trans transitions',
+      'Cooks incredible midnight street tacos'
+    ],
+    redFlags: [
+      'Emotionally guarded early on until trust is earned',
+      'Smells faintly of stencil green soap and 2-stroke exhaust'
+    ],
+    idealDate: 'Tattooing a delicate custom design in the studio after hours, followed by a midnight ride to the mountain overlook for milkshakes.',
+    favoriteTopics: ['Custom bike mechanics', 'Tattoo needle physics', 'Queer butch/femme history', 'Midwest emo vinyl records'],
+    themeColor: '#06b6d4',
+    accentColor: '#0891b2',
+    avatarUrl: '/assets/characters/jesse_avatar.png',
+    spriteUrl: '/assets/characters/jesse.png',
+  },
+  roxy: {
+    id: 'roxy',
+    name: 'Roxie (Roxanne) Cruz',
+    age: 28,
+    pronouns: 'She/Her',
+    tagline: 'Cabaret queen, nightlife matriarch, and your fiercest trans sister.',
+    occupation: 'Cabaret Hostess & Master of Ceremonies at The Velvet Siren',
+    bio: '10 years transitioning in the city’s underground scene. Roxie took all the hard knocks so the younger girls wouldn’t have to. Big laugh, emerald velvet suits, killer contour, and a heart large enough to shelter the entire queer community. When she sees Eve, she immediately takes her under her wing.',
+    aesthetic: 'Emerald Velvet Blazers, Lace Bustiers, Luscious Dark Curls, Dazzling Red Carpet Smile',
+    greenFlags: [
+      'Throws you your first ever gender euphoria party',
+      'Tells you the raw, unfiltered truth with boundless love',
+      'Bans creepy chasers from the venue on sight'
+    ],
+    redFlags: [
+      'Will drag you on stage to sing before you feel 100% ready (she believes in you too much)'
+    ],
+    idealDate: 'Platonic / sisterly date: VIP booth champagne, teaching you how to walk in 5-inch stilettos, and gossiping backstage until 3 AM.',
+    favoriteTopics: ['Drag ball ballroom culture', 'Vocal projection techniques', 'Trans resilience history', 'Best wig tape and lace glue in the city'],
+    themeColor: '#10b981',
+    accentColor: '#059669',
+    avatarUrl: '/assets/characters/roxy_avatar.png',
+    spriteUrl: '/assets/characters/roxy.png',
+  },
+  dr_shaw: {
+    id: 'dr_shaw',
+    name: 'Dr. Evelyn Shaw, MD',
+    age: 45,
+    pronouns: 'She/Her',
+    tagline: 'Compassionate endocrinologist who fights tooth and nail for her trans patients.',
+    occupation: 'Lead Physician at St. Jude Community Gender Affirming Health Clinic',
+    bio: 'Has treated over 2,000 transgender patients across two decades. Believes gender-affirming medicine is an art of healing and autonomy, not gatekeeping. Patient, gentle, scientific, and fiercely protective of Eve when insurance companies try to deny hormone coverage or surgical prior authorizations.',
+    aesthetic: 'Clean White Lab Coat over Lavender Knit Sweaters, Tortoiseshell Glasses, Warm Maternal Reassurance',
+    greenFlags: [
+      'Celebrates your estradiol lab milestones with genuine joy',
+      'Writes ironclad legal medical letters with zero hesitation',
+      'Explains medical biochemistry in accessible, affirming language'
+    ],
+    redFlags: [
+      'Chronically overbooked because every queer person in the tri-state area wants her as their doctor'
+    ],
+    idealDate: 'Professional / mentor relationship: Affirming clinic check-up followed by handing you your new HRT dosage with a proud smile.',
+    favoriteTopics: ['Endocrine receptor pharmacology', 'Holistic transgender wellness', 'Health equity advocacy', 'Her rescue greyhounds'],
+    themeColor: '#a855f7',
+    accentColor: '#9333ea',
+    avatarUrl: '/assets/characters/dr_shaw_avatar.png',
+    spriteUrl: '/assets/characters/dr_shaw.png',
   }
 };

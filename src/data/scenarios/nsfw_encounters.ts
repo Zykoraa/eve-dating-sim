@@ -36,6 +36,11 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
           nextSceneId: 'nsfw_maya_start',
         },
         {
+          text: 'Ride on Jesse’s motorcycle back to their loft above the tattoo shop (Leather, Ink & Breathless Passion).',
+          tone: 'flirty',
+          nextSceneId: 'nsfw_jesse_start',
+        },
+        {
           text: 'Shut down Marcus’s late-night penthouse proposition once and for all (Raw Boundary Beatdown).',
           tone: 'bold',
           nextSceneId: 'nsfw_marcus_shutoff_start',
@@ -330,6 +335,99 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
         {
           text: 'Return to the midnight city map.',
           tone: 'chill',
+          nextSceneId: 'nsfw_hub',
+        }
+      ]
+    },
+
+    // --- JESSE: MOTORCYCLE LOFT & RAW INK PASSION ---
+    'nsfw_jesse_start': {
+      id: 'nsfw_jesse_start',
+      speaker: 'jesse',
+      activeSuitor: 'jesse',
+      speakerTitle: 'Jesse',
+      text: 'Jesse pulls down the heavy steel security gate of Chrome & Thorn with a satisfying mechanical clank, turning off the neon street signs. They hang up their keys and gesture up the open wrought-iron spiral staircase.',
+      background: '/assets/backgrounds/tattoo_shop.png',
+      soundEffect: 'playSparkle',
+      nextSceneId: 'nsfw_jesse_loft',
+    },
+    'nsfw_jesse_loft': {
+      id: 'nsfw_jesse_loft',
+      speaker: 'jesse',
+      activeSuitor: 'jesse',
+      speakerTitle: 'Jesse',
+      text: 'Upstairs, Jesse’s loft is warm with exposed brick, dim amber filament bulbs, and an old record player spinning slow jazz. Jesse shrugs off their leather vest, leaving them in a soft fitted black tank that highlights their inked shoulders and toned arms.',
+      background: '/assets/backgrounds/tattoo_shop.png',
+      soundEffect: 'playHeartbeat',
+      nextSceneId: 'nsfw_jesse_kiss',
+    },
+    'nsfw_jesse_kiss': {
+      id: 'nsfw_jesse_kiss',
+      speaker: 'jesse',
+      activeSuitor: 'jesse',
+      speakerTitle: 'Jesse',
+      text: 'Jesse steps close, their hands resting firmly and tenderly on your hips. Their hazel eyes search yours with pure, unapologetic hunger. “Eve... I’ve wanted you in my arms like this since the minute you walked through my door. You take my breath away.”',
+      background: '/assets/backgrounds/tattoo_shop.png',
+      choices: [
+        {
+          text: 'Slide your hands up Jesse’s chest and pull them down into a fierce, deep kiss.',
+          tone: 'bold',
+          statEffects: { confidence: 20, suitorAffection: { suitor: 'jesse', amount: 25 } },
+          nextSceneId: 'nsfw_jesse_touch',
+        },
+        {
+          text: '“Jesse... I’ve never felt this safe with someone. Please don’t hold back.”',
+          tone: 'vulnerable',
+          statEffects: { comfortRating: 25, suitorAffection: { suitor: 'jesse', amount: 20 } },
+          nextSceneId: 'nsfw_jesse_touch',
+        }
+      ]
+    },
+    'nsfw_jesse_touch': {
+      id: 'nsfw_jesse_touch',
+      speaker: 'narrator',
+      text: 'Jesse’s mouth crashes into yours—passionate, tender, and possessive in the most affirming way. Their calloused hands slide gently beneath your top, lifting it over your head. Their fingers trace the fresh, delicate curves of your chest and ribs before kissing the newly inked violet butterfly on your collarbone with reverent devotion.',
+      background: '/assets/backgrounds/tattoo_shop.png',
+      soundEffect: 'playSparkle',
+      nextSceneId: 'nsfw_jesse_bed',
+    },
+    'nsfw_jesse_bed': {
+      id: 'nsfw_jesse_bed',
+      speaker: 'jesse',
+      activeSuitor: 'jesse',
+      speakerTitle: 'Jesse',
+      text: 'Jesse tumbles you onto their low platform bed beneath heavy wool blankets. Their hands are everywhere—tracing your hips, your waist, your inner thighs. “You are breathtaking, Eve. Every single curve of you. Look at me... you are completely mine tonight.”',
+      background: '/assets/backgrounds/tattoo_shop.png',
+      soundEffect: 'playHeartbeat',
+      nextSceneId: 'nsfw_jesse_climax',
+    },
+    'nsfw_jesse_climax': {
+      id: 'nsfw_jesse_climax',
+      speaker: 'narrator',
+      text: 'Rhythmic, breathless gasps echo against the brick walls. Pleasure builds in cascading, full-body surges of intense euphoria. In Jesse’s strong embrace, there is zero shame, zero dysphoria, only raw, mutual ecstasy and the overwhelming sensation of being profoundly desired as a woman.',
+      background: '/assets/backgrounds/tattoo_shop.png',
+      soundEffect: 'playVictory',
+      nextSceneId: 'nsfw_jesse_aftercare',
+    },
+    'nsfw_jesse_aftercare': {
+      id: 'nsfw_jesse_aftercare',
+      speaker: 'jesse',
+      activeSuitor: 'jesse',
+      speakerTitle: 'Jesse',
+      text: 'Lying tangled in the dark hours before sunrise, Jesse pulls you against their chest, one arm wrapped securely around your waist while their thumb idly strokes your collarbone. “Any time the world gets too loud or cruel, Eve... you ride straight here. You’ll always have a home with me.”',
+      background: '/assets/backgrounds/tattoo_shop.png',
+      soundEffect: 'playSparkle',
+      choices: [
+        {
+          text: 'Rest your head against Jesse’s chest and drift to sleep, returning home at sunrise.',
+          tone: 'vulnerable',
+          statEffects: { confidence: 25, comfortRating: 30, dysphoria: -25 },
+          nextSceneId: 'nsfw_return_home',
+        },
+        {
+          text: 'Kiss Jesse’s jaw and return to the midnight city map.',
+          tone: 'chill',
+          statEffects: { confidence: 20 },
           nextSceneId: 'nsfw_hub',
         }
       ]

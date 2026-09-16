@@ -12,8 +12,10 @@ export type CharacterExpression =
   | 'smirk'
   | 'eyeroll';
 
+export type CharacterId = SuitorId | 'eve' | 'tara' | 'bea' | 'roxy' | 'dr_shaw';
+
 export interface CharacterProfile {
-  id: SuitorId | 'eve' | 'tara' | 'bea';
+  id: CharacterId;
   name: string;
   age: number;
   pronouns: string;

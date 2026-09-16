@@ -123,12 +123,29 @@ export const TitleScreen: React.FC = () => {
 
             {/* Quick Era Jumps */}
             <div className="pt-3 border-t border-slate-800/80 flex flex-wrap items-center gap-2 text-[11px] text-slate-400">
-              <span className="font-semibold text-slate-300">Jump to Chapter:</span>
               <button 
                 onClick={() => handleChapterJump('era0_start', 'era0_coming_out', 0)}
                 className="px-2 py-0.5 rounded bg-slate-900/80 hover:bg-slate-800 text-slate-300 border border-slate-700 transition"
               >
                 Ch 0: Coming Out (Boy-Mode)
+              </button>
+              <button 
+                onClick={() => handleChapterJump('era0_family_dinner_start', 'era0_family_dinner', 0)}
+                className="px-2 py-0.5 rounded bg-slate-900/80 hover:bg-slate-800 text-rose-300 border border-rose-500/40 transition"
+              >
+                Ch 0: Family Dinner
+              </button>
+              <button 
+                onClick={() => handleChapterJump('era1_bea_crisis_flashback', 'era1_bea_aftermath', 1)}
+                className="px-2 py-0.5 rounded bg-slate-900/80 hover:bg-slate-800 text-amber-300 border border-amber-500/40 transition"
+              >
+                Ch 1: Crisis Room & Evicting Bea
+              </button>
+              <button 
+                onClick={() => handleChapterJump('era1_swimsuit_start', 'era1_first_swimsuit', 1)}
+                className="px-2 py-0.5 rounded bg-slate-900/80 hover:bg-slate-800 text-cyan-300 border border-cyan-500/40 transition"
+              >
+                Ch 1: Pier Swimsuit
               </button>
               <button 
                 onClick={() => handleChapterJump('era1_cafe_intro', 'era1_dates', 1)}
@@ -137,10 +154,22 @@ export const TitleScreen: React.FC = () => {
                 Ch 1: Liam
               </button>
               <button 
+                onClick={() => handleChapterJump('era2_cabaret_intro', 'era2_cabaret_and_ink', 2)}
+                className="px-2 py-0.5 rounded bg-slate-900/80 hover:bg-purple-900/60 text-purple-300 border border-purple-500/40 transition"
+              >
+                Ch 2: Roxie Cabaret & Jesse Ink
+              </button>
+              <button 
                 onClick={() => handleChapterJump('era2_punk_intro', 'era2_dates', 2)}
                 className="px-2 py-0.5 rounded bg-slate-900/80 hover:bg-pink-900/60 text-pink-300 border border-slate-800 transition"
               >
                 Ch 2: Chloe
+              </button>
+              <button 
+                onClick={() => handleChapterJump('era3_courthouse_steps', 'era3_name_change', 3)}
+                className="px-2 py-0.5 rounded bg-slate-900/80 hover:bg-slate-800 text-emerald-300 border border-emerald-500/40 transition"
+              >
+                Ch 3: Legal Name Hearing
               </button>
               <button 
                 onClick={() => handleChapterJump('era3_julian_intro', 'era3_dates', 3)}

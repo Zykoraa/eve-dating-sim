@@ -14,7 +14,12 @@ import {
   ShoppingBag, 
   Home, 
   ChevronRight,
-  Filter
+  Filter,
+  Flame,
+  Sun,
+  Droplets,
+  Moon,
+  Award
 } from 'lucide-react';
 import { useGameStore } from '../../state/useGameStore';
 import { soundEngine } from '../../state/useAudioStore';
@@ -46,6 +51,11 @@ export const CityMapModal: React.FC = () => {
       case 'HeartHandshake': return <HeartHandshake className="w-5 h-5 text-rose-400" />;
       case 'Users': return <Users className="w-5 h-5 text-sky-400" />;
       case 'ShoppingBag': return <ShoppingBag className="w-5 h-5 text-amber-300" />;
+      case 'Flame': return <Flame className="w-5 h-5 text-orange-400" />;
+      case 'Sun': return <Sun className="w-5 h-5 text-yellow-400" />;
+      case 'Droplets': return <Droplets className="w-5 h-5 text-cyan-400" />;
+      case 'Moon': return <Moon className="w-5 h-5 text-indigo-300" />;
+      case 'Award': return <Award className="w-5 h-5 text-amber-400" />;
       default: return <Sparkles className="w-5 h-5 text-pink-400" />;
     }
   };

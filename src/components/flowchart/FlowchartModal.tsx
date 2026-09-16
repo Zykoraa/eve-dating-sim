@@ -24,6 +24,44 @@ interface StoryNodeMeta {
 }
 
 const STORY_NODES: StoryNodeMeta[] = [
+  // Era 0: Pre-HRT & Coming Out
+  {
+    id: 'era0_start',
+    scenarioId: 'era0_coming_out',
+    title: 'Bathroom Mirror & Choosing Truth',
+    era: 0,
+    chapter: 'Chapter 0',
+    description: 'Pre-HRT boy-mode exhaustion, late-night pizza with Tara, and deciding to live.',
+    type: 'milestone',
+  },
+  {
+    id: 'era0_family_dinner_start',
+    scenarioId: 'era0_family_dinner',
+    title: 'Sunday Dinner & "My Name is Eve"',
+    era: 0,
+    chapter: 'Chapter 0',
+    description: 'Suffocating collared shirt, facing familial microaggressions, and declaring authenticity.',
+    type: 'clash',
+  },
+  {
+    id: 'era1_bea_crisis_flashback',
+    scenarioId: 'era1_bea_aftermath',
+    title: '12-Hour Crisis Hold & Banishment',
+    era: 1,
+    chapter: 'Chapter 1',
+    description: 'Surviving Bea’s malicious 911 gun lie, changing deadbolts, and reclaiming sanctuary.',
+    type: 'clash',
+  },
+  {
+    id: 'era1_swimsuit_start',
+    scenarioId: 'era1_first_swimsuit',
+    title: 'Harborview Pier & The First Swimsuit',
+    era: 1,
+    chapter: 'Chapter 1',
+    description: 'Conquering beach vulnerability in a retro one-piece and feeling ocean surf on bare skin.',
+    type: 'milestone',
+  },
+
   // Era 1
   {
     id: 'prologue_start',
@@ -117,8 +155,35 @@ const STORY_NODES: StoryNodeMeta[] = [
     description: 'Receiving chosen family guidance and trans history from elder sister Maya.',
     type: 'milestone',
   },
+  {
+    id: 'era2_cabaret_intro',
+    scenarioId: 'era2_cabaret_and_ink',
+    title: 'The Velvet Siren Chrysalis Ball',
+    era: 2,
+    chapter: 'Chapter 2',
+    description: 'Backstage contour with Roxie and stepping into the blinding spotlight of chosen family.',
+    type: 'milestone',
+  },
+  {
+    id: 'era2_jesse_intro_branch',
+    scenarioId: 'era2_cabaret_and_ink',
+    title: 'Chrome & Thorn Sacred Ink & Night Ride',
+    era: 2,
+    chapter: 'Chapter 2',
+    description: 'Violet butterfly tattoo with Jesse Nolan followed by a midnight motorcycle ride to Whispering Pines.',
+    type: 'date',
+  },
 
   // Era 3
+  {
+    id: 'era3_courthouse_steps',
+    scenarioId: 'era3_name_change',
+    title: 'Municipal Legal Name & Gender Hearing',
+    era: 3,
+    chapter: 'Chapter 3',
+    description: 'Standing before the judge with Dr. Shaw’s letter to make Eve’s name and sex marker legally permanent.',
+    type: 'milestone',
+  },
   {
     id: 'era3_rooftop_intro',
     scenarioId: 'era3_dates',

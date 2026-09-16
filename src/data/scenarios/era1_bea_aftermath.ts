@@ -1,0 +1,155 @@
+import type { StoryScenario } from '../../types/story';
+
+export const ERA1_BEA_AFTERMATH_SCENARIO: StoryScenario = {
+  id: 'era1_bea_aftermath',
+  title: 'The 12-Hour Crisis Room & The Changed Locks',
+  chapter: 'Surviving Bea',
+  era: 1,
+  hrtMonth: 2,
+  description: 'Reclaiming your home and sovereignty after Bea’s fabricated 911 gun report had you handcuffed and locked in a hospital crisis room for 12 hours.',
+  initialSceneId: 'era1_bea_crisis_flashback',
+  nodes: {
+    'era1_bea_crisis_flashback': {
+      id: 'era1_bea_crisis_flashback',
+      speaker: 'narrator',
+      text: 'The sound of buzzing fluorescent tubes still echoes in your nightmares. The memory is seared into your skin: the cold steel of handcuffs digging into your wrists, four officers with guns drawn, shouting orders because Bea told 911 you were armed and dangerous.',
+      background: '/assets/backgrounds/street_night.png',
+      soundEffect: 'playTension',
+      shakeScreen: true,
+      nextSceneId: 'era1_bea_crisis_room_desc',
+    },
+    'era1_bea_crisis_room_desc': {
+      id: 'era1_bea_crisis_room_desc',
+      speaker: 'narrator',
+      text: 'You spent twelve humiliating, freezing hours locked inside a hospital crisis room on a thin paper mattress, stripped of your phone and dignity. It took twelve hours of psychiatric evaluations for the doctors to realize you were completely harmless—just a vulnerable trans woman whose partner weaponized the state out of spite.',
+      background: '/assets/backgrounds/clinic.png',
+      nextSceneId: 'era1_bea_doctor_release',
+    },
+    'era1_bea_doctor_release': {
+      id: 'era1_bea_doctor_release',
+      speaker: 'dr_shaw',
+      speakerTitle: 'ER Attending Doctor',
+      activeSuitor: 'dr_shaw',
+      text: '“You are completely cleared, Eve. We’ve noted in your chart that the 911 report was malicious and unsubstantiated. I’m so deeply sorry the system did this to you. Do you have somewhere safe to go where that person cannot reach you?”',
+      background: '/assets/backgrounds/clinic.png',
+      nextSceneId: 'era1_bea_eve_resolve',
+    },
+    'era1_bea_eve_resolve': {
+      id: 'era1_bea_eve_resolve',
+      speaker: 'eve',
+      eveExpression: 'fierce',
+      text: 'Walking out of that hospital at 6:00 AM into the morning sun, something inside you permanently shifted. You loved Bea for two years, but that person ceased to exist the moment she gambled with your life.',
+      background: '/assets/backgrounds/street_night.png',
+      choices: [
+        {
+          text: '“I am changing every lock on my door and packing all her boxes before noon.”',
+          tone: 'bold',
+          statEffects: { confidence: 25, dysphoria: -20 },
+          nextSceneId: 'era1_bea_changing_locks',
+        },
+        {
+          text: '“Call Tara right now. I will never spend another second in danger.”',
+          tone: 'cautious',
+          statEffects: { comfortRating: 20 },
+          nextSceneId: 'era1_bea_changing_locks',
+        }
+      ]
+    },
+    'era1_bea_changing_locks': {
+      id: 'era1_bea_changing_locks',
+      speaker: 'narrator',
+      text: 'By afternoon, the locksmith finishes installing heavy brass deadbolts. Stacked neatly in the hallway are six taped cardboard boxes with Bea’s name on them. Your apartment feels strangely vast, silent, and wonderfully safe.',
+      background: '/assets/backgrounds/eve_room.png',
+      nextSceneId: 'era1_bea_knocks_door',
+    },
+    'era1_bea_knocks_door': {
+      id: 'era1_bea_knocks_door',
+      speaker: 'narrator',
+      text: 'Then, the violent rattling of the doorknob begins. Keys scrape frantically against the newly replaced brass tumbler.',
+      background: '/assets/backgrounds/eve_room.png',
+      soundEffect: 'playTension',
+      shakeScreen: true,
+      nextSceneId: 'era1_bea_shouts_hallway',
+    },
+    'era1_bea_shouts_hallway': {
+      id: 'era1_bea_shouts_hallway',
+      speaker: 'bea',
+      speakerTitle: 'Bea',
+      activeSuitor: 'bea',
+      text: '“Eve?! Eve, open the damn door! Why won’t my key work?! Are my boxes out in the hallway?! Are you insane?! Open this door right now so we can talk!”',
+      background: '/assets/backgrounds/eve_room.png',
+      nextSceneId: 'era1_bea_eve_stands_ground',
+    },
+    'era1_bea_eve_stands_ground': {
+      id: 'era1_bea_eve_stands_ground',
+      speaker: 'eve',
+      eveExpression: 'fierce',
+      text: 'Your hands don’t shake. You stand firmly on your side of the solid wood door, listening to her furious, entitled demands.',
+      background: '/assets/backgrounds/eve_room.png',
+      choices: [
+        {
+          text: '“Your keys don’t work because you don’t live here anymore, Bea. Take your boxes and leave.”',
+          tone: 'bold',
+          statEffects: { confidence: 25 },
+          nextSceneId: 'era1_bea_darvo_speech',
+        },
+        {
+          text: '“You had the police drag me into a crisis room for 12 hours. If you take one step toward this door, I am calling building security and the precinct.”',
+          tone: 'bold',
+          statEffects: { confidence: 30, comfortRating: 15 },
+          nextSceneId: 'era1_bea_darvo_speech',
+        }
+      ]
+    },
+    'era1_bea_darvo_speech': {
+      id: 'era1_bea_darvo_speech',
+      speaker: 'bea',
+      speakerTitle: 'Bea',
+      activeSuitor: 'bea',
+      text: '“You think you’re so brave now, don’t you?! I saved your life that night! You were talking about taking estrogen and ruining everything we built! I called for help because you lost your mind! You owe me an apology!”',
+      background: '/assets/backgrounds/eve_room.png',
+      shakeScreen: true,
+      nextSceneId: 'era1_bea_tara_steps_in',
+    },
+    'era1_bea_tara_steps_in': {
+      id: 'era1_bea_tara_steps_in',
+      speaker: 'tara',
+      speakerTitle: 'Tara',
+      activeSuitor: 'tara',
+      text: 'The elevator bell dings down the hall. Tara emerges holding an iced coffee in one hand and her phone in the other, glaring at Bea like an apex predator.',
+      background: '/assets/backgrounds/eve_room.png',
+      soundEffect: 'playSparkle',
+      nextSceneId: 'era1_bea_tara_confronts',
+    },
+    'era1_bea_tara_confronts': {
+      id: 'era1_bea_tara_confronts',
+      speaker: 'tara',
+      speakerTitle: 'Tara',
+      activeSuitor: 'tara',
+      text: '“Beatrice. I am currently recording you on high definition video. The building super and two security guards are coming up in the service elevator right now. Pick up your luggage and scurry back to your corporate cubicle before you get trespass charges on your record.”',
+      background: '/assets/backgrounds/eve_room.png',
+      nextSceneId: 'era1_bea_retreats',
+    },
+    'era1_bea_retreats': {
+      id: 'era1_bea_retreats',
+      speaker: 'bea',
+      speakerTitle: 'Bea',
+      activeSuitor: 'bea',
+      text: 'Bea’s face turns scarlet with humiliation. She grabs her bags with frantic, trembling hands. “You’re all delusional! Both of you! Have fun living in your fantasy world!” Her footsteps scurry down the stairwell.',
+      background: '/assets/backgrounds/eve_room.png',
+      soundEffect: 'playVictory',
+      nextSceneId: 'era1_bea_aftermath_finale',
+    },
+    'era1_bea_aftermath_finale': {
+      id: 'era1_bea_aftermath_finale',
+      speaker: 'eve',
+      eveExpression: 'smile',
+      activeSuitor: 'tara',
+      text: 'You open the door and pull Tara inside for a crushing, tearful hug. The heavy deadbolt clicks smoothly behind you. For the first time in two years, your home belongs only to the woman you are blooming into.',
+      background: '/assets/backgrounds/eve_room.png',
+      soundEffect: 'playVictory',
+      setFlag: { key: 'bea_exiled_forever', value: true },
+      nextSceneId: 'prologue_apartment_intro',
+    }
+  }
+};
