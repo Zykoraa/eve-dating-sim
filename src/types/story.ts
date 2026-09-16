@@ -24,6 +24,7 @@ export interface ChoiceOption {
   openPhone?: boolean;
   openVanity?: boolean;
   advanceEra?: TransitionEra;
+  unlockCG?: string;
   soundEffect?: string;
   nextSceneId: string;
 }
@@ -37,6 +38,9 @@ export interface DialogueNode {
   suitorExpression?: CharacterExpression;
   activeSuitor?: SuitorId | 'tara' | 'bea' | string;
   background: string;
+  cgUrl?: string;
+  isIntimate?: boolean;
+  lightingMood?: 'candlelight' | 'neon' | 'starlight' | 'warm_amber' | 'rose_glow' | 'daylight';
   ambientSound?: string;
   soundEffect?: string;
   shakeScreen?: boolean;

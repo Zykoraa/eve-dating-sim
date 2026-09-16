@@ -40,6 +40,7 @@ export const VisualNovelView: React.FC = () => {
     setFlag, 
     triggerMinigame,
     unlockEnding,
+    unlockCG,
     toggleAutoPlay
   } = useGameStore();
 
@@ -72,6 +73,10 @@ export const VisualNovelView: React.FC = () => {
 
     if (activeNode.id.startsWith('ending_')) {
       unlockEnding(activeNode.id);
+    }
+
+    if (activeNode.cgUrl) {
+      unlockCG(activeNode.cgUrl);
     }
 
     // Typewriter
@@ -177,6 +182,7 @@ export const VisualNovelView: React.FC = () => {
 
     if (choice.setFlag) setFlag(choice.setFlag.key, choice.setFlag.value);
     if (choice.advanceEra) advanceEra(choice.advanceEra);
+    if (choice.unlockCG) unlockCG(choice.unlockCG);
     if (choice.triggerMinigame) triggerMinigame(choice.triggerMinigame);
     if (choice.openPhone) setViewMode('phone');
     if (choice.openVanity) setViewMode('vanity');
@@ -203,13 +209,36 @@ export const VisualNovelView: React.FC = () => {
 
   return (
     <div className={`relative w-full h-screen overflow-hidden bg-slate-950 flex flex-col justify-between ${shake ? 'animate-shake' : ''}`}>
-      {/* Dynamic Background */}
+      {/* Dynamic Background or Fullscreen Intimate CG */}
       <div 
-        className="absolute inset-0 bg-cover bg-center transition-all duration-700 filter brightness-90 scale-105"
-        style={{ backgroundImage: `url(${activeNode?.background || '/assets/backgrounds/title_bg.jpg'})` }}
+        className={`absolute inset-0 bg-cover bg-center transition-all duration-1000 ${
+          activeNode?.cgUrl ? 'scale-105 filter brightness-100 contrast-105' : 'scale-100 filter brightness-90'
+        }`}
+        style={{ backgroundImage: `url(${activeNode?.cgUrl || activeNode?.background || '/assets/backgrounds/title_bg.jpg'})` }}
       >
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
       </div>
+
+      {/* Intimacy Atmospheric Mood Lighting Overlay */}
+      {(activeNode?.isIntimate || activeNode?.cgUrl) && (
+        <div className="absolute inset-0 pointer-events-none z-10 transition-opacity duration-1000">
+          {activeNode?.lightingMood === 'neon' && (
+            <div className="absolute inset-0 bg-gradient-to-t from-fuchsia-950/50 via-purple-900/25 to-transparent mix-blend-screen animate-pulse" />
+          )}
+          {activeNode?.lightingMood === 'warm_amber' && (
+            <div className="absolute inset-0 bg-gradient-to-t from-amber-950/50 via-orange-950/30 to-transparent mix-blend-screen animate-pulse" />
+          )}
+          {activeNode?.lightingMood === 'starlight' && (
+            <div className="absolute inset-0 bg-gradient-to-t from-cyan-950/40 via-blue-950/25 to-transparent mix-blend-screen animate-pulse" />
+          )}
+          {activeNode?.lightingMood === 'candlelight' && (
+            <div className="absolute inset-0 bg-gradient-to-t from-rose-950/60 via-red-950/30 to-transparent mix-blend-screen animate-pulse" />
+          )}
+          {activeNode?.lightingMood === 'rose_glow' && (
+            <div className="absolute inset-0 bg-gradient-to-t from-pink-950/50 via-rose-900/25 to-transparent mix-blend-screen animate-pulse" />
+          )}
+        </div>
+      )}
 
       {/* Dynamic Atmospheric Particle Canvas */}
       <ParticleAtmosphere background={activeNode?.background || ''} />
@@ -226,6 +255,16 @@ export const VisualNovelView: React.FC = () => {
               Month {state.stats.hrtMonth} on E
             </span>
           </div>
+
+          {/* Intimate Encounter (18+) Badge */}
+          {(activeNode?.isIntimate || activeNode?.cgUrl) && (
+            <div className="flex items-center gap-1.5 bg-gradient-to-r from-rose-500/30 to-pink-600/30 border border-rose-500/50 px-3 py-1 rounded-full animate-pulse shadow-lg">
+              <Heart className="w-3.5 h-3.5 fill-rose-400 text-rose-400" />
+              <span className="text-[11px] font-bold text-rose-200 uppercase tracking-wide">
+                Intimate Encounter (18+)
+              </span>
+            </div>
+          )}
 
           {/* Suitor Dual Metric Pill (Affection & Respect) */}
           {suitorProfile && activeNode?.activeSuitor && (activeNode.activeSuitor in state.suitors) && (
@@ -364,6 +403,16 @@ export const VisualNovelView: React.FC = () => {
             <span className="hidden sm:inline">City</span>
           </button>
 
+          {/* CG & Endings Gallery Button */}
+          <button 
+            onClick={() => setViewMode('gallery')}
+            className="flex items-center gap-1.5 bg-gradient-to-r from-amber-950/60 to-purple-950/60 hover:from-amber-900/80 hover:to-purple-900/80 text-amber-200 text-xs px-2.5 py-1.5 rounded-xl border border-amber-500/40 transition-all hover:scale-105 shadow-sm"
+            title="CG & Endings Gallery"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+            <span className="hidden sm:inline">Gallery</span>
+          </button>
+
           {/* Backlog / History */}
           <button 
             onClick={() => setShowHistory(!showHistory)}
@@ -402,31 +451,33 @@ export const VisualNovelView: React.FC = () => {
         </div>
       </header>
 
-      {/* Central Character Stage (Positioned behind UI to prevent layout push-down) */}
-      <div className="absolute inset-0 z-10 flex items-end justify-center px-4 md:px-16 pointer-events-none pb-28 md:pb-36">
-        {/* Eve Character Sprite (Left / Center) */}
-        <div className="relative max-h-[62vh] md:max-h-[68vh] flex justify-end transition-all duration-700 transform hover:scale-105">
-          <EveCompositeSprite
-            customConfig={state.customEve}
-            equipped={state.equippedOutfit}
-            era={state.transitionEra}
-            expression={activeNode?.eveExpression || 'neutral'}
-            mode="fullbody"
-            className="max-h-[60vh] md:max-h-[66vh] w-auto animate-fadeIn"
-          />
-        </div>
-
-        {/* Suitor Character Sprite (Right) */}
-        {suitorProfile && (
-          <div className="relative max-h-[64vh] md:max-h-[70vh] flex justify-start transition-all duration-700 transform animate-float">
-            <img 
-              src={suitorProfile.spriteUrl || suitorProfile.avatarUrl} 
-              alt={suitorProfile.name} 
-              className="max-h-[62vh] md:max-h-[68vh] object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.8)] filter contrast-105"
+      {/* Central Character Stage (Hidden when full-screen visual CG is active to prevent obstruction) */}
+      {!activeNode?.cgUrl && (
+        <div className="absolute inset-0 z-10 flex items-end justify-center px-4 md:px-16 pointer-events-none pb-28 md:pb-36">
+          {/* Eve Character Sprite (Left / Center) */}
+          <div className="relative max-h-[62vh] md:max-h-[68vh] flex justify-end transition-all duration-700 transform hover:scale-105">
+            <EveCompositeSprite
+              customConfig={state.customEve}
+              equipped={state.equippedOutfit}
+              era={state.transitionEra}
+              expression={activeNode?.eveExpression || 'neutral'}
+              mode="fullbody"
+              className="max-h-[60vh] md:max-h-[66vh] w-auto animate-fadeIn"
             />
           </div>
-        )}
-      </div>
+
+          {/* Suitor Character Sprite (Right) */}
+          {suitorProfile && (
+            <div className="relative max-h-[64vh] md:max-h-[70vh] flex justify-start transition-all duration-700 transform animate-float">
+              <img 
+                src={suitorProfile.spriteUrl || suitorProfile.avatarUrl} 
+                alt={suitorProfile.name} 
+                className="max-h-[62vh] md:max-h-[68vh] object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.8)] filter contrast-105"
+              />
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Spacer to push dialogue to bottom */}
       <div className="flex-1" />

@@ -566,6 +566,81 @@ describe('Game Data & Progression Integrity', () => {
     expect(updatedState.lastCompletedActivity).toBe(spaAct!.name);
     expect(updatedState.calendar.energy).toBe(initialEnergy - spaAct!.energyCost);
   });
+
+  it('should verify CG gallery registry, visual intimacy encounters, and unlock mechanics', async () => {
+    const { CG_GALLERY_ITEMS } = await import('../data/cgs');
+    const { getDialogueNode } = await import('../data/scenarios/index');
+    const { useGameStore } = await import('../state/useGameStore');
+
+    // 1. Verify all 6 CG gallery items exist
+    expect(CG_GALLERY_ITEMS.length).toBe(6);
+    const cgIds = CG_GALLERY_ITEMS.map(c => c.id);
+    expect(cgIds).toContain('cg_chloe_intimacy');
+    expect(cgIds).toContain('cg_liam_intimacy');
+    expect(cgIds).toContain('cg_julian_intimacy');
+    expect(cgIds).toContain('cg_maya_intimacy');
+    expect(cgIds).toContain('cg_jesse_intimacy');
+    expect(cgIds).toContain('cg_eve_euphoria');
+
+    // 2. Verify Chloe visual intimacy node
+    const chloeBed = getDialogueNode('nsfw_chloe_bed');
+    expect(chloeBed).toBeDefined();
+    expect(chloeBed?.cgUrl).toBe('/assets/cg/cg_chloe_intimacy.png');
+    expect(chloeBed?.isIntimate).toBe(true);
+    expect(chloeBed?.lightingMood).toBe('neon');
+
+    // 3. Verify Liam visual intimacy node
+    const liamPassion = getDialogueNode('nsfw_liam_passion');
+    expect(liamPassion).toBeDefined();
+    expect(liamPassion?.cgUrl).toBe('/assets/cg/cg_liam_intimacy.png');
+    expect(liamPassion?.isIntimate).toBe(true);
+    expect(liamPassion?.lightingMood).toBe('warm_amber');
+
+    // 4. Verify Julian visual intimacy node
+    const julianBed = getDialogueNode('nsfw_julian_bed');
+    expect(julianBed).toBeDefined();
+    expect(julianBed?.cgUrl).toBe('/assets/cg/cg_julian_intimacy.png');
+    expect(julianBed?.isIntimate).toBe(true);
+    expect(julianBed?.lightingMood).toBe('starlight');
+
+    // 5. Verify Maya visual intimacy node
+    const mayaTouch = getDialogueNode('nsfw_maya_touch');
+    expect(mayaTouch).toBeDefined();
+    expect(mayaTouch?.cgUrl).toBe('/assets/cg/cg_maya_intimacy.png');
+    expect(mayaTouch?.isIntimate).toBe(true);
+    expect(mayaTouch?.lightingMood).toBe('candlelight');
+
+    // 6. Verify Jesse visual intimacy node
+    const jesseBedNode = getDialogueNode('nsfw_jesse_bed');
+    expect(jesseBedNode).toBeDefined();
+    expect(jesseBedNode?.cgUrl).toBe('/assets/cg/cg_jesse_intimacy.png');
+    expect(jesseBedNode?.isIntimate).toBe(true);
+    expect(jesseBedNode?.lightingMood).toBe('warm_amber');
+
+    // 7. Verify Eve solo euphoria visual node
+    const eveMirror = getDialogueNode('nsfw_eve_euphoria_mirror');
+    expect(eveMirror).toBeDefined();
+    expect(eveMirror?.cgUrl).toBe('/assets/cg/cg_eve_euphoria.png');
+    expect(eveMirror?.isIntimate).toBe(true);
+    expect(eveMirror?.lightingMood).toBe('rose_glow');
+
+    // 8. Verify unlockCG store action
+    const store = useGameStore.getState();
+    store.unlockCG('cg_chloe_intimacy');
+    expect(useGameStore.getState().state.unlockedCGs).toContain('cg_chloe_intimacy');
+
+    // Check no duplicate unlocks
+    store.unlockCG('cg_chloe_intimacy');
+    const filtered = useGameStore.getState().state.unlockedCGs.filter(id => id === 'cg_chloe_intimacy');
+    expect(filtered.length).toBe(1);
+
+    // 9. Verify saveGame and loadGame retains unlockedCGs
+    store.unlockCG('cg_liam_intimacy');
+    store.saveGame(99, 'Test CG Slot');
+    store.loadGame(99);
+    expect(useGameStore.getState().state.unlockedCGs).toContain('cg_liam_intimacy');
+  });
 });
+
 
 

@@ -2,43 +2,54 @@ import type { StoryScenario } from '../../types/story';
 
 export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
   id: 'nsfw_encounters',
-  title: 'After Dark: Adult Romance & Explicit Intimacy (18+)',
+  title: 'After Dark: Adult Romance & Visual Intimacy (18+)',
   chapter: 'After Dark',
   era: 2,
   hrtMonth: 6,
-  description: 'Uncensored 18+ adult encounters exploring deep romantic passion, T4T intimacy, body euphoria, and overcoming vulnerability in the bedroom.',
+  description: 'Multi-phase 18+ adult encounters exploring deep romantic passion, T4T intimacy, body euphoria, full-screen CG visual art, and tender aftercare.',
   initialSceneId: 'nsfw_hub',
   nodes: {
     'nsfw_hub': {
       id: 'nsfw_hub',
       speaker: 'narrator',
-      text: 'The city night turns electric and breathless. Whose bedroom, studio, or loft are you sneaking off to tonight for an intimate after-hours rendezvous?',
+      text: 'The city night turns electric, breathless, and full of unspoken longing. Whose sanctuary, loft, or bedroom are you sneaking off to tonight for an intimate rendezvous?',
       background: '/assets/backgrounds/street_night.png',
       choices: [
         {
-          text: 'Go back to Chloe’s apartment after her basement punk show (T4T Passion & Body Affirmation).',
+          text: 'Go back to Chloe’s loft after her basement punk show (T4T Passion & Neon Sheets).',
           tone: 'bold',
+          unlockCG: 'cg_chloe_intimacy',
           nextSceneId: 'nsfw_chloe_start',
         },
         {
-          text: 'Spend a rainy night by the fireplace at Liam’s rustic botanical cottage (Gentle & Passionate Devotion).',
+          text: 'Spend a rainy night by the fireplace at Liam’s rustic botanical cottage (Hearthside Devotion).',
           tone: 'flirty',
+          unlockCG: 'cg_liam_intimacy',
           nextSceneId: 'nsfw_liam_start',
         },
         {
-          text: 'Stay over at Julian’s studio after a late-night co-op gaming marathon (Quiet, Sensual Chemistry).',
+          text: 'Stay over at Julian’s tech studio after a late-night co-op gaming marathon (Starlight Chemistry).',
           tone: 'vulnerable',
+          unlockCG: 'cg_julian_intimacy',
           nextSceneId: 'nsfw_julian_start',
         },
         {
-          text: 'Accept Maya’s after-hours invitation to her candlelit art loft (Silk, Wine & Sapphic Reverence).',
+          text: 'Accept Maya’s after-hours invitation to her candlelit art loft (Silk, Wine & Sapphic Adoration).',
           tone: 'flirty',
+          unlockCG: 'cg_maya_intimacy',
           nextSceneId: 'nsfw_maya_start',
         },
         {
-          text: 'Ride on Jesse’s motorcycle back to their loft above the tattoo shop (Leather, Ink & Breathless Passion).',
+          text: 'Ride on Jesse’s motorcycle back to their workshop loft (Sacred Ink & Highway Soul).',
           tone: 'flirty',
+          unlockCG: 'cg_jesse_intimacy',
           nextSceneId: 'nsfw_jesse_start',
+        },
+        {
+          text: 'Spend a quiet, sensual evening admiring your body’s awakening in the mirror (Self-Love & Euphoria Milestone).',
+          tone: 'vulnerable',
+          unlockCG: 'cg_eve_euphoria',
+          nextSceneId: 'nsfw_eve_euphoria_start',
         },
         {
           text: 'Shut down Marcus’s late-night penthouse proposition once and for all (Raw Boundary Beatdown).',
@@ -53,13 +64,15 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
       ]
     },
 
-    // --- CHLOE: T4T PASSION & UNFILTERED ROMANCE ---
+    // =========================================================================
+    // --- CHLOE: T4T PASSION & UNFILTERED ROMANCE (CG: cg_chloe_intimacy) ---
+    // =========================================================================
     'nsfw_chloe_start': {
       id: 'nsfw_chloe_start',
       speaker: 'chloe',
       activeSuitor: 'chloe',
       speakerTitle: 'Chloe',
-      text: 'Chloe kicks her apartment door shut behind you, drops her heavy bass guitar in the corner, and slams you gently against the wall. Her hands tangle into your hair, her breath hot against your lips.',
+      text: 'Chloe kicks her apartment door shut behind you, drops her heavy bass guitar in the corner, and pulls you gently against the wall. Her hands tangle into your hair, her breath hot against your lips in the dim hallway.',
       background: '/assets/backgrounds/punk_club.png',
       soundEffect: 'playHeartbeat',
       nextSceneId: 'nsfw_chloe_kiss',
@@ -106,16 +119,48 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
     'nsfw_chloe_bed': {
       id: 'nsfw_chloe_bed',
       speaker: 'narrator',
-      text: 'She tumbles you onto her unmade mattress under the glow of neon fairy lights. Her kisses trail down your jaw, burning across your throat and collarbones. Every stroke of her hands is intuitive, knowing exactly where to touch and where to affirm.',
+      text: 'She leads you by the hand onto her low loft bed beneath a canopy of glowing neon magenta fairy lights. The pulse of the bass and the coolness of the sheets contrast with the intense heat radiating between your bodies.',
       background: '/assets/backgrounds/punk_club.png',
+      cgUrl: '/assets/cg/cg_chloe_intimacy.png',
+      isIntimate: true,
+      lightingMood: 'neon',
       soundEffect: 'playSparkle',
-      nextSceneId: 'nsfw_chloe_climax',
+      nextSceneId: 'nsfw_chloe_passion',
+    },
+    'nsfw_chloe_passion': {
+      id: 'nsfw_chloe_passion',
+      speaker: 'chloe',
+      activeSuitor: 'chloe',
+      speakerTitle: 'Chloe',
+      text: 'Chloe kisses down your jawline to your throat, her fingers gently parting your clothing. “Look at how beautiful you are under these lights, Eve. I want you to feel how desired you are—not in spite of who you are, but because of everything you are.”',
+      background: '/assets/backgrounds/punk_club.png',
+      cgUrl: '/assets/cg/cg_chloe_intimacy.png',
+      isIntimate: true,
+      lightingMood: 'neon',
+      soundEffect: 'playHeartbeat',
+      choices: [
+        {
+          text: 'Entwine your legs with hers and guide her hands, surrendering completely to the moment.',
+          tone: 'bold',
+          statEffects: { confidence: 20, suitorAffection: { suitor: 'chloe', amount: 25 } },
+          nextSceneId: 'nsfw_chloe_climax',
+        },
+        {
+          text: 'Bury your face in her neck, whispering words of sweet praise as pleasure surges.',
+          tone: 'vulnerable',
+          statEffects: { comfortRating: 20, suitorAffection: { suitor: 'chloe', amount: 20 } },
+          nextSceneId: 'nsfw_chloe_climax',
+        }
+      ]
     },
     'nsfw_chloe_climax': {
       id: 'nsfw_chloe_climax',
       speaker: 'narrator',
-      text: 'Gasps and soft curses fill the dim room as pleasure builds in rolling, full-body waves—electric and intense. For the first time, your mind isn’t trapped in dissociation; you are completely present in your body, trembling in raw, joyful release in Chloe’s arms.',
+      text: 'Gasps and soft cries fill the dim room as pleasure builds in rolling, full-body waves—electric, affirming, and boundless. For the first time, your mind isn’t trapped in dissociation; you are completely present in your body, trembling in raw, joyful release in Chloe’s arms.',
       background: '/assets/backgrounds/punk_club.png',
+      cgUrl: '/assets/cg/cg_chloe_intimacy.png',
+      isIntimate: true,
+      lightingMood: 'neon',
       soundEffect: 'playVictory',
       nextSceneId: 'nsfw_chloe_aftercare',
     },
@@ -142,7 +187,9 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
       ]
     },
 
-    // --- LIAM: GENTLE & PASSIONATE DEVOTION ---
+    // =========================================================================
+    // --- LIAM: GENTLE & PASSIONATE DEVOTION (CG: cg_liam_intimacy) ---
+    // =========================================================================
     'nsfw_liam_start': {
       id: 'nsfw_liam_start',
       speaker: 'liam',
@@ -194,8 +241,11 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
     'nsfw_liam_passion': {
       id: 'nsfw_liam_passion',
       speaker: 'narrator',
-      text: 'He lays you back onto the soft sheepskin rug before the blazing hearth. His kisses are deep, patient, and intoxicating, trailing down your neck, stomach, and thighs with steady, worshipful heat.',
+      text: 'He lays you back onto the soft sheepskin rug before the blazing hearth. The warm amber firelight glows across the curves of your skin as his hands and mouth move with devoted, patient heat.',
       background: '/assets/backgrounds/eve_room.png',
+      cgUrl: '/assets/cg/cg_liam_intimacy.png',
+      isIntimate: true,
+      lightingMood: 'warm_amber',
       soundEffect: 'playSparkle',
       nextSceneId: 'nsfw_liam_climax',
     },
@@ -204,6 +254,9 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
       speaker: 'narrator',
       text: 'The rhythm is sweet and breathless, rising to an overwhelming crescendo that leaves you crying out against his shoulder, holding onto his broad back as pure physical ecstasy washes away every lingering ounce of self-doubt.',
       background: '/assets/backgrounds/eve_room.png',
+      cgUrl: '/assets/cg/cg_liam_intimacy.png',
+      isIntimate: true,
+      lightingMood: 'warm_amber',
       soundEffect: 'playVictory',
       nextSceneId: 'nsfw_liam_aftercare',
     },
@@ -230,13 +283,15 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
       ]
     },
 
-    // --- JULIAN: QUIET, SENSUAL CHEMISTRY ---
+    // =========================================================================
+    // --- JULIAN: QUIET, SENSUAL CHEMISTRY (CG: cg_julian_intimacy) ---
+    // =========================================================================
     'nsfw_julian_start': {
       id: 'nsfw_julian_start',
       speaker: 'julian',
       activeSuitor: 'julian',
       speakerTitle: 'Julian',
-      text: '3:00 AM in Julian’s cozy loft. The dual monitors glow softly behind you. Julian reaches over, takes off his wireframe glasses, and sets them on his desk. The quiet, shy boy is completely gone—replaced by focused, smoldering intent.',
+      text: '3:00 AM in Julian’s cozy highrise loft. The dual ultrawide monitors cast soft cyan illumination behind you. Julian reaches over, takes off his wireframe glasses, and sets them on his desk. The shy coder boy is gone—replaced by intense, smoldering intent.',
       background: '/assets/backgrounds/eve_room.png',
       soundEffect: 'playHeartbeat',
       nextSceneId: 'nsfw_julian_pull',
@@ -246,7 +301,7 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
       speaker: 'julian',
       activeSuitor: 'julian',
       speakerTitle: 'Julian',
-      text: 'He pulls you down into his lap on the sofa, his hands resting firmly at the small of your back. “I spent all night pretending to read code while all I could think about was tasting you.”',
+      text: 'He pulls you down into his lap on the sofa, his hands resting firmly at the small of your back. “I spent all night pretending to debug code while all I could think about was tasting your lips.”',
       background: '/assets/backgrounds/eve_room.png',
       nextSceneId: 'nsfw_julian_kiss',
     },
@@ -260,21 +315,37 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
           text: 'Guide his hands where you want them most, whispering what feels good.',
           tone: 'bold',
           statEffects: { confidence: 20, suitorAffection: { suitor: 'julian', amount: 20 } },
-          nextSceneId: 'nsfw_julian_climax',
+          nextSceneId: 'nsfw_julian_bed',
         },
         {
           text: 'Melt into his embrace, letting him take total control of the night.',
           tone: 'flirty',
           statEffects: { comfortRating: 15, suitorAffection: { suitor: 'julian', amount: 20 } },
-          nextSceneId: 'nsfw_julian_climax',
+          nextSceneId: 'nsfw_julian_bed',
         }
       ]
+    },
+    'nsfw_julian_bed': {
+      id: 'nsfw_julian_bed',
+      speaker: 'julian',
+      activeSuitor: 'julian',
+      speakerTitle: 'Julian',
+      text: 'Julian lifts you in his arms and carries you onto the platform bed by the floor-to-ceiling glass window, with the starlit skyline twinkling far below. “Every line of code, every world I’ve ever built... none of it compares to holding you.”',
+      background: '/assets/backgrounds/eve_room.png',
+      cgUrl: '/assets/cg/cg_julian_intimacy.png',
+      isIntimate: true,
+      lightingMood: 'starlight',
+      soundEffect: 'playSparkle',
+      nextSceneId: 'nsfw_julian_climax',
     },
     'nsfw_julian_climax': {
       id: 'nsfw_julian_climax',
       speaker: 'narrator',
-      text: 'The intimacy is electric, smart, and intensely communicative. Julian whispers endless quiet praise against your skin until you both shatter together in breathless, dizzying ecstasy.',
+      text: 'The intimacy is electric, smart, and intensely communicative. Julian whispers endless quiet praise against your skin as the skyline glimmers, until you both shatter together in breathless, dizzying ecstasy.',
       background: '/assets/backgrounds/eve_room.png',
+      cgUrl: '/assets/cg/cg_julian_intimacy.png',
+      isIntimate: true,
+      lightingMood: 'starlight',
       soundEffect: 'playVictory',
       choices: [
         {
@@ -291,13 +362,15 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
       ]
     },
 
-    // --- MAYA: BOHEMIAN SAPPHIC REVERENCE ---
+    // =========================================================================
+    // --- MAYA: BOHEMIAN SAPPHIC REVERENCE (CG: cg_maya_intimacy) ---
+    // =========================================================================
     'nsfw_maya_start': {
       id: 'nsfw_maya_start',
       speaker: 'maya',
       activeSuitor: 'maya',
       speakerTitle: 'Maya',
-      text: 'Candlelight flickers against the raw brick walls of Maya’s contemporary gallery loft. Scent of amber incense and natural wine. Maya wraps a sheer gold silk scarf around your bare shoulders, her eyes dark with devotion.',
+      text: 'Candlelight flickers against the raw brick walls of Maya’s contemporary gallery loft. Scent of amber incense, natural wine, and dried lavender fills the air. Maya wraps a sheer gold silk scarf around your bare shoulders, her dark eyes filled with adoration.',
       background: '/assets/backgrounds/rooftop_lounge.png',
       soundEffect: 'playHeartbeat',
       nextSceneId: 'nsfw_maya_devotion',
@@ -307,7 +380,7 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
       speaker: 'maya',
       activeSuitor: 'maya',
       speakerTitle: 'Maya',
-      text: '“Women are the only true divinity in this cold world, Eve. And you... you have fought so hard to exist. Let me worship your temple tonight.”',
+      text: '“Women are the only true divinity in this cold world, Eve. And you... you have fought with so much courage to exist. Let me worship your temple tonight.”',
       background: '/assets/backgrounds/rooftop_lounge.png',
       nextSceneId: 'nsfw_maya_touch',
     },
@@ -316,14 +389,20 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
       speaker: 'narrator',
       text: 'She dips her fingers in fragrant warm jasmine oil, trailing them along your collarbones, down your ribs, and over the curve of your hips. Her lips follow, tasting every inch of skin with unhurried, intoxicating Sapphic mastery.',
       background: '/assets/backgrounds/rooftop_lounge.png',
+      cgUrl: '/assets/cg/cg_maya_intimacy.png',
+      isIntimate: true,
+      lightingMood: 'candlelight',
       soundEffect: 'playSparkle',
       nextSceneId: 'nsfw_maya_climax',
     },
     'nsfw_maya_climax': {
       id: 'nsfw_maya_climax',
       speaker: 'narrator',
-      text: 'A night of decadent, transcendent bliss where every touch celebrates your womanhood without shame or hesitation. You fall asleep entangled in silk sheets, feeling completely reborn.',
+      text: 'A night of decadent, transcendent bliss where every touch celebrates your womanhood without shame or hesitation. You fall asleep entangled in burgundy silk sheets, feeling completely reborn in her embrace.',
       background: '/assets/backgrounds/rooftop_lounge.png',
+      cgUrl: '/assets/cg/cg_maya_intimacy.png',
+      isIntimate: true,
+      lightingMood: 'candlelight',
       soundEffect: 'playVictory',
       choices: [
         {
@@ -340,7 +419,9 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
       ]
     },
 
-    // --- JESSE: MOTORCYCLE LOFT & RAW INK PASSION ---
+    // =========================================================================
+    // --- JESSE: MOTORCYCLE LOFT & RAW INK PASSION (CG: cg_jesse_intimacy) ---
+    // =========================================================================
     'nsfw_jesse_start': {
       id: 'nsfw_jesse_start',
       speaker: 'jesse',
@@ -398,6 +479,9 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
       speakerTitle: 'Jesse',
       text: 'Jesse tumbles you onto their low platform bed beneath heavy wool blankets. Their hands are everywhere—tracing your hips, your waist, your inner thighs. “You are breathtaking, Eve. Every single curve of you. Look at me... you are completely mine tonight.”',
       background: '/assets/backgrounds/tattoo_shop.png',
+      cgUrl: '/assets/cg/cg_jesse_intimacy.png',
+      isIntimate: true,
+      lightingMood: 'warm_amber',
       soundEffect: 'playHeartbeat',
       nextSceneId: 'nsfw_jesse_climax',
     },
@@ -406,6 +490,9 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
       speaker: 'narrator',
       text: 'Rhythmic, breathless gasps echo against the brick walls. Pleasure builds in cascading, full-body surges of intense euphoria. In Jesse’s strong embrace, there is zero shame, zero dysphoria, only raw, mutual ecstasy and the overwhelming sensation of being profoundly desired as a woman.',
       background: '/assets/backgrounds/tattoo_shop.png',
+      cgUrl: '/assets/cg/cg_jesse_intimacy.png',
+      isIntimate: true,
+      lightingMood: 'warm_amber',
       soundEffect: 'playVictory',
       nextSceneId: 'nsfw_jesse_aftercare',
     },
@@ -433,7 +520,60 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
       ]
     },
 
+    // =========================================================================
+    // --- EVE SOLO: THE AWAKENING: MIRROR OF EUPHORIA (CG: cg_eve_euphoria) ---
+    // =========================================================================
+    'nsfw_eve_euphoria_start': {
+      id: 'nsfw_eve_euphoria_start',
+      speaker: 'eve',
+      eveExpression: 'blush',
+      text: 'You lock your apartment door, dim the ceiling lights, and light your lavender candle. The golden hour sunset streams through your sheer curtains, casting warm amber and rose radiance across your bedroom.',
+      background: '/assets/backgrounds/eve_room.png',
+      soundEffect: 'playSparkle',
+      nextSceneId: 'nsfw_eve_euphoria_mirror',
+    },
+    'nsfw_eve_euphoria_mirror': {
+      id: 'nsfw_eve_euphoria_mirror',
+      speaker: 'eve',
+      eveExpression: 'smile',
+      text: 'You slip into delicate blush silk lingerie that you bought last weekend. Stepping in front of the full-length mirror, you pause. For twenty-three years, this reflection brought only distress and disconnection. But tonight...',
+      background: '/assets/backgrounds/eve_room.png',
+      cgUrl: '/assets/cg/cg_eve_euphoria.png',
+      isIntimate: true,
+      lightingMood: 'rose_glow',
+      soundEffect: 'playHeartbeat',
+      nextSceneId: 'nsfw_eve_euphoria_touch',
+    },
+    'nsfw_eve_euphoria_touch': {
+      id: 'nsfw_eve_euphoria_touch',
+      speaker: 'narrator',
+      text: 'Your hands trace the gentle, blossoming curves of your hips and the soft contours of your chest. The estrogen has softened your skin to velvet. Tears of profound relief prick at the corners of your eyes: “This is me. I didn’t just survive transition... I became her.”',
+      background: '/assets/backgrounds/eve_room.png',
+      cgUrl: '/assets/cg/cg_eve_euphoria.png',
+      isIntimate: true,
+      lightingMood: 'rose_glow',
+      soundEffect: 'playVictory',
+      nextSceneId: 'nsfw_eve_euphoria_peace',
+    },
+    'nsfw_eve_euphoria_peace': {
+      id: 'nsfw_eve_euphoria_peace',
+      speaker: 'eve',
+      eveExpression: 'smile',
+      text: 'You blow out the candle and curl into your plush bedsheets, feeling thoroughly loved, healed, and whole. You do not need anyone else’s permission to exist in your beauty.',
+      background: '/assets/backgrounds/eve_room.png',
+      choices: [
+        {
+          text: 'Rest with deep contentment, fully celebrating your womanhood.',
+          tone: 'chill',
+          statEffects: { confidence: 30, dysphoria: -35, comfortRating: 30 },
+          nextSceneId: 'nsfw_return_home',
+        }
+      ]
+    },
+
+    // =========================================================================
     // --- MARCUS: RAW BOUNDARY BEATDOWN ---
+    // =========================================================================
     'nsfw_marcus_shutoff_start': {
       id: 'nsfw_marcus_shutoff_start',
       speaker: 'marcus',

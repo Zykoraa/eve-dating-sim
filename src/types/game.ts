@@ -147,6 +147,7 @@ export interface SaveSlot {
   stats: EveStats;
   equippedOutfit: EquippedOutfit;
   unlockedOutfits?: string[];
+  unlockedCGs?: string[];
   flags?: Record<string, boolean>;
   unlockedEndings?: string[];
   suitors: Record<SuitorId, SuitorAffection>;
