@@ -94,7 +94,7 @@ export interface CityActivity {
   scenarioId?: string;
 }
 
-export type MinigameType = 'boundary_clash' | 'vibe_check' | 'voice_tuner' | 'eyeliner' | 'mirror_monologue' | 'none';
+export type MinigameType = 'boundary_clash' | 'vibe_check' | 'voice_tuner' | 'eyeliner' | 'mirror_monologue' | 'intimacy_touch' | 'none';
 
 export interface InstaComment {
   id: string;

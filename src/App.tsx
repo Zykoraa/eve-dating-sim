@@ -7,6 +7,7 @@ import { VanityMirror } from './components/vanity/VanityMirror';
 import { BoundaryClash } from './components/minigames/BoundaryClash';
 import { EyelinerMinigame } from './components/minigames/EyelinerMinigame';
 import { MirrorMonologue } from './components/minigames/MirrorMonologue';
+import { IntimacyTouchMinigame } from './components/minigames/IntimacyTouchMinigame';
 import { FlowchartModal } from './components/flowchart/FlowchartModal';
 import { SaveLoadModal } from './components/ui/SaveLoadModal';
 import { SettingsModal } from './components/ui/SettingsModal';
@@ -41,6 +42,7 @@ export const App: React.FC = () => {
       {state.viewMode === 'minigame' && state.activeMinigame === 'boundary_clash' && <BoundaryClash />}
       {state.viewMode === 'minigame' && state.activeMinigame === 'eyeliner' && <EyelinerMinigame />}
       {state.viewMode === 'minigame' && state.activeMinigame === 'mirror_monologue' && <MirrorMonologue />}
+      {state.viewMode === 'minigame' && state.activeMinigame === 'intimacy_touch' && <IntimacyTouchMinigame />}
       {state.viewMode === 'save_load' && <SaveLoadModal />}
       {state.viewMode === 'settings' && <SettingsModal />}
       {state.viewMode === 'gallery' && <GalleryModal />}

@@ -140,6 +140,13 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
       soundEffect: 'playHeartbeat',
       choices: [
         {
+          text: '[Sensory Harmony Minigame] Synchronize your breath and touch with Chloe in a rhythmic caress minigame.',
+          tone: 'flirty',
+          triggerMinigame: 'intimacy_touch',
+          statEffects: { confidence: 25, suitorAffection: { suitor: 'chloe', amount: 30 } },
+          nextSceneId: 'nsfw_chloe_climax',
+        },
+        {
           text: 'Entwine your legs with hers and guide her hands, surrendering completely to the moment.',
           tone: 'bold',
           statEffects: { confidence: 20, suitorAffection: { suitor: 'chloe', amount: 25 } },
@@ -247,7 +254,21 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
       isIntimate: true,
       lightingMood: 'warm_amber',
       soundEffect: 'playSparkle',
-      nextSceneId: 'nsfw_liam_climax',
+      choices: [
+        {
+          text: '[Sensory Harmony Minigame] Sync breath and heartbeats with Liam in an intimate caress minigame by the fire.',
+          tone: 'flirty',
+          triggerMinigame: 'intimacy_touch',
+          statEffects: { confidence: 25, suitorAffection: { suitor: 'liam', amount: 30 } },
+          nextSceneId: 'nsfw_liam_climax',
+        },
+        {
+          text: 'Entwine your legs with his and arch into his touch, savoring his patient devotion.',
+          tone: 'bold',
+          statEffects: { confidence: 20, suitorAffection: { suitor: 'liam', amount: 25 } },
+          nextSceneId: 'nsfw_liam_climax',
+        }
+      ]
     },
     'nsfw_liam_climax': {
       id: 'nsfw_liam_climax',
@@ -336,7 +357,21 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
       isIntimate: true,
       lightingMood: 'starlight',
       soundEffect: 'playSparkle',
-      nextSceneId: 'nsfw_julian_climax',
+      choices: [
+        {
+          text: '[Sensory Harmony Minigame] Sync touch and rhythm with Julian under the cyan starlight.',
+          tone: 'flirty',
+          triggerMinigame: 'intimacy_touch',
+          statEffects: { confidence: 25, suitorAffection: { suitor: 'julian', amount: 30 } },
+          nextSceneId: 'nsfw_julian_climax',
+        },
+        {
+          text: 'Pull him down against your chest and lose yourself in the skyline glow.',
+          tone: 'bold',
+          statEffects: { confidence: 20, suitorAffection: { suitor: 'julian', amount: 25 } },
+          nextSceneId: 'nsfw_julian_climax',
+        }
+      ]
     },
     'nsfw_julian_climax': {
       id: 'nsfw_julian_climax',
@@ -393,7 +428,21 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
       isIntimate: true,
       lightingMood: 'candlelight',
       soundEffect: 'playSparkle',
-      nextSceneId: 'nsfw_maya_climax',
+      choices: [
+        {
+          text: '[Sensory Harmony Minigame] Surrender to Maya’s fragrant jasmine oil and synchronous caresses in the minigame.',
+          tone: 'flirty',
+          triggerMinigame: 'intimacy_touch',
+          statEffects: { confidence: 25, suitorAffection: { suitor: 'maya', amount: 30 } },
+          nextSceneId: 'nsfw_maya_climax',
+        },
+        {
+          text: 'Entangle your fingers into her dark curls, whispering words of gratitude and pleasure.',
+          tone: 'bold',
+          statEffects: { confidence: 20, suitorAffection: { suitor: 'maya', amount: 25 } },
+          nextSceneId: 'nsfw_maya_climax',
+        }
+      ]
     },
     'nsfw_maya_climax': {
       id: 'nsfw_maya_climax',
@@ -483,7 +532,21 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
       isIntimate: true,
       lightingMood: 'warm_amber',
       soundEffect: 'playHeartbeat',
-      nextSceneId: 'nsfw_jesse_climax',
+      choices: [
+        {
+          text: '[Sensory Harmony Minigame] Sync touch and rhythm with Jesse under the warm workshop loft lights.',
+          tone: 'flirty',
+          triggerMinigame: 'intimacy_touch',
+          statEffects: { confidence: 25, suitorAffection: { suitor: 'jesse', amount: 30 } },
+          nextSceneId: 'nsfw_jesse_climax',
+        },
+        {
+          text: 'Wrap your legs around Jesse’s waist and pull them in close, trembling in pure euphoria.',
+          tone: 'bold',
+          statEffects: { confidence: 20, suitorAffection: { suitor: 'jesse', amount: 25 } },
+          nextSceneId: 'nsfw_jesse_climax',
+        }
+      ]
     },
     'nsfw_jesse_climax': {
       id: 'nsfw_jesse_climax',
@@ -553,7 +616,21 @@ export const NSFW_ENCOUNTERS_SCENARIO: StoryScenario = {
       isIntimate: true,
       lightingMood: 'rose_glow',
       soundEffect: 'playVictory',
-      nextSceneId: 'nsfw_eve_euphoria_peace',
+      choices: [
+        {
+          text: '[Sensory Harmony Minigame] Explore and celebrate the awakening of your body in the rhythmic caress minigame.',
+          tone: 'vulnerable',
+          triggerMinigame: 'intimacy_touch',
+          statEffects: { confidence: 30, dysphoria: -30, comfortRating: 25 },
+          nextSceneId: 'nsfw_eve_euphoria_peace',
+        },
+        {
+          text: 'Rest your hands softly over your heart, smiling at your reflection in the golden light.',
+          tone: 'chill',
+          statEffects: { confidence: 20, dysphoria: -20 },
+          nextSceneId: 'nsfw_eve_euphoria_peace',
+        }
+      ]
     },
     'nsfw_eve_euphoria_peace': {
       id: 'nsfw_eve_euphoria_peace',

@@ -249,7 +249,21 @@ export const ERA2_SCENARIO: StoryScenario = {
       isIntimate: true,
       lightingMood: 'neon',
       soundEffect: 'playHeartbeat',
-      nextSceneId: 'era2_chloe_nsfw_climax',
+      choices: [
+        {
+          text: '[Sensory Harmony Minigame] Sync touch and rhythmic caresses with Chloe under the glowing neon bedroom fairy lights.',
+          tone: 'flirty',
+          triggerMinigame: 'intimacy_touch',
+          statEffects: { confidence: 25, suitorAffection: { suitor: 'chloe', amount: 30 } },
+          nextSceneId: 'era2_chloe_nsfw_climax',
+        },
+        {
+          text: 'Tangle your fingers in her hair, pulling her down into a hungry kiss as pleasure surges.',
+          tone: 'bold',
+          statEffects: { confidence: 20, suitorAffection: { suitor: 'chloe', amount: 25 } },
+          nextSceneId: 'era2_chloe_nsfw_climax',
+        }
+      ]
     },
     'era2_chloe_nsfw_climax': {
       id: 'era2_chloe_nsfw_climax',

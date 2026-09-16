@@ -639,6 +639,16 @@ describe('Game Data & Progression Integrity', () => {
     store.saveGame(99, 'Test CG Slot');
     store.loadGame(99);
     expect(useGameStore.getState().state.unlockedCGs).toContain('cg_liam_intimacy');
+
+    // 10. Verify intimacy_touch minigame choice integration
+    const chloePassionNode = getDialogueNode('nsfw_chloe_passion');
+    expect(chloePassionNode?.choices?.some(c => c.triggerMinigame === 'intimacy_touch')).toBe(true);
+
+    store.triggerMinigame('intimacy_touch');
+    expect(useGameStore.getState().state.activeMinigame).toBe('intimacy_touch');
+    expect(useGameStore.getState().state.viewMode).toBe('minigame');
+    store.triggerMinigame('none');
+    expect(useGameStore.getState().state.activeMinigame).toBe('none');
   });
 });
 

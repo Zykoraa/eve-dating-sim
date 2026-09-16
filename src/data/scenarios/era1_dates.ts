@@ -320,7 +320,21 @@ export const ERA1_SCENARIO: StoryScenario = {
       isIntimate: true,
       lightingMood: 'warm_amber',
       soundEffect: 'playSparkle',
-      nextSceneId: 'era1_liam_nsfw_climax',
+      choices: [
+        {
+          text: '[Sensory Harmony Minigame] Sync touch and rhythm with Liam under the golden bedroom glow.',
+          tone: 'flirty',
+          triggerMinigame: 'intimacy_touch',
+          statEffects: { confidence: 25, suitorAffection: { suitor: 'liam', amount: 30 } },
+          nextSceneId: 'era1_liam_nsfw_climax',
+        },
+        {
+          text: 'Melt into his embrace, holding onto his shoulders as the pleasure mounts.',
+          tone: 'bold',
+          statEffects: { confidence: 20, suitorAffection: { suitor: 'liam', amount: 25 } },
+          nextSceneId: 'era1_liam_nsfw_climax',
+        }
+      ]
     },
     'era1_liam_nsfw_climax': {
       id: 'era1_liam_nsfw_climax',

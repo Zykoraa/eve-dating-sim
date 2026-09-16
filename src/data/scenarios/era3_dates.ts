@@ -221,7 +221,21 @@ export const ERA3_SCENARIO: StoryScenario = {
       isIntimate: true,
       lightingMood: 'starlight',
       soundEffect: 'playHeartbeat',
-      nextSceneId: 'era3_julian_nsfw_climax',
+      choices: [
+        {
+          text: '[Sensory Harmony Minigame] Synchronize your rhythm and breathing with Julian in the intimate touch minigame.',
+          tone: 'flirty',
+          triggerMinigame: 'intimacy_touch',
+          statEffects: { confidence: 25, suitorAffection: { suitor: 'julian', amount: 30 } },
+          nextSceneId: 'era3_julian_nsfw_climax',
+        },
+        {
+          text: 'Entwine your fingers tightly with his, whispering how safe and desired he makes you feel.',
+          tone: 'vulnerable',
+          statEffects: { comfortRating: 20, suitorAffection: { suitor: 'julian', amount: 25 } },
+          nextSceneId: 'era3_julian_nsfw_climax',
+        }
+      ]
     },
     'era3_julian_nsfw_climax': {
       id: 'era3_julian_nsfw_climax',
